@@ -39,7 +39,7 @@ sub activate
 	$ENV{PATH} = "$virtualEnvPath/bin".((defined $ENV{PATH})? ":${ENV{PATH}}": "");
 
 	$ENV{_OLD_PERL_VIRTUAL_PERL5LIB} = $ENV{PERL5LIB};
-	$ENV{PERL5LIB} = "$virtualEnvPath/lib/perl5";
+	$ENV{PERL5LIB} = "$virtualEnvPath/lib/perl5".((defined $ENV{PERL5LIB})? ":${ENV{PERL5LIB}}": "");
 
 	$ENV{_OLD_PERL_VIRTUAL_PERL_LOCAL_LIB_ROOT} = $ENV{PERL_LOCAL_LIB_ROOT};
 	$ENV{PERL_LOCAL_LIB_ROOT} = "$virtualEnvPath";

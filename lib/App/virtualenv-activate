@@ -2,7 +2,7 @@
 # you cannot run it directly
 
 deactivate () {
-    if [ ! "${1-}" = "nondestructive" ] ; then
+    if [ ! "${1-}" ] ; then
         unset PERL_VIRTUAL_ENV
         unset PATH
         unset PERL5LIB
@@ -70,7 +70,7 @@ deactivate () {
 }
 
 # unset irrelevant variables
-deactivate nondestructive
+deactivate 1
 
 SOURCE=${BASH_SOURCE:-$0}
 
@@ -89,7 +89,7 @@ export PATH
 if ! [ -z "${PERL5LIB+_}" ] ; then
     _OLD_PERL_VIRTUAL_PERL5LIB="$PERL5LIB"
 fi
-PERL5LIB="$PERL_VIRTUAL_ENV/lib/perl5"
+PERL5LIB="$PERL_VIRTUAL_ENV/lib/perl5${PERL5LIB:+:${PERL5LIB}}"
 export PERL5LIB
 
 if ! [ -z "${PERL_LOCAL_LIB_ROOT+_}" ] ; then
