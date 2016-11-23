@@ -58,7 +58,8 @@ sub activate
 
 sub deactivate
 {
-	my $nondestructive = (defined($_[0]) and ($_[0] eq 'nondestructive'));
+	my ($arg1) = @_;
+	my $nondestructive = defined($arg1) and $arg1 eq 'nondestructive';
 
 	$ENV{PERL_VIRTUAL_ENV} = $ENV{_OLD_PERL_VIRTUAL_ENV} if defined($ENV{_OLD_PERL_VIRTUAL_ENV}) or not $nondestructive;
 	undef $ENV{_OLD_PERL_VIRTUAL_ENV};
