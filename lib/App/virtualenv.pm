@@ -12,7 +12,7 @@ use File::Basename;
 BEGIN {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = 1.01;
+	our $VERSION     = 1.02;
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -46,7 +46,7 @@ sub create
 	require local::lib;
 	local::lib->import($envPath);
 
-	$self->_setEnv();
+	_setEnv($self);
 
 	system("perl -MCPAN -e \"CPAN::install('LWP', 'CPAN', 'App::cpanminus', 'App::cpanoutdated', 'Switch', 'FindBin', 'Cwd','Perl::Shell')\"") and warn $!; warn $! if $?;
 
