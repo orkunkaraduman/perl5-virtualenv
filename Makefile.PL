@@ -10,5 +10,5 @@ WriteMakefile(
 	PREREQ_PM			=> {'local::lib' => 0, 'Switch' => 0, 'FindBin' => 0, 'Cwd' => 0, 'File::Basename' => 0},
 	AUTHOR				=> 'Orkun Karaduman <orkunkaraduman@gmail.com>',
 	ABSTRACT			=> 'Virtual environment for Perl 5',
-	EXE_FILES			=> [ qw(bin/virtualenv.pl bin/sh.pl) ],
+	EXE_FILES			=> [ qw(lib/App/virtualenv/virtualenv.pl lib/App/virtualenv/sh.pl lib/App/virtualenv/perl.pl) ],
 );
