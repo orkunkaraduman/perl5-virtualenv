@@ -8,4 +8,4 @@ use utf8;
 use App::virtualenv;
 
 
-exit not App::virtualenv::sh();
+exit not App::virtualenv::sh(undef, @ARGV);

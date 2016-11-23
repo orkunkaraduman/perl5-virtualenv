@@ -125,9 +125,9 @@ sub create
 }
 
 sub sh {
-	my ($virtualEnvPath) = @_;
+	my ($virtualEnvPath, @args) = @_;
 	$virtualEnvPath = activate($virtualEnvPath);
-	system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @ARGV) and warn $!; warn $! if $?;
+	system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @args) and warn $!; warn $! if $?;
 	return 1;
 }
 
