@@ -4,15 +4,15 @@ use warnings;
 no warnings qw(qw utf8);
 use v5.10;
 use utf8;
-use Cwd;
 use FindBin;
+use Cwd;
 use File::Basename;
 
 
 BEGIN {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = 1.02;
+	our $VERSION     = 1.03;
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -22,51 +22,109 @@ BEGIN {
 }
 
 
-sub new
+sub activate
 {
-	my $class = shift;
-	my $self = {};
-	bless $self, $class;
-	my ($envPath) = @_;
-	$self->{envPath} = Cwd::realpath((defined $envPath)? $envPath: ".");
-	return $self;
+	my ($virtualEnvPath) = @_;
+	$virtualEnvPath = Cwd::realpath($virtualEnvPath);
+
+	deactivate('nondestructive');
+
+	$ENV{_OLD_PERL_VIRTUAL_ENV} = $ENV{PERL_VIRTUAL_ENV};
+	$ENV{PERL_VIRTUAL_ENV} = $virtualEnvPath;
+
+	$ENV{_OLD_PERL_VIRTUAL_PATH} = $ENV{PATH};
+	$ENV{PATH} = "$virtualEnvPath/bin".((defined $ENV{PATH})? ":${ENV{PATH}}": "");
+
+	$ENV{_OLD_PERL_VIRTUAL_PERL5LIB} = $ENV{PERL5LIB};
+	$ENV{PERL5LIB} = "$virtualEnvPath/lib/perl5";
+
+	$ENV{_OLD_PERL_VIRTUAL_PERL_LOCAL_LIB_ROOT} = $ENV{PERL_LOCAL_LIB_ROOT};
+	$ENV{PERL_LOCAL_LIB_ROOT} = "$virtualEnvPath";
+
+	$ENV{_OLD_PERL_VIRTUAL_PERL_MB_OPT} = $ENV{PERL_MB_OPT};
+	$ENV{PERL_MB_OPT} = "--install_base \"$virtualEnvPath\"";
+
+	$ENV{_OLD_PERL_VIRTUAL_PERL_MM_OPT} = $ENV{PERL_MM_OPT};
+	$ENV{PERL_MM_OPT} = "INSTALL_BASE=$virtualEnvPath";
+
+	$ENV{_OLD_PERL_VIRTUAL_PS1} = $ENV{PS1};
+	$ENV{PS1} = "(" . basename($virtualEnvPath) . ") ".((defined $ENV{PS1})? $ENV{PS1}: "");
+
+	return;
 }
 
-DESTROY
+sub deactivate
 {
+	my $nondestructive = defined($_[0]) and $_[0] eq 'nondestructive';
+
+	$ENV{PERL_VIRTUAL_ENV} = $ENV{_OLD_PERL_VIRTUAL_ENV} if defined($ENV{_OLD_PERL_VIRTUAL_ENV}) or not $nondestructive;
+	undef $ENV{_OLD_PERL_VIRTUAL_ENV};
+
+	$ENV{PATH} = $ENV{_OLD_PERL_VIRTUAL_PATH} if defined($ENV{_OLD_PERL_VIRTUAL_PATH}) or not $nondestructive;
+	undef $ENV{_OLD_PERL_VIRTUAL_PATH};
+
+	$ENV{PERL5LIB} = $ENV{_OLD_PERL_VIRTUAL_PERL5LIB} if defined($ENV{_OLD_PERL_VIRTUAL_PERL5LIB}) or not $nondestructive;
+	undef $ENV{_OLD_PERL_VIRTUAL_PERL5LIB};
+
+	$ENV{PERL_LOCAL_LIB_ROOT} = $ENV{_OLD_PERL_VIRTUAL_PERL_LOCAL_LIB_ROOT} if defined($ENV{_OLD_PERL_VIRTUAL_PERL_LOCAL_LIB_ROOT}) or not $nondestructive;
+	undef $ENV{_OLD_PERL_VIRTUAL_PERL_LOCAL_LIB_ROOT};
+
+	$ENV{PERL_MB_OPT} = $ENV{_OLD_PERL_VIRTUAL_PERL_MB_OPT} if defined($ENV{_OLD_PERL_VIRTUAL_PERL_MB_OPT}) or not $nondestructive;
+	undef $ENV{_OLD_PERL_VIRTUAL_PERL_MB_OPT};
+
+	$ENV{PERL_MM_OPT} = $ENV{_OLD_PERL_VIRTUAL_PERL_MM_OPT} if defined($ENV{_OLD_PERL_VIRTUAL_PERL_MM_OPT}) or not $nondestructive;
+	undef $ENV{_OLD_PERL_VIRTUAL_PERL_MM_OPT};
+
+	$ENV{PS1} = $ENV{_OLD_PERL_VIRTUAL_PS1} if defined($ENV{_OLD_PERL_VIRTUAL_PS1}) or not $nondestructive;
+	undef $ENV{_OLD_PERL_VIRTUAL_PS1};
+
+	return;
+}
+
+sub getVirtualEnv
+{
+	return Cwd::realpath((defined $ENV{PERL_VIRTUAL_ENV})? $ENV{PERL_VIRTUAL_ENV}: undef);
+}
+
+sub binVirtualEnv
+{
+	my ($virtualEnvPath) = @_;
+	return Cwd::realpath("${FindBin::Bin}/..");
+}
+
+sub validVirtualEnv
+{
+	my ($virtualEnvPath) = @_;
+	return -d "$virtualEnvPath/lib/perl5";
 }
 
 sub create
 {
-	my $self = shift if defined $_[0] and UNIVERSAL::isa($_[0], __PACKAGE__);
-	my ($envPath) = @_;
-	$self = new($envPath) if not defined $self;
-	$envPath = $self->{envPath};
+	my ($virtualEnvPath) = @_;
+	$virtualEnvPath = Cwd::realpath((defined $virtualEnvPath)? $virtualEnvPath: ".");
+
+	deactivate();
 
 	require local::lib;
-	local::lib->import($envPath);
+	local::lib->import($virtualEnvPath);
 
-	_setEnv($self);
+	activate($virtualEnvPath);
 
-	system("perl -MCPAN -e \"CPAN::install('LWP', 'CPAN', 'App::cpanminus', 'App::cpanoutdated', 'Switch', 'FindBin', 'Cwd','Perl::Shell')\"") and warn $!; warn $! if $?;
+	system("perl -MCPAN -e \"CPAN::install('LWP', 'CPAN', 'App::cpanminus', 'App::cpanoutdated')\"") and warn $!; warn $! if $?;
 
 	my $pkgPath = dirname(__FILE__);
-	system("cp -v $pkgPath/virtualenv-activate $envPath/bin/activate") and warn $!; warn $! if $?;
-	#system("cp -v $FindBin::Bin/sh.pl $envPath/bin/sh.pl && chmod 755 $envPath/bin/sh.pl") warn $!; warn $! if $?;
+	system("cp -v $pkgPath/virtualenv-activate $virtualEnvPath/bin/activate") and warn $!; warn $! if $?;
 
-	return $self;
+	return 1;
 }
 
-sub _setEnv
-{
-	my $self = shift;
-	my $envPath = $self->{envPath};
-	$ENV{PATH} = "$envPath/bin".((defined $ENV{PATH})? ":${ENV{PATH}}": "");
-	$ENV{PERL5LIB} = "$envPath/lib/perl5";
-	$ENV{PERL_LOCAL_LIB_ROOT} = "$envPath";
-	$ENV{PERL_MB_OPT} = "--install_base \"$envPath\"";
-	$ENV{PERL_MM_OPT} = "INSTALL_BASE=$envPath";
-	return 0;
+sub sh {
+	my $virtualEnvPath = getVirtualEnv();
+	$virtualEnvPath = binVirtualEnv() if not defined $virtualEnvPath;
+	warn "Virtual environment not valid" if validVirtualEnv($virtualEnvPath);
+	activate($virtualEnvPath);
+	system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @ARGV) and warn $!; warn $! if $?;
+	return 1;
 }
 
 

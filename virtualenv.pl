@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!perl
 use strict;
 use warnings;
 no warnings qw(qw utf8);
@@ -8,7 +8,5 @@ use utf8;
 use App::virtualenv;
 
 
-my ($envPath) = @ARGV;
-App::virtualenv::create($envPath);
-
-exit 0;
+my ($virtualEnv) = @ARGV;
+exit not App::virtualenv::create($virtualEnv);

@@ -113,11 +113,7 @@ export PERL_MM_OPT
 if ! [ -z "${PS1+_}" ] ; then
     _OLD_PERL_VIRTUAL_PS1="$PS1"
 fi
-if [ "x" != x ] ; then
-    PS1="$PS1"
-else
-    PS1="(`basename \"$PERL_VIRTUAL_ENV\"`) $PS1"
-fi
+PS1="(`basename \"$PERL_VIRTUAL_ENV\"`) $PS1"
 export PS1
 
 # This should detect bash and zsh, which have a hash command that must
