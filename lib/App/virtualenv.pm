@@ -119,7 +119,8 @@ sub create
 	system("perl -MCPAN -e \"CPAN::install('LWP', 'CPAN', 'App::cpanminus', 'App::cpanoutdated')\"") and warn $!; warn $! if $?;
 
 	my $pkgPath = dirname(__FILE__);
-	system("cp -v $pkgPath/virtualenv-activate $virtualEnvPath/bin/activate") and warn $!; warn $! if $?;
+	system("cp -v $pkgPath/virtualenv-activate $virtualEnvPath/bin/activate && chmod 644 $virtualEnvPath/bin/activate") and warn $!; warn $! if $?;
+	system("cp -v $pkgPath/../../bin/sh.pl $virtualEnvPath/bin/sh.pl && chmod 755 $virtualEnvPath/bin/sh.pl") and warn $!; warn $! if $?;
 
 	return 1;
 }
