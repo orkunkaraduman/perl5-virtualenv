@@ -28,7 +28,7 @@ sub activate
 	$virtualEnvPath = getVirtualEnv() if not defined $virtualEnvPath;
 	$virtualEnvPath = binVirtualEnv() if not defined $virtualEnvPath;
 	$virtualEnvPath = Cwd::realpath($virtualEnvPath);
-	warn "Virtual environment is not valid" if validVirtualEnv($virtualEnvPath);
+	warn "Virtual environment is not valid" if not validVirtualEnv($virtualEnvPath);
 
 	deactivate('nondestructive');
 
@@ -58,7 +58,7 @@ sub activate
 
 sub deactivate
 {
-	my $nondestructive = defined($_[0]) and $_[0] eq 'nondestructive';
+	my $nondestructive = defined($_[0]) and ($_[0] eq 'nondestructive');
 
 	$ENV{PERL_VIRTUAL_ENV} = $ENV{_OLD_PERL_VIRTUAL_ENV} if defined($ENV{_OLD_PERL_VIRTUAL_ENV}) or not $nondestructive;
 	undef $ENV{_OLD_PERL_VIRTUAL_ENV};
