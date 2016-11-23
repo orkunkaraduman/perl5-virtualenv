@@ -8,4 +8,4 @@ use utf8;
 use App::virtualenv;
 
 
-exit App::virtualenv::sh(undef, @ARGV);
+exit App::virtualenv::perl(undef, @ARGV);
