@@ -63,7 +63,7 @@ deactivate () {
         hash -r 2>/dev/null
     fi
 
-    if [ ! "${1-}" = "nondestructive" ] ; then
+    if [ ! "${1-}" ] ; then
         # Self destruct!
         unset -f deactivate
     fi
