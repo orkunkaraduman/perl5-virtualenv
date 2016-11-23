@@ -129,13 +129,15 @@ sub create
 sub sh {
 	my ($virtualEnvPath, @args) = @_;
 	$virtualEnvPath = activate($virtualEnvPath);
-	return system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @args);
+	system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @args);
+	return $? >> 8;
 }
 
 sub perl {
 	my ($virtualEnvPath, @args) = @_;
 	$virtualEnvPath = activate($virtualEnvPath);
-	return system("/usr/bin/perl", @args);
+	system("/usr/bin/perl", @args);
+	return $? >> 8;
 }
 
 
