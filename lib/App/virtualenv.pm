@@ -12,7 +12,7 @@ use File::Basename;
 BEGIN {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = 1.03;
+	our $VERSION     = 1.04;
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -58,7 +58,7 @@ sub activate
 
 sub deactivate
 {
-	my $nondestructive = defined($_[0]) and ($_[0] eq 'nondestructive');
+	my $nondestructive = (defined($_[0]) and ($_[0] eq 'nondestructive'));
 
 	$ENV{PERL_VIRTUAL_ENV} = $ENV{_OLD_PERL_VIRTUAL_ENV} if defined($ENV{_OLD_PERL_VIRTUAL_ENV}) or not $nondestructive;
 	undef $ENV{_OLD_PERL_VIRTUAL_ENV};
