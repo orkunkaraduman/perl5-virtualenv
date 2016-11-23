@@ -12,7 +12,7 @@ use File::Basename;
 BEGIN {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = 1.04;
+	our $VERSION     = 1.00;
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -30,7 +30,7 @@ sub activate
 	$virtualEnvPath = Cwd::realpath($virtualEnvPath);
 	warn "Virtual environment is not valid" if not validVirtualEnv($virtualEnvPath);
 
-	deactivate('nondestructive');
+	deactivate(1);
 
 	$ENV{_OLD_PERL_VIRTUAL_ENV} = $ENV{PERL_VIRTUAL_ENV};
 	$ENV{PERL_VIRTUAL_ENV} = $virtualEnvPath;
@@ -58,8 +58,9 @@ sub activate
 
 sub deactivate
 {
-	my ($arg1) = @_;
-	my $nondestructive = defined($arg1) and $arg1 eq 'nondestructive';
+	my ($nondestructive) = @_;
+
+	$nondestructive = not defined($ENV{PERL_VIRTUAL_ENV}) if not defined($nondestructive);
 
 	$ENV{PERL_VIRTUAL_ENV} = $ENV{_OLD_PERL_VIRTUAL_ENV} if defined($ENV{_OLD_PERL_VIRTUAL_ENV}) or not $nondestructive;
 	undef $ENV{_OLD_PERL_VIRTUAL_ENV};
