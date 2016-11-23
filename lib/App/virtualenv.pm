@@ -25,7 +25,10 @@ BEGIN {
 sub activate
 {
 	my ($virtualEnvPath) = @_;
+	$virtualEnvPath = getVirtualEnv() if not defined $virtualEnvPath;
+	$virtualEnvPath = binVirtualEnv() if not defined $virtualEnvPath;
 	$virtualEnvPath = Cwd::realpath($virtualEnvPath);
+	warn "Virtual environment is not valid" if validVirtualEnv($virtualEnvPath);
 
 	deactivate('nondestructive');
 
@@ -50,7 +53,7 @@ sub activate
 	$ENV{_OLD_PERL_VIRTUAL_PS1} = $ENV{PS1};
 	$ENV{PS1} = "(" . basename($virtualEnvPath) . ") ".((defined $ENV{PS1})? $ENV{PS1}: "");
 
-	return;
+	return $virtualEnvPath;
 }
 
 sub deactivate
@@ -83,18 +86,19 @@ sub deactivate
 
 sub getVirtualEnv
 {
-	return Cwd::realpath((defined $ENV{PERL_VIRTUAL_ENV})? $ENV{PERL_VIRTUAL_ENV}: undef);
+	return (defined $ENV{PERL_VIRTUAL_ENV})? Cwd::realpath($ENV{PERL_VIRTUAL_ENV}): undef;
 }
 
 sub binVirtualEnv
 {
-	my ($virtualEnvPath) = @_;
 	return Cwd::realpath("${FindBin::Bin}/..");
 }
 
 sub validVirtualEnv
 {
 	my ($virtualEnvPath) = @_;
+	return 0 if not defined $virtualEnvPath;
+	$virtualEnvPath = Cwd::realpath($virtualEnvPath);
 	return -d "$virtualEnvPath/lib/perl5";
 }
 
@@ -119,10 +123,8 @@ sub create
 }
 
 sub sh {
-	my $virtualEnvPath = getVirtualEnv();
-	$virtualEnvPath = binVirtualEnv() if not defined $virtualEnvPath;
-	warn "Virtual environment not valid" if validVirtualEnv($virtualEnvPath);
-	activate($virtualEnvPath);
+	my ($virtualEnvPath) = @_;
+	$virtualEnvPath = activate($virtualEnvPath);
 	system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @ARGV) and warn $!; warn $! if $?;
 	return 1;
 }
