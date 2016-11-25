@@ -12,7 +12,7 @@ use File::Basename;
 BEGIN {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.01';
+	our $VERSION     = 'v1.01';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
