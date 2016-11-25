@@ -1,7 +1,8 @@
+COPYRIGHT
 LICENSE
 MANIFEST
 Makefile.PL
-README
+README.md
 lib/App/virtualenv.pm
 lib/App/virtualenv/activate
 lib/App/virtualenv/perl.pl
