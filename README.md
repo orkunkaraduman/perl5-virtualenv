@@ -25,6 +25,10 @@ runs Unix shell under Perl virtual environment
 
 runs Perl language interpreter under Perl virtual environment
 
+**[*environment_path*/bin/]shell.pl**
+
+runs Perl shell interpreter under Perl virtual environment
+
 ## INSTALLATION
 
 To install this module type the following:
@@ -50,6 +54,7 @@ This module requires these other modules and libraries:
 * FindBin
 * Cwd
 * File::Basename
+* Perl::Shell
 
 ## COPYRIGHT AND LICENCE
 
