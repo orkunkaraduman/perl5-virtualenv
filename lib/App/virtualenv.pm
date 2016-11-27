@@ -134,11 +134,22 @@ sub create
 	return 1;
 }
 
+sub _sh
+{
+	system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @args);
+	return $? >> 8;
+}
+
 sub sh
 {
 	my ($virtualEnvPath, @args) = @_;
 	$virtualEnvPath = activate($virtualEnvPath);
-	system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @args);
+	return _sh;
+}
+
+sub _perl
+{
+	system("/usr/bin/perl", @args);
 	return $? >> 8;
 }
 
@@ -146,8 +157,7 @@ sub perl
 {
 	my ($virtualEnvPath, @args) = @_;
 	$virtualEnvPath = activate($virtualEnvPath);
-	system("/usr/bin/perl", @args);
-	return $? >> 8;
+	return _perl;
 }
 
 sub bashReadLine
