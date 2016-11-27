@@ -196,14 +196,19 @@ sub Perl::Shell::_State::do
 	return Lexical::Persistence::do($self, @_);
 }
 
-sub shell
+sub _shell
 {
-	my ($virtualEnvPath, @args) = @_;
 	open my $stdout, ">&:encoding(iso-8859-1)", *STDOUT;
 	local *STDOUT = *$stdout;
 	#open my $stdin, "<&:encoding(iso-8859-1)", *STDIN;
 	#local *STDIN = *$stdin;
 	return Perl::Shell::shell();
+}
+
+sub shell
+{
+	my ($virtualEnvPath, @args) = @_;
+	return perl($virtualEnvPath, "-MApp::virtualenv", "-eApp::virtualenv::_shell();");
 }
 
 
