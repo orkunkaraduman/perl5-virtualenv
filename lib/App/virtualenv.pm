@@ -135,11 +135,25 @@ sub create
 	return 1;
 }
 
+sub _system
+{
+	system(@_);
+	if ($? == -1)
+	{
+		warn "failed to execute: $!";
+		return 255;
+	} elsif ($? & 127)
+	{
+		warn "child died with signal ".($? & 127).", ".(($? & 128)? "with": "without")." coredump";
+		return 255;
+	}
+	return $? >> 8;
+}
+
 sub _sh
 {
 	my (@args) = @_;
-	system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @args);
-	return $? >> 8;
+	return _system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @args);
 }
 
 sub sh
@@ -152,8 +166,7 @@ sub sh
 sub _perl
 {
 	my (@args) = @_;
-	system("/usr/bin/perl", @args);
-	return $? >> 8;
+	return _system("/usr/bin/perl", @args);
 }
 
 sub perl
