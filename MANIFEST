@@ -10,4 +10,4 @@ lib/App/virtualenv/sh.pl
 lib/App/virtualenv/shell.pl
 lib/App/virtualenv/virtualenv.pl
 t/perl5-virtualenv.t
-test.pl
+tests.pl
