@@ -8,11 +8,13 @@ use FindBin;
 use Cwd;
 use File::Basename;
 use Perl::Shell;
+use Term::ReadLine;
 use Config;
 use Lexical::Persistence;
 
 
-BEGIN {
+BEGIN
+{
 	require Exporter;
 	# set the version for version checking
 	our $VERSION     = '1.02';
@@ -22,6 +24,9 @@ BEGIN {
 	our @EXPORT      = qw();
 	# Functions and variables which can be optionally exported
 	our @EXPORT_OK   = qw();
+
+	$ENV{PERL_RL} = 'gnu o=0';
+	require Term::ReadLine;
 }
 
 
@@ -158,7 +163,8 @@ sub bashReadLine
 	return (not $?)? $_: undef;
 }
 
-sub Perl::Shell::_readline
+#sub Perl::Shell::_readline
+sub _readline
 {
 	my $prompt = shift;
 	if ( -t STDIN ) {
