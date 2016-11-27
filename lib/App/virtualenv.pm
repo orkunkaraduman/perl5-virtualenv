@@ -130,6 +130,7 @@ sub create
 	system("cp -v $pkgPath/virtualenv/activate $virtualEnvPath/bin/activate && chmod 644 $virtualEnvPath/bin/activate");
 	system("cp -v $pkgPath/virtualenv/sh.pl $virtualEnvPath/bin/sh.pl && chmod 755 $virtualEnvPath/bin/sh.pl");
 	system("cp -v $pkgPath/virtualenv/perl.pl $virtualEnvPath/bin/perl.pl && chmod 755 $virtualEnvPath/bin/perl.pl");
+	system("cp -v $pkgPath/virtualenv/shell.pl $virtualEnvPath/bin/shell.pl && chmod 755 $virtualEnvPath/bin/shell.pl");
 
 	return 1;
 }
