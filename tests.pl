@@ -7,7 +7,8 @@ use v5.10;
 use open qw(:std :locale);
 use utf8;
 
+use lib './lib/';
 use App::virtualenv;
 
 
-exit App::virtualenv::perl(undef, @ARGV);
+exit App::virtualenv::shell(undef, @ARGV);

@@ -1,24 +1,32 @@
 package App::virtualenv;
 use strict;
 use warnings;
-no warnings qw(qw utf8);
+no warnings qw(qw utf8 redefine);
 use v5.10;
 use utf8;
 use FindBin;
 use Cwd;
 use File::Basename;
+use Perl::Shell;
+use Term::ReadLine;
+use Config;
+use Lexical::Persistence;
 
 
-BEGIN {
+BEGIN
+{
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.01';
+	our $VERSION     = '1.02';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
 	our @EXPORT      = qw();
 	# Functions and variables which can be optionally exported
 	our @EXPORT_OK   = qw();
+
+	$ENV{PERL_RL} = 'gnu o=0';
+	require Term::ReadLine;
 }
 
 
@@ -122,22 +130,99 @@ sub create
 	system("cp -v $pkgPath/virtualenv/activate $virtualEnvPath/bin/activate && chmod 644 $virtualEnvPath/bin/activate");
 	system("cp -v $pkgPath/virtualenv/sh.pl $virtualEnvPath/bin/sh.pl && chmod 755 $virtualEnvPath/bin/sh.pl");
 	system("cp -v $pkgPath/virtualenv/perl.pl $virtualEnvPath/bin/perl.pl && chmod 755 $virtualEnvPath/bin/perl.pl");
+	system("cp -v $pkgPath/virtualenv/shell.pl $virtualEnvPath/bin/shell.pl && chmod 755 $virtualEnvPath/bin/shell.pl");
 
 	return 1;
 }
 
-sub sh {
-	my ($virtualEnvPath, @args) = @_;
-	$virtualEnvPath = activate($virtualEnvPath);
-	system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @args);
+sub _system
+{
+	system(@_);
+	if ($? == -1)
+	{
+		warn "failed to execute: $!";
+		return 255;
+	} elsif ($? & 127)
+	{
+		warn "child died with signal ".($? & 127).", ".(($? & 128)? "with": "without")." coredump";
+		return 255;
+	}
 	return $? >> 8;
 }
 
-sub perl {
+sub _sh
+{
+	my (@args) = @_;
+	return _system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @args);
+}
+
+sub sh
+{
 	my ($virtualEnvPath, @args) = @_;
 	$virtualEnvPath = activate($virtualEnvPath);
-	system("/usr/bin/perl", @args);
-	return $? >> 8;
+	return _sh(@args);
+}
+
+sub _perl
+{
+	my (@args) = @_;
+	return _system("/usr/bin/perl", @args);
+}
+
+sub perl
+{
+	my ($virtualEnvPath, @args) = @_;
+	$virtualEnvPath = activate($virtualEnvPath);
+	return _perl(@args);
+}
+
+sub bashReadLine
+{
+	my ($prompt) = @_;
+	$prompt =~ s/\\/\\\\/g;
+	$prompt =~ s/"/\\"/g;
+	$prompt =~ s/\\/\\\\/g;
+	$prompt =~ s/"/\\"/g;
+	my $cmd = '/bin/bash -c "read -p \"'.$prompt.'\" -r -e && echo \"\$REPLY\""';
+	$_ = `$cmd`;
+	chomp;
+	return (not $?)? $_: undef;
+}
+
+#sub Perl::Shell::_readline
+sub _readline
+{
+	my $prompt = shift;
+	if ( -t STDIN ) {
+		return bashReadLine($prompt);
+	} else {
+		print $prompt;
+		my $line = <>;
+		chomp $line if defined $line;
+		return $line;
+	}
+}
+
+sub Perl::Shell::_State::do
+{
+	my $self = shift;
+	$_[0] = "use v$Config{version};\n".$_[0] if defined $_[0];
+	return Lexical::Persistence::do($self, @_);
+}
+
+sub _shell
+{
+	open my $stdout, ">&:encoding(iso-8859-1)", *STDOUT;
+	local *STDOUT = *$stdout;
+	#open my $stdin, "<&:encoding(iso-8859-1)", *STDIN;
+	#local *STDIN = *$stdin;
+	return Perl::Shell::shell();
+}
+
+sub shell
+{
+	my ($virtualEnvPath, @args) = @_;
+	return perl($virtualEnvPath, "-MApp::virtualenv", "-eApp::virtualenv::_shell();");
 }
 
 

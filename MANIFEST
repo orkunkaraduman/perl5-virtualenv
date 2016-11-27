@@ -7,5 +7,7 @@ lib/App/virtualenv.pm
 lib/App/virtualenv/activate
 lib/App/virtualenv/perl.pl
 lib/App/virtualenv/sh.pl
+lib/App/virtualenv/shell.pl
 lib/App/virtualenv/virtualenv.pl
 t/perl5-virtualenv.t
+tests.pl

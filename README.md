@@ -1,7 +1,7 @@
 # perl5-virtualenv
 ###### Virtual environment for Perl 5
 
-perl5-virtualenv is a tool to create isolated Perl 5 virtual environments.
+perl5-virtualenv is a tool to create isolated Perl 5 virtual environments, like Python virtual environment.
 
 ## USAGE
 
@@ -21,9 +21,13 @@ deactivates Perl virtual environment
 
 runs Unix shell under Perl virtual environment
 
-**[*environment_path*/bin/]perl.pl [argument]...**
+**[*environment_path*/bin/]perl.pl [*argument*]...**
 
 runs Perl language interpreter under Perl virtual environment
+
+**[*environment_path*/bin/]shell.pl**
+
+runs Perl shell interpreter under Perl virtual environment
 
 ## INSTALLATION
 
@@ -37,6 +41,10 @@ To install this module type the following:
 >
 > make install
 
+or
+
+> cpanm https://github.com/orkunkaraduman/perl5-virtualenv/archive/v1.02.tar.gz
+
 ## DEPENDENCIES
 
 This module requires these other modules and libraries:
@@ -46,6 +54,7 @@ This module requires these other modules and libraries:
 * FindBin
 * Cwd
 * File::Basename
+* Perl::Shell
 
 ## COPYRIGHT AND LICENCE
 
