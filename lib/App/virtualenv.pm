@@ -1,13 +1,15 @@
 package App::virtualenv;
 use strict;
 use warnings;
-no warnings qw(qw utf8);
+no warnings qw(qw utf8 redefine);
 use v5.10;
 use utf8;
 use FindBin;
 use Cwd;
 use File::Basename;
 use Perl::Shell;
+use Config;
+use Lexical::Persistence;
 
 
 BEGIN {
@@ -167,6 +169,13 @@ sub Perl::Shell::_readline
 		chomp $line if defined $line;
 		return $line;
 	}
+}
+
+sub Perl::Shell::_State::do
+{
+	my $self = shift;
+	$_[0] = "use v$Config{version};\n".$_[0] if defined $_[0];
+	return Lexical::Persistence::do($self, @_);
 }
 
 sub shell
