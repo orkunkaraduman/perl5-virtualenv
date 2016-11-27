@@ -151,7 +151,6 @@ sub bashReadLine
 	$prompt =~ s/\\/\\\\/g;
 	$prompt =~ s/"/\\"/g;
 	my $cmd = '/bin/bash -c "read -p \"'.$prompt.'\" -r -e && echo \"\$REPLY\""';
-	say $cmd;
 	$_ = `$cmd`;
 	chomp;
 	return (not $?)? $_: undef;
@@ -172,6 +171,7 @@ sub Perl::Shell::_readline
 
 sub shell
 {
+	my ($virtualEnvPath, @args) = @_;
 	return Perl::Shell::shell();
 }
 
