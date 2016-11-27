@@ -7,12 +7,13 @@ use utf8;
 use FindBin;
 use Cwd;
 use File::Basename;
+use Perl::Shell;
 
 
 BEGIN {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.01';
+	our $VERSION     = '1.02';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -126,18 +127,52 @@ sub create
 	return 1;
 }
 
-sub sh {
+sub sh
+{
 	my ($virtualEnvPath, @args) = @_;
 	$virtualEnvPath = activate($virtualEnvPath);
 	system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @args);
 	return $? >> 8;
 }
 
-sub perl {
+sub perl
+{
 	my ($virtualEnvPath, @args) = @_;
 	$virtualEnvPath = activate($virtualEnvPath);
 	system("/usr/bin/perl", @args);
 	return $? >> 8;
+}
+
+sub bashReadLine
+{
+	my ($prompt) = @_;
+	$prompt =~ s/\\/\\\\/g;
+	$prompt =~ s/"/\\"/g;
+	$prompt =~ s/\\/\\\\/g;
+	$prompt =~ s/"/\\"/g;
+	my $cmd = '/bin/bash -c "read -p \"'.$prompt.'\" -r -e && echo \"\$REPLY\""';
+	say $cmd;
+	$_ = `$cmd`;
+	chomp;
+	return (not $?)? $_: undef;
+}
+
+sub Perl::Shell::_readline
+{
+	my $prompt = shift;
+	if ( -t STDIN ) {
+		return bashReadLine($prompt);
+	} else {
+		print $prompt;
+		my $line = <>;
+		chomp $line if defined $line;
+		return $line;
+	}
+}
+
+sub shell
+{
+	return Perl::Shell::shell();
 }
 
 
