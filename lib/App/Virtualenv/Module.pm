@@ -5,7 +5,7 @@ App::Virtualenv::Module - Module to implement App::Virtualenv.
 
 =head1 VERSION
 
-same with App::Virtualenv
+version 1.04
 
 =head1 SYNOPSIS
 
@@ -29,7 +29,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = $App::Virtualenv::VERSION;
+	our $VERSION     = '1.04';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
