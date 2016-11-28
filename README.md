@@ -55,7 +55,7 @@ To install this module type the following
 
 from CPAN
 
-> cpan App::Virtualenv
+> cpan -i App::Virtualenv
 
 ## DEPENDENCIES
 
