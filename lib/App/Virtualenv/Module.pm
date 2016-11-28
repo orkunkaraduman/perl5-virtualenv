@@ -1,7 +1,7 @@
 package App::Virtualenv::Module;
 =head1 NAME
 
-App::Virtualenv::Module
+App::Virtualenv::Module - Module to implement App::Virtualenv.
 
 =head1 VERSION
 
