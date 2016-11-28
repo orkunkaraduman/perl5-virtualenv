@@ -1,4 +1,17 @@
-package App::virtualenv;
+package App::Virtualenv;
+=head1 NAME
+
+App::Virtualenv
+
+=head1 VERSION
+
+version 1.03
+
+=head1 SYNOPSIS
+
+Perl 5 virtual environment module.
+
+=cut
 use strict;
 use warnings;
 no warnings qw(qw utf8 redefine);
@@ -17,7 +30,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.02';
+	our $VERSION     = '1.03';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -32,36 +45,36 @@ BEGIN
 
 sub activate
 {
-	my ($virtualEnvPath) = @_;
-	$virtualEnvPath = getVirtualEnv() if not defined $virtualEnvPath;
-	$virtualEnvPath = binVirtualEnv() if not defined $virtualEnvPath;
-	$virtualEnvPath = Cwd::realpath($virtualEnvPath);
-	warn "Virtual environment is not valid" if not validVirtualEnv($virtualEnvPath);
+	my ($virtualenvPath) = @_;
+	$virtualenvPath = getVirtualenvPath() if not defined $virtualenvPath;
+	$virtualenvPath = binVirtualenvPath() if not defined $virtualenvPath;
+	$virtualenvPath = Cwd::realpath($virtualenvPath);
+	warn "Virtual environment is not valid" if not validVirtualenvPath($virtualenvPath);
 
 	deactivate(1);
 
 	$ENV{_OLD_PERL_VIRTUAL_ENV} = $ENV{PERL_VIRTUAL_ENV};
-	$ENV{PERL_VIRTUAL_ENV} = $virtualEnvPath;
+	$ENV{PERL_VIRTUAL_ENV} = $virtualenvPath;
 
 	$ENV{_OLD_PERL_VIRTUAL_PATH} = $ENV{PATH};
-	$ENV{PATH} = "$virtualEnvPath/bin".((defined $ENV{PATH})? ":${ENV{PATH}}": "");
+	$ENV{PATH} = "$virtualenvPath/bin".((defined $ENV{PATH})? ":${ENV{PATH}}": "");
 
 	$ENV{_OLD_PERL_VIRTUAL_PERL5LIB} = $ENV{PERL5LIB};
-	$ENV{PERL5LIB} = "$virtualEnvPath/lib/perl5".((defined $ENV{PERL5LIB})? ":${ENV{PERL5LIB}}": "");
+	$ENV{PERL5LIB} = "$virtualenvPath/lib/perl5".((defined $ENV{PERL5LIB})? ":${ENV{PERL5LIB}}": "");
 
 	$ENV{_OLD_PERL_VIRTUAL_PERL_LOCAL_LIB_ROOT} = $ENV{PERL_LOCAL_LIB_ROOT};
-	$ENV{PERL_LOCAL_LIB_ROOT} = "$virtualEnvPath";
+	$ENV{PERL_LOCAL_LIB_ROOT} = "$virtualenvPath";
 
 	$ENV{_OLD_PERL_VIRTUAL_PERL_MB_OPT} = $ENV{PERL_MB_OPT};
-	$ENV{PERL_MB_OPT} = "--install_base \"$virtualEnvPath\"";
+	$ENV{PERL_MB_OPT} = "--install_base \"$virtualenvPath\"";
 
 	$ENV{_OLD_PERL_VIRTUAL_PERL_MM_OPT} = $ENV{PERL_MM_OPT};
-	$ENV{PERL_MM_OPT} = "INSTALL_BASE=$virtualEnvPath";
+	$ENV{PERL_MM_OPT} = "INSTALL_BASE=$virtualenvPath";
 
 	$ENV{_OLD_PERL_VIRTUAL_PS1} = $ENV{PS1};
-	$ENV{PS1} = "(" . basename($virtualEnvPath) . ") ".((defined $ENV{PS1})? $ENV{PS1}: "");
+	$ENV{PS1} = "(" . basename($virtualenvPath) . ") ".((defined $ENV{PS1})? $ENV{PS1}: "");
 
-	return $virtualEnvPath;
+	return $virtualenvPath;
 }
 
 sub deactivate
@@ -94,43 +107,43 @@ sub deactivate
 	return;
 }
 
-sub getVirtualEnv
+sub getVirtualenvPath
 {
 	return (defined $ENV{PERL_VIRTUAL_ENV})? Cwd::realpath($ENV{PERL_VIRTUAL_ENV}): undef;
 }
 
-sub binVirtualEnv
+sub binVirtualenvPath
 {
 	return Cwd::realpath("${FindBin::Bin}/..");
 }
 
-sub validVirtualEnv
+sub validVirtualenvPath
 {
-	my ($virtualEnvPath) = @_;
-	return 0 if not defined $virtualEnvPath;
-	$virtualEnvPath = Cwd::realpath($virtualEnvPath);
-	return -d "$virtualEnvPath/lib/perl5";
+	my ($virtualenvPath) = @_;
+	return 0 if not defined $virtualenvPath;
+	$virtualenvPath = Cwd::realpath($virtualenvPath);
+	return -d "$virtualenvPath/lib/perl5";
 }
 
 sub create
 {
-	my ($virtualEnvPath) = @_;
-	$virtualEnvPath = Cwd::realpath((defined $virtualEnvPath)? $virtualEnvPath: ".");
+	my ($virtualenvPath) = @_;
+	$virtualenvPath = Cwd::realpath((defined $virtualenvPath)? $virtualenvPath: ".");
 
 	deactivate();
 
 	require local::lib;
-	local::lib->import($virtualEnvPath);
+	local::lib->import($virtualenvPath);
 
-	activate($virtualEnvPath);
+	activate($virtualenvPath);
 
 	system("/usr/bin/perl -MCPAN -e \"CPAN::install('LWP', 'CPAN', 'App::cpanminus', 'App::cpanoutdated')\"");
 
 	my $pkgPath = dirname(__FILE__);
-	system("cp -v $pkgPath/virtualenv/activate $virtualEnvPath/bin/activate && chmod 644 $virtualEnvPath/bin/activate");
-	system("cp -v $pkgPath/virtualenv/sh.pl $virtualEnvPath/bin/sh.pl && chmod 755 $virtualEnvPath/bin/sh.pl");
-	system("cp -v $pkgPath/virtualenv/perl.pl $virtualEnvPath/bin/perl.pl && chmod 755 $virtualEnvPath/bin/perl.pl");
-	system("cp -v $pkgPath/virtualenv/shell.pl $virtualEnvPath/bin/shell.pl && chmod 755 $virtualEnvPath/bin/shell.pl");
+	system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
+	system("cp -v $pkgPath/Virtualenv/sh.pl $virtualenvPath/bin/sh.pl && chmod 755 $virtualenvPath/bin/sh.pl");
+	system("cp -v $pkgPath/Virtualenv/perl.pl $virtualenvPath/bin/perl.pl && chmod 755 $virtualenvPath/bin/perl.pl");
+	system("cp -v $pkgPath/Virtualenv/shell.pl $virtualenvPath/bin/shell.pl && chmod 755 $virtualenvPath/bin/shell.pl");
 
 	return 1;
 }
@@ -158,8 +171,8 @@ sub _sh
 
 sub sh
 {
-	my ($virtualEnvPath, @args) = @_;
-	$virtualEnvPath = activate($virtualEnvPath);
+	my ($virtualenvPath, @args) = @_;
+	$virtualenvPath = activate($virtualenvPath);
 	return _sh(@args);
 }
 
@@ -171,8 +184,8 @@ sub _perl
 
 sub perl
 {
-	my ($virtualEnvPath, @args) = @_;
-	$virtualEnvPath = activate($virtualEnvPath);
+	my ($virtualenvPath, @args) = @_;
+	$virtualenvPath = activate($virtualenvPath);
 	return _perl(@args);
 }
 
@@ -221,9 +234,31 @@ sub _shell
 
 sub shell
 {
-	my ($virtualEnvPath, @args) = @_;
-	return perl($virtualEnvPath, "-MApp::virtualenv", "-eApp::virtualenv::_shell();");
+	my ($virtualenvPath, @args) = @_;
+	return perl($virtualenvPath, "-MApp::Virtualenv", "-eApp::Virtualenv::_shell();");
 }
 
 
 1;
+=head1 AUTHOR
+
+Orkun Karaduman <orkunkaraduman@gmail.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2016  Orkun Karaduman <orkunkaraduman@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+=cut

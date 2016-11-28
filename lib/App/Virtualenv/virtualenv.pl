@@ -1,15 +1,17 @@
 #! /usr/bin/perl
 =head1 NAME
 
-tests.pl
+virtualenv.pl
 
 =head1 VERSION
 
 same with App::Virtualenv
 
-=head1 USAGE
+=head1 SYNOPSIS
 
-B<tests.pl I<abc>>
+creates new Perl virtual environment
+
+C<virtualenv.pl [I<environment_path>]>
 
 =cut
 use strict;
@@ -19,13 +21,11 @@ use v5.10;
 use open qw(:std :locale);
 use utf8;
 
-use lib './lib/';
-use App::Virtualenv::Module;
+use App::Virtualenv;
 
 
-App::Virtualenv::Module::list();
-
-exit 0;
+my ($virtualenv) = @ARGV;
+exit not App::Virtualenv::create($virtualenv);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

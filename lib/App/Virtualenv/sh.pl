@@ -1,15 +1,17 @@
 #! /usr/bin/perl
 =head1 NAME
 
-tests.pl
+sh.pl
 
 =head1 VERSION
 
 same with App::Virtualenv
 
-=head1 USAGE
+=head1 SYNOPSIS
 
-B<tests.pl I<abc>>
+runs Unix shell under Perl virtual environment
+
+C<[I<environment_path>/bin/]sh.pl>
 
 =cut
 use strict;
@@ -19,13 +21,10 @@ use v5.10;
 use open qw(:std :locale);
 use utf8;
 
-use lib './lib/';
-use App::Virtualenv::Module;
+use App::Virtualenv;
 
 
-App::Virtualenv::Module::list();
-
-exit 0;
+exit App::Virtualenv::sh(undef, @ARGV);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
