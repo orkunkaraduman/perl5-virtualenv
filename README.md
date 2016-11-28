@@ -62,6 +62,8 @@ from CPAN
 This module requires these other modules and libraries:
 
 * local::lib
+* CPAN
+* ExtUtils::Installed
 * Switch
 * FindBin
 * Cwd
