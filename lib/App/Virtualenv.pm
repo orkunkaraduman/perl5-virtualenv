@@ -137,13 +137,13 @@ sub create
 
 	activate($virtualenvPath);
 
-	system("/usr/bin/perl -MCPAN -e \"CPAN::install('LWP', 'CPAN', 'App::cpanminus', 'App::cpanoutdated')\"");
+	_system("/usr/bin/perl -MCPAN -e \"CPAN::install('LWP', 'CPAN', 'App::cpanminus', 'App::cpanoutdated')\"");
 
 	my $pkgPath = dirname(__FILE__);
-	system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
-	system("cp -v $pkgPath/Virtualenv/sh.pl $virtualenvPath/bin/sh.pl && chmod 755 $virtualenvPath/bin/sh.pl");
-	system("cp -v $pkgPath/Virtualenv/perl.pl $virtualenvPath/bin/perl.pl && chmod 755 $virtualenvPath/bin/perl.pl");
-	system("cp -v $pkgPath/Virtualenv/shell.pl $virtualenvPath/bin/shell.pl && chmod 755 $virtualenvPath/bin/shell.pl");
+	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
+	_system("cp -v $pkgPath/Virtualenv/sh.pl $virtualenvPath/bin/sh.pl && chmod 755 $virtualenvPath/bin/sh.pl");
+	_system("cp -v $pkgPath/Virtualenv/perl.pl $virtualenvPath/bin/perl.pl && chmod 755 $virtualenvPath/bin/perl.pl");
+	_system("cp -v $pkgPath/Virtualenv/shell.pl $virtualenvPath/bin/shell.pl && chmod 755 $virtualenvPath/bin/shell.pl");
 
 	return 1;
 }
