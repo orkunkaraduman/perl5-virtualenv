@@ -11,13 +11,14 @@ use Perl::Shell;
 use Term::ReadLine;
 use Config;
 use Lexical::Persistence;
+use ExtUtils::Installed;
 
 
 BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.02';
+	our $VERSION     = '1.03';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -223,6 +224,22 @@ sub shell
 {
 	my ($virtualEnvPath, @args) = @_;
 	return perl($virtualEnvPath, "-MApp::virtualenv", "-eApp::virtualenv::_shell();");
+}
+
+sub _list
+{
+	my $inst = ExtUtils::Installed->new();
+	my @perl5lib = split(":", $ENV{PERL5LIB});
+	my $perl5lib = $perl5lib[0] if defined $perl5lib[0];
+	my @modules = $inst->modules();
+	for my $module (sort {lc($a) cmp lc($b)} @modules)
+	{
+		my @files = $inst->files($module, "all", $perl5lib);
+		my $version = $inst->version($module);
+		my $space = "                            ";
+		my $spaces = substr($space, -length($space)+length($module));
+		say "$module $spaces $version" if @files;
+	}
 }
 
 
