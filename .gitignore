@@ -1,7 +1,22 @@
-.project
-.includepath
-.settings/**
+*.project
+*.includepath
+*.settings
 
-.DS_Store
+*.DS_Store
 *.sublime-project
 *.sublime-workspace
+
+*.bak
+*.old
+*.tar
+*.tar.*
+*~
+
+/MYMETA.json
+/MYMETA.yml
+/Makefile
+/_build
+/blib
+/pm_to_blib
+
+/App-Virtualenv-*

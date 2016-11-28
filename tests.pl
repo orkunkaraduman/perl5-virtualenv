@@ -8,7 +8,9 @@ use open qw(:std :locale);
 use utf8;
 
 use lib './lib/';
-use App::virtualenv;
+use App::Virtualenv;
 
 
-exit App::virtualenv::shell(undef, @ARGV);
+App::Virtualenv::_list();
+
+exit 0;

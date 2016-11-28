@@ -43,7 +43,7 @@ To install this module type the following:
 
 or
 
-> cpanm https://github.com/orkunkaraduman/perl5-virtualenv/archive/v1.02.tar.gz
+> cpanm https://github.com/orkunkaraduman/perl5-virtualenv/archive/v1.03.tar.gz
 
 ## DEPENDENCIES
 

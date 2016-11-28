@@ -7,8 +7,8 @@ use v5.10;
 use open qw(:std :locale);
 use utf8;
 
-use App::virtualenv;
+use App::Virtualenv;
 
 
-my ($virtualEnv) = @ARGV;
-exit not App::virtualenv::create($virtualEnv);
+my ($virtualenv) = @ARGV;
+exit not App::Virtualenv::create($virtualenv);
