@@ -1,7 +1,7 @@
 #! /usr/bin/perl
 =head1 NAME
 
-test.pl - for internal tests.
+test.pl - for internal tests
 
 =head1 VERSION
 
@@ -9,7 +9,7 @@ version not defined
 
 =head1 SYNOPSIS
 
-for internal tests.
+for internal tests
 
 =cut
 use strict;
@@ -18,14 +18,14 @@ no warnings qw(qw utf8);
 use v5.10;
 use open qw(:std :locale);
 use utf8;
+use FindBin;
 
-use lib '../lib';
+use lib "${FindBin::Bin}/../lib";
+use App::Virtualenv;
 use App::Virtualenv::Module;
 
 
-App::Virtualenv::Module::list();
-
-exit 0;
+exit App::Virtualenv::Module::list();
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

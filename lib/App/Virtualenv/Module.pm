@@ -1,7 +1,7 @@
 package App::Virtualenv::Module;
 =head1 NAME
 
-App::Virtualenv::Module - Module to implement App::Virtualenv.
+App::Virtualenv::Module - Module management for Perl 5 virtual environment
 
 =head1 VERSION
 
@@ -9,7 +9,7 @@ version 1.04
 
 =head1 SYNOPSIS
 
-This module is not completely implemented yet.
+Module management for Perl 5 virtual environment
 
 =cut
 use strict;
@@ -23,6 +23,8 @@ use File::Basename;
 use Term::ReadLine;
 use Config;
 use ExtUtils::Installed;
+
+use App::Virtualenv;
 
 
 BEGIN
@@ -42,9 +44,11 @@ BEGIN
 }
 
 
-sub list
+my $inst = ExtUtils::Installed->new();
+
+
+sub _list
 {
-	my $inst = ExtUtils::Installed->new();
 	my @perl5lib = split(":", $ENV{PERL5LIB});
 	my $perl5lib = $perl5lib[0];
 	return 0 if not defined $perl5lib;
@@ -61,6 +65,13 @@ sub list
 		say "$module$spaces $version" if @files;
 	}
 	return 1;
+}
+
+sub list
+{
+	my ($virtualenvPath, @args) = @_;
+	$virtualenvPath = App::Virtualenv::activate($virtualenvPath);
+	return App::Virtualenv::_perl("-MApp::Virtualenv", "-e exit not App::Virtualenv::Module::_list();");
 }
 
 
