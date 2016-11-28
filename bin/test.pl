@@ -1,15 +1,15 @@
 #! /usr/bin/perl
 =head1 NAME
 
-tests.pl
+test.pl - for internal tests.
 
 =head1 VERSION
 
-same with App::Virtualenv
+version not defined
 
-=head1 USAGE
+=head1 SYNOPSIS
 
-B<tests.pl I<abc>>
+for internal tests.
 
 =cut
 use strict;
@@ -19,7 +19,7 @@ use v5.10;
 use open qw(:std :locale);
 use utf8;
 
-use lib './lib/';
+use lib '../lib';
 use App::Virtualenv::Module;
 
 
