@@ -11,6 +11,8 @@ version 1.04
 
 Module management for Perl 5 virtual environment
 
+I<This module is not completed yet.>
+
 =cut
 use strict;
 use warnings;
