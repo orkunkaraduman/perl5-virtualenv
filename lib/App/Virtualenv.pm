@@ -49,7 +49,7 @@ sub activate
 	$virtualenvPath = getVirtualenvPath() if not defined $virtualenvPath;
 	$virtualenvPath = binVirtualenvPath() if not defined $virtualenvPath;
 	$virtualenvPath = Cwd::realpath($virtualenvPath);
-	warn "Virtual environment is not valid" if not validVirtualenvPath($virtualenvPath);
+	die "Virtual environment is not valid" if not validVirtualenvPath($virtualenvPath);
 
 	deactivate(1);
 
@@ -235,7 +235,15 @@ sub _shell
 sub shell
 {
 	my ($virtualenvPath, @args) = @_;
-	return perl($virtualenvPath, "-MApp::Virtualenv", "-eApp::Virtualenv::_shell();");
+	eval
+	{
+		$virtualenvPath = activate($virtualenvPath);
+	};
+	if ($@)
+	{
+		warn $@;
+	}
+	return _perl("-MApp::Virtualenv", "-eApp::Virtualenv::_shell();");
 }
 
 
