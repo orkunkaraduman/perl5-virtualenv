@@ -43,7 +43,7 @@ deactivates activated Perl virtual environment
 
 ## INSTALLATION
 
-To install this module type the following:
+To install this module type the following
 
 > perl Makefile.PL
 >
@@ -52,6 +52,10 @@ To install this module type the following:
 > make test
 >
 > make install
+
+from CPAN
+
+> cpan App::Virtualenv
 
 ## DEPENDENCIES
 

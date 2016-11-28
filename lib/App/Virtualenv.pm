@@ -9,7 +9,7 @@ version 1.03
 
 =head1 SYNOPSIS
 
-
+Perl 5 virtual environment module.
 
 =cut
 use strict;
