@@ -4,6 +4,7 @@ MANIFEST
 Makefile.PL
 README.md
 lib/App/Virtualenv.pm
+lib/App/Virtualenv/Module.pm
 lib/App/Virtualenv/activate
 lib/App/Virtualenv/perl.pl
 lib/App/Virtualenv/sh.pl

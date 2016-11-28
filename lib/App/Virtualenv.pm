@@ -226,21 +226,5 @@ sub shell
 	return perl($virtualenvPath, "-MApp::Virtualenv", "-eApp::Virtualenv::_shell();");
 }
 
-sub _list
-{
-	my $inst = ExtUtils::Installed->new();
-	my @perl5lib = split(":", $ENV{PERL5LIB});
-	my $perl5lib = $perl5lib[0] if defined $perl5lib[0];
-	my @modules = $inst->modules();
-	for my $module (sort {lc($a) cmp lc($b)} @modules)
-	{
-		my @files = $inst->files($module, "all", $perl5lib);
-		my $version = $inst->version($module);
-		my $space = "                            ";
-		my $spaces = substr($space, -length($space)+length($module));
-		say "$module $spaces $version" if @files;
-	}
-}
-
 
 1;
