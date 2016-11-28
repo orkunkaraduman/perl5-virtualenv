@@ -1,7 +1,7 @@
 package App::Virtualenv;
 =head1 NAME
 
-App::Virtualenv - Perl 5 virtual environment module.
+App::Virtualenv - Perl 5 virtual environment core
 
 =head1 VERSION
 
@@ -9,7 +9,7 @@ version 1.04
 
 =head1 SYNOPSIS
 
-Perl 5 virtual environment module.
+Perl 5 virtual environment core
 
 =cut
 use strict;
@@ -137,7 +137,7 @@ sub create
 
 	activate($virtualenvPath);
 
-	_perl("-MCPAN", "-e CPAN::install('CPAN', 'App::cpanminus', 'App::cpanoutdated')");
+	_perl("-MCPAN", "-e exit CPAN::install('CPAN', 'App::cpanminus', 'App::cpanoutdated')");
 
 	my $pkgPath = dirname(__FILE__);
 	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
@@ -235,15 +235,9 @@ sub _shell
 sub shell
 {
 	my ($virtualenvPath, @args) = @_;
-	eval
-	{
-		$virtualenvPath = activate($virtualenvPath);
-	};
-	if ($@)
-	{
-		warn $@;
-	}
-	return _perl("-MApp::Virtualenv", "-e App::Virtualenv::_shell();");
+	eval { $virtualenvPath = activate($virtualenvPath); };
+	warn $@ if $@;
+	return _perl("-MApp::Virtualenv", "-e exit App::Virtualenv::_shell();");
 }
 
 
