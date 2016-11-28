@@ -13,4 +13,14 @@ WriteMakefile(
 	AUTHOR				=> 'Orkun Karaduman <orkunkaraduman@gmail.com>',
 	ABSTRACT			=> 'Virtual environment for Perl 5',
 	LICENSE				=> 'gpl_3',
+	META_MERGE			=> {
+		"meta-spec" => { version => 2 },
+		resources => {
+			repository => {
+				type => 'git',
+				url => 'git://git@github.com:orkunkaraduman/perl5-virtualenv.git',
+				web => 'https://github.com/orkunkaraduman/perl5-virtualenv',
+			},
+		},
+	},
 );
