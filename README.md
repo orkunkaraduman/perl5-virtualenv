@@ -9,7 +9,7 @@ perl5-virtualenv is a tool to create isolated Perl 5 virtual environments, like 
 
 creates new Perl virtual environment
 
-`virtualenv.pl [*environment_path*]`
+> virtualenv.pl [*environment_path*]
 
 ### sh.pl
 
