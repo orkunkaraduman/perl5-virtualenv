@@ -38,7 +38,7 @@ BEGIN
 	# Functions and variables which can be optionally exported
 	our @EXPORT_OK   = qw();
 
-	$ENV{PERL_RL} = 'gnu o=0';
+	$ENV{PERL_RL} = 'perl o=0';
 	require Term::ReadLine;
 }
 
@@ -237,7 +237,7 @@ sub shell
 	my ($virtualenvPath, @args) = @_;
 	eval { $virtualenvPath = activate($virtualenvPath); };
 	warn $@ if $@;
-	return _perl("-MApp::Virtualenv", "-e exit App::Virtualenv::_shell();");
+	return _perl("-MApp::Virtualenv", "-e exit not App::Virtualenv::_shell();");
 }
 
 

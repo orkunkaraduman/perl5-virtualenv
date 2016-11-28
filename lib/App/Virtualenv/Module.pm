@@ -39,18 +39,18 @@ BEGIN
 	# Functions and variables which can be optionally exported
 	our @EXPORT_OK   = qw();
 
-	$ENV{PERL_RL} = 'gnu o=0';
+	$ENV{PERL_RL} = 'perl o=0';
 	require Term::ReadLine;
 }
 
 
 my $inst = ExtUtils::Installed->new();
+my @perl5lib = split(":", $ENV{PERL5LIB});
+my $perl5lib = $perl5lib[0];
 
 
 sub _list
 {
-	my @perl5lib = split(":", $ENV{PERL5LIB});
-	my $perl5lib = $perl5lib[0];
 	return 0 if not defined $perl5lib;
 	my @modules = $inst->modules();
 	for my $module (sort {lc($a) cmp lc($b)} @modules)
@@ -70,8 +70,9 @@ sub _list
 sub list
 {
 	my ($virtualenvPath, @args) = @_;
-	$virtualenvPath = App::Virtualenv::activate($virtualenvPath);
-	return App::Virtualenv::_perl("-MApp::Virtualenv", "-e exit not App::Virtualenv::Module::_list();");
+	eval { $virtualenvPath = App::Virtualenv::activate($virtualenvPath); };
+	warn $@ if $@;
+	return App::Virtualenv::_perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::_list();");
 }
 
 
