@@ -15,31 +15,31 @@ creates new Perl virtual environment
 
 runs Unix shell under Perl virtual environment
 
-**[*environment_path*/bin/]sh.pl**
+> [*environment_path*/bin/]sh.pl
 
 ### perl.pl
 
 runs Perl language interpreter under Perl virtual environment
 
-**[*environment_path*/bin/]perl.pl [*argument*]...**
+> [*environment_path*/bin/]perl.pl [*argument*]...
 
 ### shell.pl
 
 runs Perl shell interpreter under Perl virtual environment
 
-**[*environment_path*/bin/]shell.pl**
+> [*environment_path*/bin/]shell.pl
 
 ### activate
 
 activates Perl virtual environment
 
-**source *environment_path*/bin/activate**
+> source *environment_path*/bin/activate
 
 ### deactivate
 
-deactivates Perl virtual environment
+deactivates activated Perl virtual environment
 
-**deactivate**
+> deactivate
 
 ## INSTALLATION
 
