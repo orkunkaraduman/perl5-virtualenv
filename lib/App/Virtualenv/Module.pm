@@ -1,15 +1,17 @@
 package App::Virtualenv::Module;
 =head1 NAME
 
-App::Virtualenv::Module - Module to implement App::Virtualenv.
+App::Virtualenv::Module - Module management for Perl 5 virtual environment
 
 =head1 VERSION
 
-same with App::Virtualenv
+version 1.04
 
 =head1 SYNOPSIS
 
-This module is not completely implemented yet.
+Module management for Perl 5 virtual environment
+
+I<This module is not completed yet.>
 
 =cut
 use strict;
@@ -24,12 +26,14 @@ use Term::ReadLine;
 use Config;
 use ExtUtils::Installed;
 
+use App::Virtualenv;
+
 
 BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = $App::Virtualenv::VERSION;
+	our $VERSION     = '1.04';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -37,16 +41,18 @@ BEGIN
 	# Functions and variables which can be optionally exported
 	our @EXPORT_OK   = qw();
 
-	$ENV{PERL_RL} = 'gnu o=0';
+	$ENV{PERL_RL} = 'perl o=0';
 	require Term::ReadLine;
 }
 
 
-sub list
+my $inst = ExtUtils::Installed->new();
+my @perl5lib = split(":", $ENV{PERL5LIB});
+my $perl5lib = $perl5lib[0];
+
+
+sub _list
 {
-	my $inst = ExtUtils::Installed->new();
-	my @perl5lib = split(":", $ENV{PERL5LIB});
-	my $perl5lib = $perl5lib[0];
 	return 0 if not defined $perl5lib;
 	my @modules = $inst->modules();
 	for my $module (sort {lc($a) cmp lc($b)} @modules)
@@ -61,6 +67,14 @@ sub list
 		say "$module$spaces $version" if @files;
 	}
 	return 1;
+}
+
+sub list
+{
+	my ($virtualenvPath, @args) = @_;
+	eval { $virtualenvPath = App::Virtualenv::activate($virtualenvPath); };
+	warn $@ if $@;
+	return App::Virtualenv::_perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::_list();");
 }
 
 

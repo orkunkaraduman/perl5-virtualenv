@@ -1,8 +1,10 @@
 COPYRIGHT
+Changes
 LICENSE
 MANIFEST
 Makefile.PL
 README.md
+bin/test.pl
 lib/App/Virtualenv.pm
 lib/App/Virtualenv/Module.pm
 lib/App/Virtualenv/activate
@@ -10,5 +12,5 @@ lib/App/Virtualenv/perl.pl
 lib/App/Virtualenv/sh.pl
 lib/App/Virtualenv/shell.pl
 lib/App/Virtualenv/virtualenv.pl
+t/App-Virtualenv-Module.t
 t/App-Virtualenv.t
-tests.pl

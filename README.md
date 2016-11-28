@@ -15,17 +15,17 @@ creates new Perl virtual environment
 
 runs Unix shell under Perl virtual environment
 
-> [*environment_path*/bin/]sh.pl
+> *environment_path*/bin/sh.pl
 
 ### perl.pl
 
 runs Perl language interpreter under Perl virtual environment
 
-> [*environment_path*/bin/]perl.pl [*argument*]...
+> *environment_path*/bin/perl.pl [*argument*]...
 
 ### shell.pl
 
-runs Perl shell interpreter under Perl virtual environment
+runs Perl shell
 
 > [*environment_path*/bin/]shell.pl
 
@@ -62,6 +62,8 @@ from CPAN
 This module requires these other modules and libraries:
 
 * local::lib
+* CPAN
+* ExtUtils::Installed
 * Switch
 * FindBin
 * Cwd

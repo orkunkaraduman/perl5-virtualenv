@@ -1,0 +1,24 @@
+1.04	2016-11-29
+		Kwalitee Issue - has_abstract_in_pod fix
+		Added Change log
+		Improved modules
+		Improved Perl POD sections
+		Little bug fixes
+
+1.03	2016-11-28
+		Module name changed to App::Virtualenv from App::virtualenv
+		Added Perl PODs
+		Added META_MERGE to Makefile.PL
+		Changed README.md
+		Initialized App::Virtualenv::Module but not implemented yet
+
+1.02	2016-11-27
+		Added Perl::Shell in shell.pl
+		Bug fixes
+
+1.01	2016-11-25
+		Version fixes
+		README & COPYRIGHT improvements
+
+1.00	2016-11-23
+		First release

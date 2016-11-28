@@ -1,15 +1,15 @@
 package App::Virtualenv;
 =head1 NAME
 
-App::Virtualenv - Perl 5 virtual environment module.
+App::Virtualenv - Perl 5 virtual environment core
 
 =head1 VERSION
 
-version 1.03
+version 1.04
 
 =head1 SYNOPSIS
 
-Perl 5 virtual environment module.
+Perl 5 virtual environment core
 
 =cut
 use strict;
@@ -30,7 +30,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.03';
+	our $VERSION     = '1.04';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -38,7 +38,7 @@ BEGIN
 	# Functions and variables which can be optionally exported
 	our @EXPORT_OK   = qw();
 
-	$ENV{PERL_RL} = 'gnu o=0';
+	$ENV{PERL_RL} = 'perl o=0';
 	require Term::ReadLine;
 }
 
@@ -49,7 +49,7 @@ sub activate
 	$virtualenvPath = getVirtualenvPath() if not defined $virtualenvPath;
 	$virtualenvPath = binVirtualenvPath() if not defined $virtualenvPath;
 	$virtualenvPath = Cwd::realpath($virtualenvPath);
-	warn "Virtual environment is not valid" if not validVirtualenvPath($virtualenvPath);
+	die "Virtual environment is not valid: $virtualenvPath " if not validVirtualenvPath($virtualenvPath);
 
 	deactivate(1);
 
@@ -137,13 +137,13 @@ sub create
 
 	activate($virtualenvPath);
 
-	system("/usr/bin/perl -MCPAN -e \"CPAN::install('LWP', 'CPAN', 'App::cpanminus', 'App::cpanoutdated')\"");
+	_perl("-MCPAN", "-e exit not CPAN::force('install', 'CPAN', 'App::cpanminus', 'App::cpanoutdated');");
 
 	my $pkgPath = dirname(__FILE__);
-	system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
-	system("cp -v $pkgPath/Virtualenv/sh.pl $virtualenvPath/bin/sh.pl && chmod 755 $virtualenvPath/bin/sh.pl");
-	system("cp -v $pkgPath/Virtualenv/perl.pl $virtualenvPath/bin/perl.pl && chmod 755 $virtualenvPath/bin/perl.pl");
-	system("cp -v $pkgPath/Virtualenv/shell.pl $virtualenvPath/bin/shell.pl && chmod 755 $virtualenvPath/bin/shell.pl");
+	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
+	_system("cp -v $pkgPath/Virtualenv/sh.pl $virtualenvPath/bin/sh.pl && chmod 755 $virtualenvPath/bin/sh.pl");
+	_system("cp -v $pkgPath/Virtualenv/perl.pl $virtualenvPath/bin/perl.pl && chmod 755 $virtualenvPath/bin/perl.pl");
+	_system("cp -v $pkgPath/Virtualenv/shell.pl $virtualenvPath/bin/shell.pl && chmod 755 $virtualenvPath/bin/shell.pl");
 
 	return 1;
 }
@@ -235,7 +235,9 @@ sub _shell
 sub shell
 {
 	my ($virtualenvPath, @args) = @_;
-	return perl($virtualenvPath, "-MApp::Virtualenv", "-eApp::Virtualenv::_shell();");
+	eval { $virtualenvPath = activate($virtualenvPath); };
+	warn $@ if $@;
+	return _perl("-MApp::Virtualenv", "-e exit not App::Virtualenv::_shell();");
 }
 
 

@@ -1,17 +1,17 @@
 #! /usr/bin/perl
 =head1 NAME
 
-sh.pl
+sh.pl - runs Unix shell under Perl virtual environment
 
 =head1 VERSION
 
-same with App::Virtualenv
+version 1.04
 
 =head1 SYNOPSIS
 
 runs Unix shell under Perl virtual environment
 
-C<[I<environment_path>/bin/]sh.pl>
+C<I<environment_path>/bin/sh.pl>
 
 =cut
 use strict;

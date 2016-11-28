@@ -6,10 +6,10 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
 	NAME				=> 'App::Virtualenv',
-	VERSION_FROM		=> 'lib/App/Virtualenv.pm',
+	VERSION				=> '1.04',
 	MIN_PERL_VERSION	=> 'v5.10',
-	PREREQ_PM			=> { 'local::lib' => 0, 'Switch' => 0, 'FindBin' => 0, 'Cwd' => 0, 'File::Basename' => 0, 'Perl::Shell' => 0 },
-	EXE_FILES			=> [ qw(lib/App/Virtualenv/virtualenv.pl lib/App/Virtualenv/sh.pl lib/App/Virtualenv/perl.pl lib/App/Virtualenv/shell.pl) ],
+	PREREQ_PM			=> { 'local::lib' => 0, 'CPAN' => 0, 'ExtUtils::Installed' => 0, 'Switch' => 0, 'FindBin' => 0, 'Cwd' => 0, 'File::Basename' => 0, 'Perl::Shell' => 0 },
+	EXE_FILES			=> [ qw(lib/App/Virtualenv/virtualenv.pl lib/App/Virtualenv/shell.pl) ],
 	AUTHOR				=> 'Orkun Karaduman <orkunkaraduman@gmail.com>',
 	ABSTRACT			=> 'Virtual environment for Perl 5',
 	LICENSE				=> 'gpl_3',
