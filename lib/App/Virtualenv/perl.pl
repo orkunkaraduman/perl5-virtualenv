@@ -1,17 +1,17 @@
 #! /usr/bin/perl
 =head1 NAME
 
-perl.pl
+perl.pl - runs Perl language interpreter under Perl virtual environment
 
 =head1 VERSION
 
-same with App::Virtualenv
+version 1.04
 
 =head1 SYNOPSIS
 
 runs Perl language interpreter under Perl virtual environment
 
-C<[I<environment_path>/bin/]perl.pl [I<argument>]...>
+C<I<environment_path>/bin/perl.pl [I<argument>]...>
 
 =cut
 use strict;

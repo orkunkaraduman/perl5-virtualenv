@@ -1,15 +1,15 @@
 #! /usr/bin/perl
 =head1 NAME
 
-shell.pl
+shell.pl - runs Perl shell
 
 =head1 VERSION
 
-same with App::Virtualenv
+version 1.04
 
 =head1 SYNOPSIS
 
-runs Perl shell interpreter under Perl virtual environment
+runs Perl shell
 
 C<[I<environment_path>/bin/]shell.pl>
 

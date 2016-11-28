@@ -1,11 +1,11 @@
 #! /usr/bin/perl
 =head1 NAME
 
-virtualenv.pl
+virtualenv.pl - creates new Perl virtual environment
 
 =head1 VERSION
 
-same with App::Virtualenv
+version 1.04
 
 =head1 SYNOPSIS
 
