@@ -39,12 +39,13 @@ sub list
 	for my $module (sort {lc($a) cmp lc($b)} @modules)
 	{
 		my @files = $inst->files($module, "all", $perl5lib);
-		my $version = $inst->version($module);
-		my $space = "                                      ";
+		my $space = "                                       ";
 		my $len = length($space)-length($module);
 		my $spaces = substr($space, -$len);
 		$spaces = "" if $len <= 0;
-		say "$module $spaces $version" if @files;
+		my $version = $inst->version($module);
+		$version = "undef" if not $version;
+		say "$module$spaces $version" if @files;
 	}
 	return 1;
 }
