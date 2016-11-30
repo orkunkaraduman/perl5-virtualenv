@@ -5,7 +5,7 @@ App::Virtualenv - Perl 5 virtual environment core
 
 =head1 VERSION
 
-version 1.04
+version 1.05
 
 =head1 SYNOPSIS
 
@@ -20,17 +20,14 @@ use utf8;
 use FindBin;
 use Cwd;
 use File::Basename;
-use Perl::Shell;
-use Term::ReadLine;
 use Config;
-use Lexical::Persistence;
 
 
 BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.04';
+	our $VERSION     = '1.05';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -202,7 +199,6 @@ sub bashReadLine
 	return (not $?)? $_: undef;
 }
 
-#sub Perl::Shell::_readline
 sub _readline
 {
 	my $prompt = shift;
@@ -214,30 +210,6 @@ sub _readline
 		chomp $line if defined $line;
 		return $line;
 	}
-}
-
-sub Perl::Shell::_State::do
-{
-	my $self = shift;
-	$_[0] = "use v$Config{version};\n".$_[0] if defined $_[0];
-	return Lexical::Persistence::do($self, @_);
-}
-
-sub _shell
-{
-	open my $stdout, ">&:encoding(iso-8859-1)", *STDOUT;
-	local *STDOUT = *$stdout;
-	#open my $stdin, "<&:encoding(iso-8859-1)", *STDIN;
-	#local *STDIN = *$stdin;
-	return Perl::Shell::shell();
-}
-
-sub shell
-{
-	my ($virtualenvPath, @args) = @_;
-	eval { $virtualenvPath = activate($virtualenvPath); };
-	warn $@ if $@;
-	return _perl("-MApp::Virtualenv", "-e exit not App::Virtualenv::_shell();");
 }
 
 
