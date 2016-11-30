@@ -11,18 +11,6 @@ creates new Perl virtual environment
 
 > virtualenv.pl [*environment_path*]
 
-### sh.pl
-
-runs Unix shell under Perl virtual environment
-
-> *environment_path*/bin/sh.pl
-
-### perl.pl
-
-runs Perl language interpreter under Perl virtual environment
-
-> *environment_path*/bin/perl.pl [*argument*]...
-
 ### activate
 
 activates Perl virtual environment
@@ -34,6 +22,18 @@ activates Perl virtual environment
 deactivates activated Perl virtual environment
 
 > deactivate
+
+### sh.pl
+
+runs Unix shell under Perl virtual environment
+
+> *environment_path*/bin/sh.pl
+
+### perl.pl
+
+runs Perl language interpreter under Perl virtual environment
+
+> *environment_path*/bin/perl.pl [*argument*]...
 
 ## INSTALLATION
 
