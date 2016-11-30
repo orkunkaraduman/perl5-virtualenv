@@ -24,7 +24,8 @@ use utf8;
 use App::Virtualenv;
 
 
-my $virtualenvPath = activate($virtualenvPath);
+my $virtualenvPath = App::Virtualenv::activate($virtualenvPath);
+say "Virtual environment path: $virtualenvPath";
 exit App::Virtualenv::sh(@ARGV);
 =head1 AUTHOR
 

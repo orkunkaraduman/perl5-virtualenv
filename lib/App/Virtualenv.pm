@@ -44,7 +44,7 @@ sub activate
 	$virtualenvPath = getVirtualenvPath() if not defined $virtualenvPath;
 	$virtualenvPath = binVirtualenvPath() if not defined $virtualenvPath;
 	$virtualenvPath = Cwd::realpath($virtualenvPath);
-	die "Virtual environment is not valid: $virtualenvPath " if not validVirtualenvPath($virtualenvPath);
+	die "Virtual environment path is not valid: $virtualenvPath " if not validVirtualenvPath($virtualenvPath);
 
 	deactivate(1);
 
