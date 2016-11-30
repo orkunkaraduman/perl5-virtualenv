@@ -23,12 +23,6 @@ runs Perl language interpreter under Perl virtual environment
 
 > *environment_path*/bin/perl.pl [*argument*]...
 
-### shell.pl
-
-runs Perl shell
-
-> [*environment_path*/bin/]shell.pl
-
 ### activate
 
 activates Perl virtual environment
@@ -62,13 +56,13 @@ from CPAN
 This module requires these other modules and libraries:
 
 * local::lib
-* CPAN
-* ExtUtils::Installed
 * Switch
 * FindBin
 * Cwd
 * File::Basename
-* Perl::Shell
+* ExtUtils::Installed
+* CPAN
+* CPANPLUS
 
 ## COPYRIGHT AND LICENCE
 
