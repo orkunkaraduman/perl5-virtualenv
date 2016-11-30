@@ -14,13 +14,15 @@ Perl 5 virtual environment core
 =cut
 use strict;
 use warnings;
-no warnings qw(qw utf8 redefine);
+no warnings qw(qw utf8);
 use v5.10;
 use utf8;
 use FindBin;
 use Cwd;
 use File::Basename;
 use Config;
+
+use App::Virtualenv::Utils;
 
 
 BEGIN
@@ -34,9 +36,6 @@ BEGIN
 	our @EXPORT      = qw();
 	# Functions and variables which can be optionally exported
 	our @EXPORT_OK   = qw();
-
-	$ENV{PERL_RL} = 'perl o=0';
-	require Term::ReadLine;
 }
 
 
@@ -145,21 +144,6 @@ sub create
 	return 1;
 }
 
-sub _system
-{
-	system(@_);
-	if ($? == -1)
-	{
-		warn "failed to execute: $!";
-		return 255;
-	} elsif ($? & 127)
-	{
-		warn "child died with signal ".($? & 127).", ".(($? & 128)? "with": "without")." coredump";
-		return 255;
-	}
-	return $? >> 8;
-}
-
 sub _sh
 {
 	my (@args) = @_;
@@ -184,32 +168,6 @@ sub perl
 	my ($virtualenvPath, @args) = @_;
 	$virtualenvPath = activate($virtualenvPath);
 	return _perl(@args);
-}
-
-sub bashReadLine
-{
-	my ($prompt) = @_;
-	$prompt =~ s/\\/\\\\/g;
-	$prompt =~ s/"/\\"/g;
-	$prompt =~ s/\\/\\\\/g;
-	$prompt =~ s/"/\\"/g;
-	my $cmd = '/bin/bash -c "read -p \"'.$prompt.'\" -r -e && echo \"\$REPLY\""';
-	$_ = `$cmd`;
-	chomp;
-	return (not $?)? $_: undef;
-}
-
-sub _readline
-{
-	my $prompt = shift;
-	if ( -t STDIN ) {
-		return bashReadLine($prompt);
-	} else {
-		print $prompt;
-		my $line = <>;
-		chomp $line if defined $line;
-		return $line;
-	}
 }
 
 
