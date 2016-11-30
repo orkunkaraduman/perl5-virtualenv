@@ -79,7 +79,15 @@ sub _install
 		say "Module $moduleName is already installed in Perl virtual environment";
 		return 1;
 	}
-	return $mod->install(force => 1, verbose => 1);
+	my $result = $mod->install(force => 1, verbose => 1);
+	if ($result)
+	{
+		say "Module $moduleName had been successfully installed.";
+	} else
+	{
+		say "Module $moduleName could not be installed.";
+	}
+	return $result;
 }
 
 sub install
@@ -112,7 +120,15 @@ sub _upgrade
 		say "Module $moduleName is up to date.";
 		return 1;
 	}
-	return $mod->install(force => 1, verbose => 1);
+	my $result = $mod->install(force => 1, verbose => 1);
+	if ($result)
+	{
+		say "Module $moduleName had been successfully upgraded.";
+	} else
+	{
+		say "Module $moduleName could not be upgraded.";
+	}
+	return $result;
 }
 
 sub upgrade
