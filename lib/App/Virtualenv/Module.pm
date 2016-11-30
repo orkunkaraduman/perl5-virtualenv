@@ -11,8 +11,6 @@ version 1.05
 
 Module management for Perl 5 virtual environment
 
-I<This module is not completed yet.>
-
 =cut
 use strict;
 use warnings;
@@ -66,38 +64,82 @@ sub list
 	return 1;
 }
 
-sub install
+sub _install
 {
 	my ($moduleName) = @_;
 	my $mod = $cb->module_tree($moduleName);
-	die "Module $moduleName is not found" if not defined $mod;
+	if (not defined $mod)
+	{
+		warn "Module $moduleName is not found";
+		return 0;
+	}
 	my $instdir = $mod->installed_dir();
-	die "Module $moduleName is already installed in Perl virtual environment" if defined $instdir and $instdir eq $perl5lib;
+	if (defined $instdir and $instdir eq $perl5lib)
+	{
+		say "Module $moduleName is already installed in Perl virtual environment";
+		return 1;
+	}
+	return $mod->install(force => 1, verbose => 1);
+}
+
+sub install
+{
+	my $result = 1;
+	for my $moduleName (@_)
+	{
+		$result &&= _install($moduleName);
+	}
+	return $result;
+}
+
+sub _upgrade
+{
+	my ($moduleName) = @_;
+	my $mod = $cb->module_tree($moduleName);
+	if (not defined $mod)
+	{
+		warn "Module $moduleName is not found";
+		return 0;
+	}
+	my $instdir = $mod->installed_dir();
+	unless (defined $instdir and $instdir eq $perl5lib)
+	{
+		warn "Module $moduleName is not installed in Perl virtual environment";
+		return 0;
+	}
+	if ($mod->is_uptodate())
+	{
+		say "Module $moduleName is up to date.";
+		return 1;
+	}
 	return $mod->install(force => 1, verbose => 1);
 }
 
 sub upgrade
 {
-	my ($moduleName) = @_;
-	my $mod = $cb->module_tree($moduleName);
-	die "Module $moduleName is not found" if not defined $mod;
-	my $instdir = $mod->installed_dir();
-	die "Module $moduleName is not installed in Perl virtual environment" unless defined $instdir and $instdir eq $perl5lib;
-	if ($mod->is_uptodate())
+	my $result = 1;
+	for my $moduleName (@_)
 	{
-		say "Module $moduleName is up to date.";
-		return 0;
+		$result &&= _upgrade($moduleName);
 	}
-	return $mod->install(force => 1, verbose => 1);
+	return $result;
 }
 
-sub remove
+sub _remove
 {
 	my ($moduleName) = @_;
 	my $mod = $cb->module_tree($moduleName);
-	die "Module $moduleName is not found" if not defined $mod;
+	if (not defined $mod)
+	{
+		warn "Module $moduleName is not found";
+		return 0;
+	}
 	my $instdir = $mod->installed_dir();
-	die "Module $moduleName is not installed in Perl virtual environment" unless defined $instdir and $instdir eq $perl5lib;
+	unless (defined $instdir and $instdir eq $perl5lib)
+	{
+		warn "Module $moduleName is not installed in Perl virtual environment";
+		return 0;
+	}
 	my $result = $mod->uninstall(type => 'all');
 	if ($result)
 	{
@@ -105,6 +147,16 @@ sub remove
 	} else
 	{
 		say "Module $moduleName could not be removed.";
+	}
+	return $result;
+}
+
+sub remove
+{
+	my $result = 1;
+	for my $moduleName (@_)
+	{
+		$result &&= _remove($moduleName);
 	}
 	return $result;
 }

@@ -1,7 +1,7 @@
 package App::Virtualenv::Utils;
 =head1 NAME
 
-App::Virtualenv - Perl 5 virtual environment utilities
+App::Virtualenv - Utilities for Perl 5 virtual environment
 
 =head1 VERSION
 
@@ -9,7 +9,7 @@ version 1.05
 
 =head1 SYNOPSIS
 
-Perl 5 virtual environment utilities
+Utilities for Perl 5 virtual environment
 
 =cut
 use strict;

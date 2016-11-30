@@ -132,7 +132,7 @@ sub create
 
 	activate($virtualenvPath);
 
-	perl("-MCPAN", "-e exit not CPAN::force('install', 'CPAN', 'App::cpanminus', 'App::cpanoutdated');");
+	perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install('CPAN', 'CPANPLUS');");
 
 	my $pkgPath = dirname(__FILE__);
 	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
