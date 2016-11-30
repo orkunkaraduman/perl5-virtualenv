@@ -25,7 +25,7 @@ use App::Virtualenv;
 use App::Virtualenv::Module;
 
 
-exit App::Virtualenv::Module::list();
+exit App::Virtualenv::perl("-I${FindBin::Bin}/../lib", "-MApp::Virtualenv::Module", "-e exit App::Virtualenv::Module::${ARGV[0]}('${ARGV[1]}');");
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
