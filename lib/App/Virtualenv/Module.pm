@@ -42,11 +42,9 @@ BEGIN
 }
 
 
-#our $virtualenvPath = App::Virtualenv::getVirtualenvPath;
-#die "Perl 5 virtual environment is not activated" if not defined $virtualenvPath;
 my @perl5lib = split(":", defined $ENV{PERL5LIB}? $ENV{PERL5LIB}: "");
 my $perl5lib = $perl5lib[0];
-die "Perl 5 virtual environment PERL5LIB is not defined" unless $perl5lib;
+die "Perl virtual environment variable PERL5LIB is not defined" unless $perl5lib;
 my $inst = ExtUtils::Installed->new;
 my $cb = CPANPLUS::Backend->new;
 
@@ -74,7 +72,7 @@ sub install
 	my $mod = $cb->module_tree($moduleName);
 	die "Module $moduleName is not found" if not defined $mod;
 	my $instdir = $mod->installed_dir();
-	die "Module $moduleName is already installed in virtual environment" if defined $instdir and $instdir eq $perl5lib;
+	die "Module $moduleName is already installed in Perl virtual environment" if defined $instdir and $instdir eq $perl5lib;
 	return $mod->install(force => 1, verbose => 1);
 }
 
@@ -84,7 +82,7 @@ sub upgrade
 	my $mod = $cb->module_tree($moduleName);
 	die "Module $moduleName is not found" if not defined $mod;
 	my $instdir = $mod->installed_dir();
-	die "Module $moduleName is not installed in virtual environment" unless defined $instdir and $instdir eq $perl5lib;
+	die "Module $moduleName is not installed in Perl virtual environment" unless defined $instdir and $instdir eq $perl5lib;
 	if ($mod->is_uptodate())
 	{
 		say "Module $moduleName is up to date.";
@@ -99,7 +97,7 @@ sub remove
 	my $mod = $cb->module_tree($moduleName);
 	die "Module $moduleName is not found" if not defined $mod;
 	my $instdir = $mod->installed_dir();
-	die "Module $moduleName is not installed in virtual environment" unless defined $instdir and $instdir eq $perl5lib;
+	die "Module $moduleName is not installed in Perl virtual environment" unless defined $instdir and $instdir eq $perl5lib;
 	my $result = $mod->uninstall(type => 'all');
 	if ($result)
 	{
