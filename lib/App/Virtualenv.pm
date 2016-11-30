@@ -20,7 +20,6 @@ use utf8;
 use FindBin;
 use Cwd;
 use File::Basename;
-use Config;
 
 use App::Virtualenv::Utils;
 
@@ -143,30 +142,16 @@ sub create
 	return 1;
 }
 
-sub _sh
+sub sh
 {
 	my (@args) = @_;
 	return _system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @args);
 }
 
-sub sh
-{
-	my ($virtualenvPath, @args) = @_;
-	$virtualenvPath = activate($virtualenvPath);
-	return _sh(@args);
-}
-
-sub _perl
+sub perl
 {
 	my (@args) = @_;
 	return _system("/usr/bin/perl", @args);
-}
-
-sub perl
-{
-	my ($virtualenvPath, @args) = @_;
-	$virtualenvPath = activate($virtualenvPath);
-	return _perl(@args);
 }
 
 

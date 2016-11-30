@@ -5,7 +5,7 @@ sh.pl - runs Unix shell under Perl virtual environment
 
 =head1 VERSION
 
-version 1.04
+version 1.05
 
 =head1 SYNOPSIS
 
@@ -24,7 +24,8 @@ use utf8;
 use App::Virtualenv;
 
 
-exit App::Virtualenv::sh(undef, @ARGV);
+my $virtualenvPath = activate($virtualenvPath);
+exit App::Virtualenv::sh(@ARGV);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
