@@ -24,7 +24,7 @@ use utf8;
 use App::Virtualenv::Piv;
 
 
-exit App::Virtualenv::Piv::create(@ARGV);
+exit App::Virtualenv::Piv::virtualenv(@ARGV);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

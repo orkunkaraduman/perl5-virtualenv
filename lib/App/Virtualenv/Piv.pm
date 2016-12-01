@@ -42,9 +42,9 @@ sub main
 	my $args = cmdArgs(@_);
 	switch ($args->{cmd})
 	{
-		case "create"
+		case "virtualenv"
 		{
-			return create(@{$args->{params}});
+			return virtualenv(@{$args->{params}});
 		}
 		case "list"
 		{
@@ -70,9 +70,10 @@ sub activate
 {
 	my $virtualenvPath = App::Virtualenv::activate();
 	say "Perl virtual environment path: $virtualenvPath";
+	return $virtualenvPath;
 }
 
-sub create
+sub virtualenv
 {
 	my ($virtualenv) = @_;
 	return not App::Virtualenv::create($virtualenv);
@@ -92,6 +93,7 @@ sub perl
 
 sub list
 {
+	activate;
 	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::list();");
 }
 

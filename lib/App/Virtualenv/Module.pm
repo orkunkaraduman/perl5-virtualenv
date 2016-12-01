@@ -1,7 +1,7 @@
 package App::Virtualenv::Module;
 =head1 NAME
 
-App::Virtualenv::Module - Module management for Perl 5 virtual environment
+App::Virtualenv::Module - Module management for Perl virtual environment
 
 =head1 VERSION
 
@@ -9,7 +9,7 @@ version 1.05
 
 =head1 SYNOPSIS
 
-Module management for Perl 5 virtual environment
+Module management for Perl virtual environment
 
 =cut
 use strict;
