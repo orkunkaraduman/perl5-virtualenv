@@ -1,7 +1,7 @@
 package App::Virtualenv::Utils;
 =head1 NAME
 
-App::Virtualenv::Utils - Utilities for Perl 5 virtual environment
+App::Virtualenv::Utils - Utilities for Perl virtual environment
 
 =head1 VERSION
 
@@ -9,7 +9,7 @@ version 1.05
 
 =head1 SYNOPSIS
 
-Utilities for Perl 5 virtual environment
+Utilities for Perl virtual environment
 
 =cut
 use strict;
@@ -33,7 +33,7 @@ BEGIN
 }
 
 
-sub _system
+sub _system_old
 {
 	system(@_);
 	if ($? == -1)
@@ -43,6 +43,29 @@ sub _system
 	} elsif ($? & 127)
 	{
 		warn "\nchild died with signal ".($? & 127).", ".(($? & 128)? "with": "without")." coredump";
+		return 255;
+	}
+	return $? >> 8;
+}
+
+sub _system
+{
+	my $pid;
+	if (not defined($pid = fork))
+	{
+		warn "failed to execute: $!";
+		return 255;
+	}
+	if (not $pid)
+	{
+		no warnings FATAL => 'exec';
+		exec(@_);
+		warn "failed to execute: $!";
+		exit 255;
+	}
+	if (waitpid($pid, 0) <= 0)
+	{
+		warn "failed to execute: $!";
 		return 255;
 	}
 	return $? >> 8;
