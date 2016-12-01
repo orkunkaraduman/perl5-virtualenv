@@ -17,6 +17,7 @@ use warnings;
 no warnings qw(qw utf8);
 use v5.10;
 use utf8;
+use Config;
 use FindBin;
 use Cwd;
 use File::Basename;
@@ -42,8 +43,8 @@ BEGIN
 
 
 my @perl5lib = split(":", defined $ENV{PERL5LIB}? $ENV{PERL5LIB}: "");
-my $perl5lib = $perl5lib[0];
-die "Perl virtual environment variable PERL5LIB is not defined" unless $perl5lib;
+my $sitelib = $perl5lib[0];
+$sitelib = $Config{sitelib} unless defined $sitelib;
 my $inst = ExtUtils::Installed->new;
 my $cb = CPANPLUS::Backend->new;
 
@@ -53,7 +54,7 @@ sub list
 	my @modules = $inst->modules();
 	for my $module (sort {lc($a) cmp lc($b)} @modules)
 	{
-		my @files = $inst->files($module, "all", $perl5lib);
+		my @files = $inst->files($module, "all", $sitelib);
 		my $space = "                                       ";
 		my $len = length($space)-length($module);
 		my $spaces = substr($space, -$len);
@@ -75,7 +76,7 @@ sub _install
 		return 0;
 	}
 	my $instdir = $mod->installed_dir();
-	my $installed = (defined $instdir and $instdir eq $perl5lib);
+	my $installed = (defined $instdir and $instdir eq $sitelib);
 	if ($installed and $mod->is_uptodate())
 	{
 		cp_msg("Module $moduleName is up to date.", 1);
@@ -113,7 +114,7 @@ sub _remove
 		return 0;
 	}
 	my $instdir = $mod->installed_dir();
-	unless (defined $instdir and $instdir eq $perl5lib)
+	unless (defined $instdir and $instdir eq $sitelib)
 	{
 		cp_msg("Module $moduleName is not installed in Perl virtual environment", 1);
 		return 1;

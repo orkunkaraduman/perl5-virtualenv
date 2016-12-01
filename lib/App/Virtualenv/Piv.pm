@@ -60,6 +60,7 @@ sub main
 		}
 		else
 		{
+			say STDERR, "Command $args->{cmd} is not defined.";
 			return 254;
 		}
 	}
@@ -69,7 +70,7 @@ sub main
 sub activate
 {
 	my $virtualenvPath = App::Virtualenv::activate();
-	say "Perl virtual environment path: $virtualenvPath";
+	say "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath;
 	return $virtualenvPath;
 }
 
