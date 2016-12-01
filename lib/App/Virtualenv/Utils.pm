@@ -1,7 +1,7 @@
 package App::Virtualenv::Utils;
 =head1 NAME
 
-App::Virtualenv - Utilities for Perl 5 virtual environment
+App::Virtualenv::Utils - Utilities for Perl 5 virtual environment
 
 =head1 VERSION
 

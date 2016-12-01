@@ -5,7 +5,7 @@ virtualenv.pl - creates new Perl virtual environment
 
 =head1 VERSION
 
-version 1.04
+version 1.05
 
 =head1 SYNOPSIS
 
@@ -21,11 +21,10 @@ use v5.10;
 use open qw(:std :locale);
 use utf8;
 
-use App::Virtualenv;
+use App::Virtualenv::Piv;
 
 
-my ($virtualenv) = @ARGV;
-exit not App::Virtualenv::create($virtualenv);
+exit App::Virtualenv::Piv::create(@ARGV);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
