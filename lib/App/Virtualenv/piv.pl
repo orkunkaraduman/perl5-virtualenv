@@ -1,7 +1,7 @@
 #! /usr/bin/perl
 =head1 NAME
 
-virtualenv.pl - creates new Perl virtual environment
+piv.pl - wrapper for Perl in Virtual environment
 
 =head1 VERSION
 
@@ -9,9 +9,9 @@ version 1.05
 
 =head1 SYNOPSIS
 
-creates new Perl virtual environment
+wrapper Perl in Virtual environment
 
-C<virtualenv.pl [I<environment_path>]>
+C<[I<environment_path>/bin/]piv.pl [I<-arg>]... I<command> [I<param>]...>
 
 =cut
 use strict;
@@ -24,7 +24,7 @@ use utf8;
 use App::Virtualenv::Piv;
 
 
-exit App::Virtualenv::Piv::virtualenv(@ARGV);
+exit App::Virtualenv::Piv::main(@ARGV);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

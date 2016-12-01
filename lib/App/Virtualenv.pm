@@ -17,6 +17,7 @@ use warnings;
 no warnings qw(qw utf8);
 use v5.10;
 use utf8;
+use Config;
 use FindBin;
 use Cwd;
 use File::Basename;
@@ -44,7 +45,7 @@ sub activate
 	$virtualenvPath = getVirtualenvPath() if not defined $virtualenvPath;
 	$virtualenvPath = binVirtualenvPath() if not defined $virtualenvPath;
 	$virtualenvPath = Cwd::realpath($virtualenvPath);
-	die "Virtual environment path is not valid: $virtualenvPath " if not validVirtualenvPath($virtualenvPath);
+	return if not validVirtualenvPath($virtualenvPath);
 
 	deactivate(1);
 
@@ -138,6 +139,9 @@ sub create
 	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
 	_system("cp -v $pkgPath/Virtualenv/sh.pl $virtualenvPath/bin/sh.pl && chmod 755 $virtualenvPath/bin/sh.pl");
 	_system("cp -v $pkgPath/Virtualenv/perl.pl $virtualenvPath/bin/perl.pl && chmod 755 $virtualenvPath/bin/perl.pl");
+	_system("ln -v -s -f perl.pl $virtualenvPath/bin/perl");
+	_system("cp -v $pkgPath/Virtualenv/piv.pl $virtualenvPath/bin/piv.pl && chmod 755 $virtualenvPath/bin/piv.pl");
+	_system("ln -v -s -f piv.pl $virtualenvPath/bin/piv");
 
 	return 1;
 }
@@ -151,7 +155,7 @@ sub sh
 sub perl
 {
 	my (@args) = @_;
-	return _system("/usr/bin/perl", @args);
+	return _system($Config{perlpath}, @args);
 }
 
 

@@ -1,7 +1,7 @@
 package App::Virtualenv::Utils;
 =head1 NAME
 
-App::Virtualenv - Utilities for Perl 5 virtual environment
+App::Virtualenv::Utils - Utilities for Perl virtual environment
 
 =head1 VERSION
 
@@ -9,7 +9,7 @@ version 1.05
 
 =head1 SYNOPSIS
 
-Utilities for Perl 5 virtual environment
+Utilities for Perl virtual environment
 
 =cut
 use strict;
@@ -27,13 +27,13 @@ BEGIN
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
-	our @EXPORT      = qw(_system bashReadLine readLine);
+	our @EXPORT      = qw(_system bashReadLine readLine cmdArgs);
 	# Functions and variables which can be optionally exported
 	our @EXPORT_OK   = qw();
 }
 
 
-sub _system
+sub _system_old
 {
 	system(@_);
 	if ($? == -1)
@@ -48,13 +48,36 @@ sub _system
 	return $? >> 8;
 }
 
+sub _system
+{
+	my $pid;
+	if (not defined($pid = fork))
+	{
+		warn "failed to execute: $!";
+		return 255;
+	}
+	if (not $pid)
+	{
+		no warnings FATAL => 'exec';
+		exec(@_);
+		warn "failed to execute: $!";
+		exit 255;
+	}
+	if (waitpid($pid, 0) <= 0)
+	{
+		warn "failed to execute: $!";
+		return 255;
+	}
+	return $? >> 8;
+}
+
 sub bashReadLine
 {
 	my ($prompt) = @_;
-	$prompt =~ s/\\/\\\\/g;
-	$prompt =~ s/"/\\"/g;
-	$prompt =~ s/\\/\\\\/g;
-	$prompt =~ s/"/\\"/g;
+	$prompt =~ s/\\/\\\\/;
+	$prompt =~ s/"/\\"/;
+	$prompt =~ s/\\/\\\\/;
+	$prompt =~ s/"/\\"/;
 	my $cmd = '/bin/bash -c "read -p \"'.$prompt.'\" -r -e && echo -n \"\$REPLY\""';
 	$_ = `$cmd`;
 	return (not $?)? $_: undef;
@@ -71,6 +94,39 @@ sub readLine
 		chomp $line if defined $line;
 		return $line;
 	}
+}
+
+sub cmdArgs
+{
+	my @argv = @_;
+	my %args;
+	$args{cmd} = undef;
+	$args{params} = [];
+	while (scalar @argv)
+	{
+		my $argv = shift @argv;
+
+		if (scalar @{$args{params}})
+		{
+			push @{$args{params}}, $argv;
+			next;
+		}
+
+		if (substr($argv, 0, 1) eq '-')
+		{
+			$args{$argv} = shift @argv;
+			next;
+		}
+
+		if (defined $args{cmd})
+		{
+			push @{$args{params}}, $argv;
+			next;
+		}
+
+		$args{cmd} = $argv;
+	}
+	return \%args;
 }
 
 

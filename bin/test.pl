@@ -18,13 +18,19 @@ no warnings qw(qw utf8);
 use v5.10;
 use open qw(:std :locale);
 use utf8;
+use Config;
 use FindBin;
+use Data::Dumper;
 
 use lib "${FindBin::Bin}/../lib";
 use App::Virtualenv;
+use App::Virtualenv::Utils;
 use App::Virtualenv::Module;
 
 
+say Dumper(\%Config);
+exit;
+exit _system("perl");
 exit App::Virtualenv::perl("-I${FindBin::Bin}/../lib", "-MApp::Virtualenv::Module", "-e exit App::Virtualenv::Module::${ARGV[0]}('${ARGV[1]}');");
 =head1 AUTHOR
 

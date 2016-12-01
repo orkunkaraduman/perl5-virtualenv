@@ -1,7 +1,7 @@
 package App::Virtualenv::Module;
 =head1 NAME
 
-App::Virtualenv::Module - Module management for Perl 5 virtual environment
+App::Virtualenv::Module - Module management for Perl virtual environment
 
 =head1 VERSION
 
@@ -9,7 +9,7 @@ version 1.05
 
 =head1 SYNOPSIS
 
-Module management for Perl 5 virtual environment
+Module management for Perl virtual environment
 
 =cut
 use strict;
@@ -17,11 +17,13 @@ use warnings;
 no warnings qw(qw utf8);
 use v5.10;
 use utf8;
+use Config;
 use FindBin;
 use Cwd;
 use File::Basename;
 use ExtUtils::Installed;
 require CPANPLUS;
+use CPANPLUS::Error qw(cp_msg cp_error);
 
 use App::Virtualenv;
 
@@ -41,8 +43,8 @@ BEGIN
 
 
 my @perl5lib = split(":", defined $ENV{PERL5LIB}? $ENV{PERL5LIB}: "");
-my $perl5lib = $perl5lib[0];
-die "Perl virtual environment variable PERL5LIB is not defined" unless $perl5lib;
+my $sitelib = $perl5lib[0];
+$sitelib = $Config{sitelib} unless defined $sitelib;
 my $inst = ExtUtils::Installed->new;
 my $cb = CPANPLUS::Backend->new;
 
@@ -52,7 +54,7 @@ sub list
 	my @modules = $inst->modules();
 	for my $module (sort {lc($a) cmp lc($b)} @modules)
 	{
-		my @files = $inst->files($module, "all", $perl5lib);
+		my @files = $inst->files($module, "all", $sitelib);
 		my $space = "                                       ";
 		my $len = length($space)-length($module);
 		my $spaces = substr($space, -$len);
@@ -68,24 +70,26 @@ sub _install
 {
 	my ($moduleName) = @_;
 	my $mod = $cb->module_tree($moduleName);
-	if (not defined $mod)
+	if (not $mod)
 	{
-		warn "Module $moduleName is not found";
+		cp_error("Module $moduleName is not found", 1);
 		return 0;
 	}
 	my $instdir = $mod->installed_dir();
-	if (defined $instdir and $instdir eq $perl5lib)
+	my $installed = (defined $instdir and $instdir eq $sitelib);
+	if ($installed and $mod->is_uptodate())
 	{
-		say "Module $moduleName is already installed in Perl virtual environment";
+		cp_msg("Module $moduleName is up to date.", 1);
 		return 1;
 	}
+	my $willBeStatus =  (not $installed)? "installed": "upgraded";
 	my $result = $mod->install(force => 1, verbose => 1);
 	if ($result)
 	{
-		say "Module $moduleName had been successfully installed.";
+		cp_msg("Module $moduleName has been successfully $willBeStatus.", 1);
 	} else
 	{
-		say "Module $moduleName could not be installed.";
+		cp_error("Module $moduleName could not be $willBeStatus.", 1);
 	}
 	return $result;
 }
@@ -95,48 +99,7 @@ sub install
 	my $result = 1;
 	for my $moduleName (@_)
 	{
-		$result &&= _install($moduleName);
-	}
-	return $result;
-}
-
-sub _upgrade
-{
-	my ($moduleName) = @_;
-	my $mod = $cb->module_tree($moduleName);
-	if (not defined $mod)
-	{
-		warn "Module $moduleName is not found";
-		return 0;
-	}
-	my $instdir = $mod->installed_dir();
-	unless (defined $instdir and $instdir eq $perl5lib)
-	{
-		warn "Module $moduleName is not installed in Perl virtual environment";
-		return 0;
-	}
-	if ($mod->is_uptodate())
-	{
-		say "Module $moduleName is up to date.";
-		return 1;
-	}
-	my $result = $mod->install(force => 1, verbose => 1);
-	if ($result)
-	{
-		say "Module $moduleName had been successfully upgraded.";
-	} else
-	{
-		say "Module $moduleName could not be upgraded.";
-	}
-	return $result;
-}
-
-sub upgrade
-{
-	my $result = 1;
-	for my $moduleName (@_)
-	{
-		$result &&= _upgrade($moduleName);
+		$result = (_install($moduleName) and $result);
 	}
 	return $result;
 }
@@ -145,24 +108,24 @@ sub _remove
 {
 	my ($moduleName) = @_;
 	my $mod = $cb->module_tree($moduleName);
-	if (not defined $mod)
+	if (not $mod)
 	{
-		warn "Module $moduleName is not found";
+		cp_error("Module $moduleName is not found", 1);
 		return 0;
 	}
 	my $instdir = $mod->installed_dir();
-	unless (defined $instdir and $instdir eq $perl5lib)
+	unless (defined $instdir and $instdir eq $sitelib)
 	{
-		warn "Module $moduleName is not installed in Perl virtual environment";
-		return 0;
+		cp_msg("Module $moduleName is not installed in Perl virtual environment", 1);
+		return 1;
 	}
 	my $result = $mod->uninstall(type => 'all');
 	if ($result)
 	{
-		say "Module $moduleName had been successfully removed.";
+		cp_msg("Module $moduleName has been successfully removed.", 1);
 	} else
 	{
-		say "Module $moduleName could not be removed.";
+		cp_error("Module $moduleName could not be removed.", 1);
 	}
 	return $result;
 }
@@ -172,7 +135,7 @@ sub remove
 	my $result = 1;
 	for my $moduleName (@_)
 	{
-		$result &&= _remove($moduleName);
+		$result = (_remove($moduleName) and $result);
 	}
 	return $result;
 }
