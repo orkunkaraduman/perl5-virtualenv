@@ -22,6 +22,7 @@ use Cwd;
 use File::Basename;
 use ExtUtils::Installed;
 require CPANPLUS;
+use CPANPLUS::Error qw(cp_msg cp_error);
 
 use App::Virtualenv;
 
@@ -68,24 +69,26 @@ sub _install
 {
 	my ($moduleName) = @_;
 	my $mod = $cb->module_tree($moduleName);
-	if (not defined $mod)
+	if (not $mod)
 	{
-		say "Module $moduleName is not found";
+		cp_error("Module $moduleName is not found", 1);
 		return 0;
 	}
 	my $instdir = $mod->installed_dir();
-	if (defined $instdir and $instdir eq $perl5lib)
+	my $installed = (defined $instdir and $instdir eq $perl5lib);
+	if ($installed and $mod->is_uptodate())
 	{
-		say "Module $moduleName is already installed in Perl virtual environment";
+		cp_msg("Module $moduleName is up to date.", 1);
 		return 1;
 	}
+	my $willBeStatus =  (not $installed)? "installed": "upgraded";
 	my $result = $mod->install(force => 1, verbose => 1);
 	if ($result)
 	{
-		say "Module $moduleName had been successfully installed.";
+		cp_msg("Module $moduleName has been successfully $willBeStatus.", 1);
 	} else
 	{
-		say "Module $moduleName could not be installed.";
+		cp_error("Module $moduleName could not be $willBeStatus.", 1);
 	}
 	return $result;
 }
@@ -100,69 +103,28 @@ sub install
 	return $result;
 }
 
-sub _upgrade
-{
-	my ($moduleName) = @_;
-	my $mod = $cb->module_tree($moduleName);
-	if (not defined $mod)
-	{
-		say "Module $moduleName is not found";
-		return 0;
-	}
-	my $instdir = $mod->installed_dir();
-	unless (defined $instdir and $instdir eq $perl5lib)
-	{
-		say "Module $moduleName is not installed in Perl virtual environment";
-		return 0;
-	}
-	if ($mod->is_uptodate())
-	{
-		say "Module $moduleName is up to date.";
-		return 1;
-	}
-	my $result = $mod->install(force => 1, verbose => 1);
-	if ($result)
-	{
-		say "Module $moduleName had been successfully upgraded.";
-	} else
-	{
-		say "Module $moduleName could not be upgraded.";
-	}
-	return $result;
-}
-
-sub upgrade
-{
-	my $result = 1;
-	for my $moduleName (@_)
-	{
-		$result &&= _upgrade($moduleName);
-	}
-	return $result;
-}
-
 sub _remove
 {
 	my ($moduleName) = @_;
 	my $mod = $cb->module_tree($moduleName);
-	if (not defined $mod)
+	if (not $mod)
 	{
-		say "Module $moduleName is not found";
+		cp_error("Module $moduleName is not found", 1);
 		return 0;
 	}
 	my $instdir = $mod->installed_dir();
 	unless (defined $instdir and $instdir eq $perl5lib)
 	{
-		say "Module $moduleName is not installed in Perl virtual environment";
-		return 0;
+		cp_msg("Module $moduleName is not installed in Perl virtual environment", 1);
+		return 1;
 	}
 	my $result = $mod->uninstall(type => 'all');
 	if ($result)
 	{
-		say "Module $moduleName had been successfully removed.";
+		cp_msg("Module $moduleName has been successfully removed.", 1);
 	} else
 	{
-		say "Module $moduleName could not be removed.";
+		cp_error("Module $moduleName could not be removed.", 1);
 	}
 	return $result;
 }
