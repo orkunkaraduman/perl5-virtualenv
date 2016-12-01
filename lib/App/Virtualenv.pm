@@ -17,6 +17,7 @@ use warnings;
 no warnings qw(qw utf8);
 use v5.10;
 use utf8;
+use Config;
 use FindBin;
 use Cwd;
 use File::Basename;
@@ -154,7 +155,7 @@ sub sh
 sub perl
 {
 	my (@args) = @_;
-	return _system("/usr/bin/perl", @args);
+	return _system($Config{perlpath}, @args);
 }
 
 

@@ -11,6 +11,7 @@ lib/App/Virtualenv/Piv.pm
 lib/App/Virtualenv/Utils.pm
 lib/App/Virtualenv/activate
 lib/App/Virtualenv/perl.pl
+lib/App/Virtualenv/piv
 lib/App/Virtualenv/piv.pl
 lib/App/Virtualenv/sh.pl
 lib/App/Virtualenv/virtualenv.pl

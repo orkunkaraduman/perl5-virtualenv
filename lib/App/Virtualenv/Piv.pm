@@ -40,6 +40,11 @@ BEGIN
 sub main
 {
 	my $args = cmdArgs(@_);
+	if (not defined $args->{cmd})
+	{
+		say STDERR "Command is needed.";
+		return 254;
+	}
 	switch ($args->{cmd})
 	{
 		case "virtualenv"
@@ -60,8 +65,8 @@ sub main
 		}
 		else
 		{
-			say STDERR, "Command $args->{cmd} is not defined.";
-			return 254;
+			say STDERR "Command \"$args->{cmd}\" is not known.";
+			return 253;
 		}
 	}
 	return 0;
