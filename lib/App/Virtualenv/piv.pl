@@ -1,7 +1,7 @@
 #! /usr/bin/perl
 =head1 NAME
 
-pev.pl - bla bla bla
+piv.pl - wrapper for Perl in Virtual environment
 
 =head1 VERSION
 
@@ -9,9 +9,9 @@ version 1.05
 
 =head1 SYNOPSIS
 
-bla bla bla
+wrapper Perl in Virtual environment
 
-C<[I<environment_path>/bin/]pev.pl>
+C<[I<environment_path>/bin/]piv.pl [I<-arg>]... I<command> [I<param>]...>
 
 =cut
 use strict;
@@ -20,22 +20,11 @@ no warnings qw(qw utf8);
 use v5.10;
 use open qw(:std :locale);
 use utf8;
-use Switch;
-use FindBin;
-use Data::Dumper;
 
-use lib "${FindBin::Bin}/../../../lib";
-use App::Virtualenv;
-use App::Virtualenv::Utils;
+use App::Virtualenv::Piv;
 
 
-my $args = cmdArgs(@ARGV);
-say Dumper($args);
-exit 0;
-
-my $virtualenvPath = App::Virtualenv::activate();
-say "Perl virtual environment path: $virtualenvPath";
-exit App::Virtualenv::sh(@ARGV);
+exit App::Virtualenv::Piv::main(@ARGV);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

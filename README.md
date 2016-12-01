@@ -35,6 +35,12 @@ runs Perl language interpreter under Perl virtual environment
 
 > *environment_path*/bin/perl.pl [*argument*]...
 
+### piv.pl
+
+wrapper for Perl in Virtual environment
+
+> *environment_path*/bin/piv.pl [*-arg*]... *cmd* [*param*]...
+
 ## INSTALLATION
 
 To install this module type the following

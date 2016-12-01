@@ -17,6 +17,7 @@ use warnings;
 no warnings qw(qw utf8);
 use v5.10;
 use utf8;
+use Switch;
 
 use App::Virtualenv;
 use App::Virtualenv::Utils;
@@ -43,21 +44,32 @@ sub main
 	{
 		case "create"
 		{
-			create(@$args->{params});
+			return create(@{$args->{params}});
 		}
 		case "list"
 		{
-			list(@$args->{params});
+			return list(@{$args->{params}});
 		}
 		case "install"
 		{
-			install(@$args->{params});
+			install(@{$args->{params}});
 		}
 		case "remove"
 		{
-			remove(@$args->{params});
+			return remove(@{$args->{params}});
+		}
+		else
+		{
+			return 254;
 		}
 	}
+	return 0;
+}
+
+sub activate
+{
+	my $virtualenvPath = App::Virtualenv::activate();
+	say "Perl virtual environment path: $virtualenvPath";
 }
 
 sub create
@@ -66,25 +78,39 @@ sub create
 	return not App::Virtualenv::create($virtualenv);
 }
 
+sub sh
+{
+	activate;
+	return App::Virtualenv::sh(@_);
+}
+
+sub perl
+{
+	activate;
+	return App::Virtualenv::perl(@_);
+}
+
 sub list
 {
-	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit App::Virtualenv::Module::list();");
+	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::list();");
 }
 
 sub install
 {
+	activate;
 	my @mods = @_;
-	@mods ~= s/(.*)/\"\Q$1\E\"/g;
+	for (@mods) { s/(.*)/\"\Q$1\E\"/; }
 	my $mods = join ", ", @mods;
-	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit App::Virtualenv::Module::install($mods);");
+	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install($mods);");
 }
 
 sub remove
 {
+	activate;
 	my @mods = @_;
-	@mods ~= s/(.*)/\"\Q$1\E\"/g;
+	for (@mods) { s/(.*)/\"\Q$1\E\"/; }
 	my $mods = join ", ", @mods;
-	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit App::Virtualenv::Module::remove($mods);");
+	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::remove($mods);");
 }
 
 

@@ -1,8 +1,9 @@
-1.05	2016-11-30
+1.05	2016-12-01
 		Perl::Shell removed from project
 		Removed wrapper functions from App::Virtualenv
 		App::Virtualenv::Utils module added
 		App::Virtualenv::Module module ok with CPANPLUS
+		App::Virtualenv::Piv added
 
 1.04	2016-11-29
 		Kwalitee Issue - has_abstract_in_pod fix

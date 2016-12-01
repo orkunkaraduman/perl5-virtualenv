@@ -138,6 +138,7 @@ sub create
 	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
 	_system("cp -v $pkgPath/Virtualenv/sh.pl $virtualenvPath/bin/sh.pl && chmod 755 $virtualenvPath/bin/sh.pl");
 	_system("cp -v $pkgPath/Virtualenv/perl.pl $virtualenvPath/bin/perl.pl && chmod 755 $virtualenvPath/bin/perl.pl");
+	_system("cp -v $pkgPath/Virtualenv/piv.pl $virtualenvPath/bin/piv.pl && chmod 755 $virtualenvPath/bin/piv.pl");
 
 	return 1;
 }

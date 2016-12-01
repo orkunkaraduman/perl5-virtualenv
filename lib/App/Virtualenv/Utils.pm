@@ -51,10 +51,10 @@ sub _system
 sub bashReadLine
 {
 	my ($prompt) = @_;
-	$prompt =~ s/\\/\\\\/g;
-	$prompt =~ s/"/\\"/g;
-	$prompt =~ s/\\/\\\\/g;
-	$prompt =~ s/"/\\"/g;
+	$prompt =~ s/\\/\\\\/;
+	$prompt =~ s/"/\\"/;
+	$prompt =~ s/\\/\\\\/;
+	$prompt =~ s/"/\\"/;
 	my $cmd = '/bin/bash -c "read -p \"'.$prompt.'\" -r -e && echo -n \"\$REPLY\""';
 	$_ = `$cmd`;
 	return (not $?)? $_: undef;
