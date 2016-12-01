@@ -98,7 +98,7 @@ sub install
 	my $result = 1;
 	for my $moduleName (@_)
 	{
-		$result &&= _install($moduleName);
+		$result = (_install($moduleName) and $result);
 	}
 	return $result;
 }
@@ -134,7 +134,7 @@ sub remove
 	my $result = 1;
 	for my $moduleName (@_)
 	{
-		$result &&= _remove($moduleName);
+		$result = (_remove($moduleName) and $result);
 	}
 	return $result;
 }
