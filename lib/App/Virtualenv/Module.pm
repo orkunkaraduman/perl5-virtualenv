@@ -70,7 +70,7 @@ sub _install
 	my $mod = $cb->module_tree($moduleName);
 	if (not defined $mod)
 	{
-		warn "Module $moduleName is not found";
+		say "Module $moduleName is not found";
 		return 0;
 	}
 	my $instdir = $mod->installed_dir();
@@ -106,13 +106,13 @@ sub _upgrade
 	my $mod = $cb->module_tree($moduleName);
 	if (not defined $mod)
 	{
-		warn "Module $moduleName is not found";
+		say "Module $moduleName is not found";
 		return 0;
 	}
 	my $instdir = $mod->installed_dir();
 	unless (defined $instdir and $instdir eq $perl5lib)
 	{
-		warn "Module $moduleName is not installed in Perl virtual environment";
+		say "Module $moduleName is not installed in Perl virtual environment";
 		return 0;
 	}
 	if ($mod->is_uptodate())
@@ -147,13 +147,13 @@ sub _remove
 	my $mod = $cb->module_tree($moduleName);
 	if (not defined $mod)
 	{
-		warn "Module $moduleName is not found";
+		say "Module $moduleName is not found";
 		return 0;
 	}
 	my $instdir = $mod->installed_dir();
 	unless (defined $instdir and $instdir eq $perl5lib)
 	{
-		warn "Module $moduleName is not installed in Perl virtual environment";
+		say "Module $moduleName is not installed in Perl virtual environment";
 		return 0;
 	}
 	my $result = $mod->uninstall(type => 'all');
