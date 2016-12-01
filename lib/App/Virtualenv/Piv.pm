@@ -52,7 +52,7 @@ sub main
 		}
 		case "install"
 		{
-			install(@{$args->{params}});
+			return install(@{$args->{params}});
 		}
 		case "remove"
 		{
