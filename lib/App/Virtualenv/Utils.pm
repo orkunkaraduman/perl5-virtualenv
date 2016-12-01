@@ -27,7 +27,7 @@ BEGIN
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
-	our @EXPORT      = qw(_system bashReadLine readLine);
+	our @EXPORT      = qw(_system bashReadLine readLine cmdArgs);
 	# Functions and variables which can be optionally exported
 	our @EXPORT_OK   = qw();
 }
@@ -71,6 +71,39 @@ sub readLine
 		chomp $line if defined $line;
 		return $line;
 	}
+}
+
+sub cmdArgs
+{
+	my @argv = @_;
+	my %args;
+	$args{cmd} = undef;
+	$args{params} = [];
+	while (scalar @argv)
+	{
+		my $argv = shift @argv;
+
+		if (scalar @{$args{params}})
+		{
+			push @{$args{params}}, $argv;
+			next;
+		}
+
+		if (substr($argv, 0, 1) eq '-')
+		{
+			$args{$argv} = shift @argv;
+			next;
+		}
+
+		if (defined $args{cmd})
+		{
+			push @{$args{params}}, $argv;
+			next;
+		}
+
+		$args{cmd} = $argv;
+	}
+	return \%args;
 }
 
 
