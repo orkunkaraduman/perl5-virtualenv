@@ -109,7 +109,7 @@ sub install
 	my @mods = @_;
 	@mods = map(s/(.*)/\"\Q$1\E\"/r, @mods);
 	my $mods = join ", ", @mods;
-	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install($mods);");
+	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(modules => [$mods]);");
 }
 
 sub remove

@@ -68,9 +68,11 @@ sub list
 
 sub install
 {
+	my %params = @_;
 	my $result = 1;
-	for my $moduleName (@_)
+	for my $moduleName (@{$params{modules}})
 	{
+		cp_msg("Looking for module $moduleName", 1);
 		my $mod = $cb->module_tree($moduleName);
 		if (not $mod)
 		{
@@ -78,43 +80,57 @@ sub install
 			$result = 0;
 			next;
 		}
+
 		if ($mod->package_is_perl_core())
 		{
 			cp_msg("Module $moduleName is in Perl core", 1);
 			next;
 		}
-		my $instdir = $mod->installed_dir();
-		my $installed = (defined $instdir and ($instdir =~ /^\Q$sitelib\E/));
-		if ($installed and $mod->is_uptodate())
+
+		my $instpath = $mod->installed_dir();
+		$instpath = $mod->installed_file() unless defined $instpath;
+		say $Config{privlib}."/".($moduleName =~ s/::/\//r).".pm";
+		if (not $params{force} and ($instpath =~ /^\Q$Config{privlib}\E/ or -e $Config{privlib}."/".($moduleName =~ s/::/\//r).".pm"))
+		{
+			cp_msg("Module $moduleName is in Perl library", 1);
+			next;
+		}
+
+		my $installed = (defined $instpath and ($instpath =~ /^\Q$sitelib\E/));
+		if (not $params{force} and $installed and $mod->is_uptodate())
 		{
 			cp_msg("Module $moduleName is up to date", 1);
 			next;
 		}
+
 		cp_msg("Fetching module $moduleName", 1);
-		unless ($mod->fetch())
+		unless ($mod->fetch(verbose => 1))
 		{
 			cp_error("Failed to fetch module $moduleName", 1);
 			$result = 0;
 			next;
 		}
 		#cp_msg("Succeed to fetch module $moduleName", 1);
+
 		cp_msg("Extracting module $moduleName", 1);
-		unless ($mod->extract())
+		unless ($mod->extract(verbose => 1))
 		{
 			cp_error("Failed to extract module $moduleName", 1);
 			$result = 0;
 			next;
 		}
 		#cp_msg("Succeed to extract module $moduleName", 1);
+
 		cp_msg("Preparing module $moduleName", 1);
-		unless ($mod->prepare())
+		unless ($mod->prepare(verbose => 1))
 		{
 			cp_error("Failed to prepare module $moduleName", 1);
 			$result = 0;
 			next;
 		}
 		#cp_msg("Succeed to prepare module $moduleName", 1);
-		cp_msg("Prerequisites of module $moduleName will be installed", 1);
+
+		cp_msg("Looking for prerequisites of module $moduleName", 1);
 		state @install;
 		push @install, $moduleName;
 		my $res = 1;
@@ -125,7 +141,7 @@ sub install
 			for my $p (keys %$ps)
 			{
 				next if (scalar grep($_ eq $p, @install));
-				unless (install($p))
+				unless (install(modules => [$p]))
 				{
 					$res = 0;
 					last;
@@ -140,10 +156,31 @@ sub install
 			$result = 0;
 			next;
 		}
-		#cp_msg("Succeed to install prerequisites of module $moduleName", 1);
+		cp_msg("Succeed to install prerequisites of module $moduleName", 1);
+
+=pod
+		cp_msg("Creating module $moduleName", 1);
+		unless ($mod->create(verbose => 1))
+		{
+			cp_error("Failed to create module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		#cp_msg("Succeed to create module $moduleName", 1);
+
+		cp_msg("Testing module $moduleName", 1);
+		unless ($mod->test(verbose => 1))
+		{
+			cp_error("Failed to test module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		#cp_msg("Succeed to test module $moduleName", 1);
+=cut
+
 		cp_msg("Installing module $moduleName", 1);
 		my $willBeStatus =  (not $installed)? "installed": "upgraded";
-		unless ($mod->install(force => 1, verbose => 1))
+		unless ($mod->install(verbose => 1, force => 1))
 		{
 			cp_error("Module $moduleName could not be $willBeStatus", 1);
 			$result = 0;
@@ -166,8 +203,8 @@ sub remove
 			$result = 0;
 			next;
 		}
-		my $instdir = $mod->installed_dir();
-		my $installed = (defined $instdir and ($instdir =~ /^\Q$sitelib\E/));
+		my $instpath = $mod->installed_dir();
+		my $installed = (defined $instpath and ($instpath =~ /^\Q$sitelib\E/));
 		unless ($installed)
 		{
 			cp_msg("Module $moduleName is not installed", 1);
