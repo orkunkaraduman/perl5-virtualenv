@@ -107,7 +107,7 @@ sub install
 {
 	activate;
 	my @mods = @_;
-	for (@mods) { s/(.*)/\"\Q$1\E\"/; }
+	@mods = map(s/(.*)/\"\Q$1\E\"/r, @mods);
 	my $mods = join ", ", @mods;
 	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install($mods);");
 }
@@ -116,7 +116,7 @@ sub remove
 {
 	activate;
 	my @mods = @_;
-	for (@mods) { s/(.*)/\"\Q$1\E\"/; }
+	@mods = map(s/(.*)/\"\Q$1\E\"/r, @mods);
 	my $mods = join ", ", @mods;
 	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::remove($mods);");
 }
