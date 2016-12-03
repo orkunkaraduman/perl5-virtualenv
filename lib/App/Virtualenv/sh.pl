@@ -21,10 +21,12 @@ use v5.10;
 use open qw(:std :locale);
 use utf8;
 
-use App::Virtualenv::Piv;
+use App::Virtualenv;
 
 
-exit App::Virtualenv::Piv::sh(@ARGV);
+my $virtualenvPath = App::Virtualenv::activate();
+say "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath;
+exit App::Virtualenv::sh(@ARGV);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

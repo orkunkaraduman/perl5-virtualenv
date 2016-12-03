@@ -29,7 +29,7 @@ use App::Virtualenv::Module;
 use App::Virtualenv::Piv;
 
 
-exit App::Virtualenv::Module::install(force => 1, modules => ['ExtUtils::Installed']);
+#exit App::Virtualenv::Module::install(force => 1, modules => ['ExtUtils::Installed']);
 exit App::Virtualenv::Piv::main(@ARGV);
 exit App::Virtualenv::perl("-I${FindBin::Bin}/../lib", "-MApp::Virtualenv::Module", "-e exit App::Virtualenv::Module::${ARGV[0]}('${ARGV[1]}');");
 =head1 AUTHOR
