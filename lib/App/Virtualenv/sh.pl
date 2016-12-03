@@ -11,7 +11,7 @@ version 1.05
 
 runs Unix shell under Perl virtual environment
 
-C<I<environment_path>/bin/sh.pl>
+C<[I<environment_path>/bin/]sh.pl> [I<argument>]...>
 
 =cut
 use strict;

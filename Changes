@@ -1,4 +1,4 @@
-1.05	2016-12-01
+1.05	2016-12-03
 		- Perl::Shell removed from project
 		- Removed wrapper functions from App::Virtualenv
 		- App::Virtualenv::Utils module added

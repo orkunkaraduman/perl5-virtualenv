@@ -106,7 +106,7 @@ sub cmdArgs
 	{
 		my $argv = shift @argv;
 
-		if (scalar @{$args{params}})
+		if (@{$args{params}})
 		{
 			push @{$args{params}}, $argv;
 			next;

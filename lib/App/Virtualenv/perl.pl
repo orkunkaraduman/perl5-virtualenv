@@ -11,7 +11,7 @@ version 1.05
 
 runs Perl language interpreter under Perl virtual environment
 
-C<I<environment_path>/bin/perl.pl [I<argument>]...>
+C<[I<environment_path>/bin/]perl.pl [I<argument>]...>
 
 =cut
 use strict;
