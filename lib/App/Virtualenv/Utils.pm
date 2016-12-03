@@ -5,7 +5,7 @@ App::Virtualenv::Utils - Utilities for Perl virtual environment
 
 =head1 VERSION
 
-version 1.05
+version 1.06
 
 =head1 SYNOPSIS
 
@@ -23,7 +23,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.05';
+	our $VERSION     = '1.06';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -120,7 +120,7 @@ sub cmdArgs
 
 		if (substr($argv, 0, 1) eq '-')
 		{
-			$args{$argv} = $argv;
+			$args{$argv} = substr($argv, 1);
 			next;
 		}
 

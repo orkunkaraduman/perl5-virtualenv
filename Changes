@@ -1,3 +1,9 @@
+1.06	2016-12-04
+		- Added piv remove -f
+		- Added piv virtualenv -e
+		- Added archlib check for Perl library
+		- Added archlib for installed
+
 1.05	2016-12-03
 		- Perl::Shell removed from project
 		- Removed wrapper functions from App::Virtualenv

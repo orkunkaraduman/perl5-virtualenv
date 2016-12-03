@@ -5,7 +5,7 @@ App::Virtualenv - Perl virtual environment core
 
 =head1 VERSION
 
-version 1.05
+version 1.06
 
 =head1 SYNOPSIS
 
@@ -29,7 +29,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.05';
+	our $VERSION     = '1.06';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -123,7 +123,7 @@ sub validVirtualenvPath
 
 sub create
 {
-	my ($virtualenvPath) = @_;
+	my ($virtualenvPath, $empty) = @_;
 	$virtualenvPath = Cwd::realpath((defined $virtualenvPath)? $virtualenvPath: ".");
 	say "Creating Perl virtual environment: $virtualenvPath";
 
@@ -134,7 +134,7 @@ sub create
 
 	activate($virtualenvPath);
 
-	perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => 1, modules => ['LWP', 'CPAN', 'CPANPLUS']);");
+	perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => 1, modules => ['LWP', 'CPAN', 'CPANPLUS']);") unless $empty;
 
 	my $pkgPath = dirname(__FILE__);
 	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
