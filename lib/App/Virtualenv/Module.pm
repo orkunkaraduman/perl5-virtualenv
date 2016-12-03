@@ -5,7 +5,7 @@ App::Virtualenv::Module - Module management for Perl virtual environment
 
 =head1 VERSION
 
-version 1.05
+version 1.06
 
 =head1 SYNOPSIS
 
@@ -33,7 +33,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.05';
+	our $VERSION     = '1.06';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -145,6 +145,7 @@ sub install
 		{
 			delete $ps->{'perl'};
 			delete $ps->{'Config'};
+			delete $ps->{'Errno'};
 			for my $p (keys %$ps)
 			{
 				next if (grep($_ eq $p, @install));
