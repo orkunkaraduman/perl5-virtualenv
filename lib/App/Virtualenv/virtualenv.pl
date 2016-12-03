@@ -24,7 +24,7 @@ use utf8;
 use App::Virtualenv;
 
 
-exit App::Virtualenv::create($ARGV[0]);
+exit not App::Virtualenv::create($ARGV[0]);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
