@@ -89,7 +89,8 @@ sub main
 			my @modules = @{$args->{params}};
 			@modules = map(s/(.*)/\"\Q$1\E\"/r, @modules);
 			my $modules = join(", ", @modules);
-			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::remove(modules => [$modules]);");
+			my $force = defined($args->{-f})? 1: 0;
+			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::remove(force => $force, modules => [$modules]);");
 		}
 		else
 		{

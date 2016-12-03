@@ -120,7 +120,7 @@ sub cmdArgs
 
 		if (substr($argv, 0, 1) eq '-')
 		{
-			$args{$argv} = $argv;
+			$args{$argv} = substr($argv, 1);
 			next;
 		}
 

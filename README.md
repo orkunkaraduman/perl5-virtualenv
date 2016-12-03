@@ -75,7 +75,7 @@ install or upgrade packages under Perl virtual environment
 
 remove packages under Perl virtual environment
 
-> [*environment_path*/bin/]piv remove *package*...
+> [*environment_path*/bin/]piv remove [-f] *package*...
 
 ## INSTALLATION
 
