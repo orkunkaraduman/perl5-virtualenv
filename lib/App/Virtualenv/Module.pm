@@ -99,7 +99,9 @@ sub install
 		my $instpath = $mod->installed_dir();
 		$instpath = $mod->installed_file() unless defined $instpath;
 		my $installed = (defined $instpath and ($instpath =~ /^\Q$sitelib\E/));
-		if (not $force and ($instpath =~ /^\Q$Config{privlib}\E/ or grep({ my $inc = $_; $inc =~ /^\Q$Config{privlib}\E/ and -e $inc."/".($moduleName =~ s/\:\:/\//r).".pm"; } @INC)))
+		if (not $force and
+			($instpath =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ or
+			grep({ my $inc = $_; $inc =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ and -e $inc."/".($moduleName =~ s/\:\:/\//r).".pm"; } @INC)))
 		{
 			cp_msg("Module $moduleName is in Perl library", 1);
 			next;
