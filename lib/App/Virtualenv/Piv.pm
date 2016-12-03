@@ -5,7 +5,7 @@ App::Virtualenv::Piv - Perl in Virtual environment
 
 =head1 VERSION
 
-version 1.05
+version 1.06
 
 =head1 SYNOPSIS
 
@@ -27,7 +27,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.05';
+	our $VERSION     = '1.06';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -56,7 +56,7 @@ sub main
 	{
 		case "virtualenv"
 		{
-			return not App::Virtualenv::create($args->{params}->[0]);
+			return not App::Virtualenv::create($args->{params}->[0], defined($args->{-e}));
 		}
 		case "sh"
 		{
@@ -89,7 +89,8 @@ sub main
 			my @modules = @{$args->{params}};
 			@modules = map(s/(.*)/\"\Q$1\E\"/r, @modules);
 			my $modules = join(", ", @modules);
-			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::remove(modules => [$modules]);");
+			my $force = defined($args->{-f})? 1: 0;
+			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::remove(force => $force, modules => [$modules]);");
 		}
 		else
 		{

@@ -5,7 +5,7 @@ App::Virtualenv::Module - Module management for Perl virtual environment
 
 =head1 VERSION
 
-version 1.05
+version 1.06
 
 =head1 SYNOPSIS
 
@@ -33,7 +33,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.05';
+	our $VERSION     = '1.06';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -44,11 +44,30 @@ BEGIN
 
 
 my @perl5lib = split(":", defined $ENV{PERL5LIB}? $ENV{PERL5LIB}: "");
-my $sitelib = $perl5lib[0];
-$sitelib = $Config{sitelib} unless defined $sitelib;
+my %sitelib;
+$sitelib{$perl5lib[0]} = "perl5lib" if $perl5lib[0];
+unless (keys %sitelib)
+{
+	$sitelib{$Config{sitelib}} = "sitelib";
+	$sitelib{$Config{archlib}} = "archlib";
+}
 my $inst = ExtUtils::Installed->new;
 my $cb = CPANPLUS::Backend->new;
 
+
+sub moduleFiles
+{
+	my ($module) = @_;
+	my %files;
+	for my $path (sort keys %sitelib)
+	{
+		for my $file ($inst->files($module, "all", $path))
+		{
+			$files{$file} = $sitelib{$path};
+		}
+	}
+	return keys %files;
+}
 
 sub list
 {
@@ -56,7 +75,7 @@ sub list
 	my @modules = $inst->modules();
 	for my $module (sort {lc($a) cmp lc($b)} @modules)
 	{
-		my @files = $inst->files($module, "all", $sitelib);
+		my @files = moduleFiles($module);
 		next unless @files;
 		if ($params{1})
 		{
@@ -77,6 +96,7 @@ sub list
 sub install
 {
 	my %params = @_;
+	my $force = $params{force}? 1: 0;
 	my $result = 1;
 	for my $moduleName (@{$params{modules}})
 	{
@@ -97,13 +117,15 @@ sub install
 
 		my $instpath = $mod->installed_dir();
 		$instpath = $mod->installed_file() unless defined $instpath;
-		my $installed = (defined $instpath and ($instpath =~ /^\Q$sitelib\E/));
-		if (not $params{force} and ($instpath =~ /^\Q$Config{privlib}\E/ or grep({ my $inc = $_; $inc =~ /^\Q$Config{privlib}\E/ and -e $inc."/".($moduleName =~ s/::/\//r).".pm"; } @INC)))
+		my $installed = (defined $instpath and grep($instpath =~ /^\Q$_\E/, keys %sitelib));
+		if (not $force and
+			($instpath =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ or
+			grep({ my $inc = $_; $inc =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ and -e $inc."/".($moduleName =~ s/\:\:/\//r).".pm"; } @INC)))
 		{
 			cp_msg("Module $moduleName is in Perl library", 1);
 			next;
 		}
-		if (not $params{force} and $installed and $mod->is_uptodate())
+		if (not $force and $installed and $mod->is_uptodate())
 		{
 			cp_msg("Module $moduleName is up to date", 1);
 			next;
@@ -144,6 +166,7 @@ sub install
 		{
 			delete $ps->{'perl'};
 			delete $ps->{'Config'};
+			delete $ps->{'Errno'};
 			for my $p (keys %$ps)
 			{
 				next if (grep($_ eq $p, @install));
@@ -200,6 +223,7 @@ sub install
 sub remove
 {
 	my %params = @_;
+	my $force = $params{force}? 1: 0;
 	my $result = 1;
 	for my $moduleName (@{$params{modules}})
 	{
@@ -214,7 +238,7 @@ sub remove
 
 		my $instpath = $mod->installed_dir();
 		$instpath = $mod->installed_file() unless defined $instpath;
-		my $installed = (defined $instpath and ($instpath =~ /^\Q$sitelib\E/));
+		my $installed = (defined $instpath and grep($instpath =~ /^\Q$_\E/, keys %sitelib));
 		unless ($installed)
 		{
 			cp_msg("Module $moduleName is not installed", 1);
@@ -222,7 +246,7 @@ sub remove
 		}
 
 		cp_msg("Removing module $moduleName", 1);
-		unless ($mod->uninstall(verbose => 1, type => 'all'))
+		unless ($mod->uninstall(verbose => 1, force => $force, type => 'all'))
 		{
 			cp_error("Module $moduleName could not be removed", 1);
 			$result = 0;
