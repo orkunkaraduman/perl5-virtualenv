@@ -5,13 +5,13 @@ perl.pl - runs Perl language interpreter under Perl virtual environment
 
 =head1 VERSION
 
-version 1.04
+version 1.05
 
 =head1 SYNOPSIS
 
 runs Perl language interpreter under Perl virtual environment
 
-C<I<environment_path>/bin/perl.pl [I<argument>]...>
+C<[I<environment_path>/bin/]perl.pl [I<argument>]...>
 
 =cut
 use strict;
@@ -24,7 +24,9 @@ use utf8;
 use App::Virtualenv;
 
 
-exit App::Virtualenv::perl(undef, @ARGV);
+my $virtualenvPath = App::Virtualenv::activate();
+say "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath;
+exit App::Virtualenv::perl(@ARGV);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

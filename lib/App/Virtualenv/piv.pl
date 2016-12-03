@@ -1,17 +1,17 @@
 #! /usr/bin/perl
 =head1 NAME
 
-shell.pl - runs Perl shell
+piv.pl - wrapper for Perl in Virtual environment
 
 =head1 VERSION
 
-version 1.04
+version 1.05
 
 =head1 SYNOPSIS
 
-runs Perl shell
+wrapper Perl in Virtual environment
 
-C<[I<environment_path>/bin/]shell.pl>
+C<[I<environment_path>/bin/]piv.pl [-I<arg>]... [--I<arg> I<value>]... I<cmd> [I<param>]...>
 
 =cut
 use strict;
@@ -22,9 +22,10 @@ use open qw(:std :locale);
 use utf8;
 
 use App::Virtualenv;
+use App::Virtualenv::Piv;
 
 
-exit App::Virtualenv::shell(undef, @ARGV);
+exit App::Virtualenv::Piv::main(@ARGV);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

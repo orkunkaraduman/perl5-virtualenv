@@ -11,24 +11,6 @@ creates new Perl virtual environment
 
 > virtualenv.pl [*environment_path*]
 
-### sh.pl
-
-runs Unix shell under Perl virtual environment
-
-> *environment_path*/bin/sh.pl
-
-### perl.pl
-
-runs Perl language interpreter under Perl virtual environment
-
-> *environment_path*/bin/perl.pl [*argument*]...
-
-### shell.pl
-
-runs Perl shell
-
-> [*environment_path*/bin/]shell.pl
-
 ### activate
 
 activates Perl virtual environment
@@ -40,6 +22,60 @@ activates Perl virtual environment
 deactivates activated Perl virtual environment
 
 > deactivate
+
+### sh.pl
+
+runs Unix shell under Perl virtual environment
+
+> [*environment_path*/bin/]sh.pl [*argument*]...
+
+### perl.pl
+
+runs Perl language interpreter under Perl virtual environment
+
+> [*environment_path*/bin/]perl.pl [*argument*]...
+
+### piv.pl
+
+wrapper for Perl in Virtual environment
+
+> [*environment_path*/bin/]piv.pl [-*arg*]... [--*arg* *value*]... *cmd* [*param*]...
+
+#### piv virtualenv
+
+creates new Perl virtual environment
+
+> piv virtualenv [*environment_path*]
+
+#### piv sh
+
+runs Unix shell under Perl virtual environment
+
+> [*environment_path*/bin/]piv sh [*argument*]...
+
+#### piv perl
+
+runs Perl language interpreter under Perl virtual environment
+
+> [*environment_path*/bin/]piv perl [*argument*]...
+
+#### piv list
+
+list installed packages under Perl virtual environment
+
+> [*environment_path*/bin/]piv list [-1]
+
+#### piv install
+
+install or upgrade packages under Perl virtual environment
+
+> [*environment_path*/bin/]piv install [-f] *package*...
+
+#### piv remove
+
+remove packages under Perl virtual environment
+
+> [*environment_path*/bin/]piv remove *package*...
 
 ## INSTALLATION
 
@@ -62,13 +98,13 @@ from CPAN
 This module requires these other modules and libraries:
 
 * local::lib
-* CPAN
-* ExtUtils::Installed
 * Switch
 * FindBin
 * Cwd
 * File::Basename
-* Perl::Shell
+* ExtUtils::Installed
+* CPAN
+* CPANPLUS
 
 ## COPYRIGHT AND LICENCE
 

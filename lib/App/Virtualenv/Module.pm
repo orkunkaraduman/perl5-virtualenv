@@ -1,17 +1,15 @@
 package App::Virtualenv::Module;
 =head1 NAME
 
-App::Virtualenv::Module - Module management for Perl 5 virtual environment
+App::Virtualenv::Module - Module management for Perl virtual environment
 
 =head1 VERSION
 
-version 1.04
+version 1.05
 
 =head1 SYNOPSIS
 
-Module management for Perl 5 virtual environment
-
-I<This module is not completed yet.>
+Module management for Perl virtual environment
 
 =cut
 use strict;
@@ -19,62 +17,220 @@ use warnings;
 no warnings qw(qw utf8);
 use v5.10;
 use utf8;
+use Config;
 use FindBin;
 use Cwd;
 use File::Basename;
-use Term::ReadLine;
-use Config;
 use ExtUtils::Installed;
+require CPANPLUS;
+use CPANPLUS::Error qw(cp_msg cp_error);
 
 use App::Virtualenv;
+use App::Virtualenv::Utils;
 
 
 BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.04';
+	our $VERSION     = '1.05';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
 	our @EXPORT      = qw();
 	# Functions and variables which can be optionally exported
 	our @EXPORT_OK   = qw();
-
-	$ENV{PERL_RL} = 'perl o=0';
-	require Term::ReadLine;
 }
 
 
-my $inst = ExtUtils::Installed->new();
-my @perl5lib = split(":", $ENV{PERL5LIB});
-my $perl5lib = $perl5lib[0];
+my @perl5lib = split(":", defined $ENV{PERL5LIB}? $ENV{PERL5LIB}: "");
+my $sitelib = $perl5lib[0];
+$sitelib = $Config{sitelib} unless defined $sitelib;
+my $inst = ExtUtils::Installed->new;
+my $cb = CPANPLUS::Backend->new;
 
 
-sub _list
+sub list
 {
-	return 0 if not defined $perl5lib;
+	my %params = @_;
 	my @modules = $inst->modules();
 	for my $module (sort {lc($a) cmp lc($b)} @modules)
 	{
-		my @files = $inst->files($module, "all", $perl5lib);
+		my @files = $inst->files($module, "all", $sitelib);
+		next unless @files;
+		if ($params{1})
+		{
+			say $module;
+			next;
+		}
 		my $space = "                                       ";
 		my $len = length($space)-length($module);
 		my $spaces = substr($space, -$len);
 		$spaces = "" if $len <= 0;
 		my $version = $inst->version($module);
-		$version = "undef" if not $version;
-		say "$module$spaces $version" if @files;
+		$version = "0" if not $version;
+		say "$module$spaces $version";
 	}
 	return 1;
 }
 
-sub list
+sub install
 {
-	my ($virtualenvPath, @args) = @_;
-	eval { $virtualenvPath = App::Virtualenv::activate($virtualenvPath); };
-	warn $@ if $@;
-	return App::Virtualenv::_perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::_list();");
+	my %params = @_;
+	my $result = 1;
+	for my $moduleName (@{$params{modules}})
+	{
+		cp_msg("Looking for module $moduleName to install", 1);
+		my $mod = $cb->module_tree($moduleName);
+		if (not $mod)
+		{
+			cp_error("Module $moduleName is not found", 1);
+			$result = 0;
+			next;
+		}
+
+		if ($mod->package_is_perl_core())
+		{
+			cp_msg("Module $moduleName is in Perl core", 1);
+			next;
+		}
+
+		my $instpath = $mod->installed_dir();
+		$instpath = $mod->installed_file() unless defined $instpath;
+		my $installed = (defined $instpath and ($instpath =~ /^\Q$sitelib\E/));
+		if (not $params{force} and ($instpath =~ /^\Q$Config{privlib}\E/ or grep({ my $inc = $_; $inc =~ /^\Q$Config{privlib}\E/ and -e $inc."/".($moduleName =~ s/::/\//r).".pm"; } @INC)))
+		{
+			cp_msg("Module $moduleName is in Perl library", 1);
+			next;
+		}
+		if (not $params{force} and $installed and $mod->is_uptodate())
+		{
+			cp_msg("Module $moduleName is up to date", 1);
+			next;
+		}
+
+		cp_msg("Fetching module $moduleName", 1);
+		unless ($mod->fetch(verbose => 1))
+		{
+			cp_error("Failed to fetch module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		#cp_msg("Succeed to fetch module $moduleName", 1);
+
+		cp_msg("Extracting module $moduleName", 1);
+		unless ($mod->extract(verbose => 1))
+		{
+			cp_error("Failed to extract module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		#cp_msg("Succeed to extract module $moduleName", 1);
+
+		cp_msg("Preparing module $moduleName", 1);
+		unless ($mod->prepare(verbose => 1))
+		{
+			cp_error("Failed to prepare module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		#cp_msg("Succeed to prepare module $moduleName", 1);
+
+		cp_msg("Looking for prerequisites of module $moduleName", 1);
+		state @install;
+		push @install, $moduleName;
+		my $res = 1;
+		for my $ps (@{$mod->{_status}->{prereqs}})
+		{
+			delete $ps->{'perl'};
+			delete $ps->{'Config'};
+			for my $p (keys %$ps)
+			{
+				next if (grep($_ eq $p, @install));
+				unless (install(modules => [$p]))
+				{
+					$res = 0;
+					last;
+				}
+			}
+			last unless $res;
+		}
+		pop @install;
+		unless ($res)
+		{
+			cp_error("Failed to install prerequisites of module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		cp_msg("Succeed to install prerequisites of module $moduleName", 1);
+
+=pod
+		cp_msg("Creating module $moduleName", 1);
+		unless ($mod->create(verbose => 1))
+		{
+			cp_error("Failed to create module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		#cp_msg("Succeed to create module $moduleName", 1);
+
+		cp_msg("Testing module $moduleName", 1);
+		unless ($mod->test(verbose => 1))
+		{
+			cp_error("Failed to test module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		#cp_msg("Succeed to test module $moduleName", 1);
+=cut
+
+		cp_msg("Installing module $moduleName", 1);
+		my $willBeStatus =  (not $installed)? "installed": "upgraded";
+		unless ($mod->install(verbose => 1, force => 1))
+		{
+			cp_error("Module $moduleName could not be $willBeStatus", 1);
+			$result = 0;
+			next;
+		}
+		cp_msg("Module $moduleName has been successfully $willBeStatus", 1);
+	}
+	return $result;
+}
+
+sub remove
+{
+	my %params = @_;
+	my $result = 1;
+	for my $moduleName (@{$params{modules}})
+	{
+		cp_msg("Looking for module $moduleName to remove", 1);
+		my $mod = $cb->module_tree($moduleName);
+		if (not $mod)
+		{
+			cp_error("Module $moduleName is not found", 1);
+			$result = 0;
+			next;
+		}
+
+		my $instpath = $mod->installed_dir();
+		$instpath = $mod->installed_file() unless defined $instpath;
+		my $installed = (defined $instpath and ($instpath =~ /^\Q$sitelib\E/));
+		unless ($installed)
+		{
+			cp_msg("Module $moduleName is not installed", 1);
+			next;
+		}
+
+		cp_msg("Removing module $moduleName", 1);
+		unless ($mod->uninstall(verbose => 1, type => 'all'))
+		{
+			cp_error("Module $moduleName could not be removed", 1);
+			$result = 0;
+			next;
+		}
+		cp_msg("Module $moduleName has been successfully removed", 1);
+	}
+	return $result;
 }
 
 
