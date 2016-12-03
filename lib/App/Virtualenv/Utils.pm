@@ -102,19 +102,25 @@ sub cmdArgs
 	my %args;
 	$args{cmd} = undef;
 	$args{params} = [];
-	while (scalar @argv)
+	while (@argv)
 	{
 		my $argv = shift @argv;
 
-		if (scalar @{$args{params}})
+		if (@{$args{params}})
 		{
 			push @{$args{params}}, $argv;
 			next;
 		}
 
-		if (substr($argv, 0, 1) eq '-')
+		if (substr($argv, 0, 2) eq '--')
 		{
 			$args{$argv} = shift @argv;
+			next;
+		}
+
+		if (substr($argv, 0, 1) eq '-')
+		{
+			$args{$argv} = $argv;
 			next;
 		}
 

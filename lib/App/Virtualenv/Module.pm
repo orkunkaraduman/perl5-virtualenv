@@ -26,6 +26,7 @@ require CPANPLUS;
 use CPANPLUS::Error qw(cp_msg cp_error);
 
 use App::Virtualenv;
+use App::Virtualenv::Utils;
 
 
 BEGIN
@@ -51,91 +52,183 @@ my $cb = CPANPLUS::Backend->new;
 
 sub list
 {
+	my %params = @_;
 	my @modules = $inst->modules();
 	for my $module (sort {lc($a) cmp lc($b)} @modules)
 	{
 		my @files = $inst->files($module, "all", $sitelib);
+		next unless @files;
+		if ($params{1})
+		{
+			say $module;
+			next;
+		}
 		my $space = "                                       ";
 		my $len = length($space)-length($module);
 		my $spaces = substr($space, -$len);
 		$spaces = "" if $len <= 0;
 		my $version = $inst->version($module);
 		$version = "0" if not $version;
-		say "$module$spaces $version" if @files;
+		say "$module$spaces $version";
 	}
 	return 1;
 }
 
-sub _install
-{
-	my ($moduleName) = @_;
-	my $mod = $cb->module_tree($moduleName);
-	if (not $mod)
-	{
-		cp_error("Module $moduleName is not found", 1);
-		return 0;
-	}
-	my $instdir = $mod->installed_dir();
-	my $installed = (defined $instdir and $instdir eq $sitelib);
-	if ($installed and $mod->is_uptodate())
-	{
-		cp_msg("Module $moduleName is up to date.", 1);
-		return 1;
-	}
-	my $willBeStatus =  (not $installed)? "installed": "upgraded";
-	my $result = $mod->install(force => 1, verbose => 1);
-	if ($result)
-	{
-		cp_msg("Module $moduleName has been successfully $willBeStatus.", 1);
-	} else
-	{
-		cp_error("Module $moduleName could not be $willBeStatus.", 1);
-	}
-	return $result;
-}
-
 sub install
 {
+	my %params = @_;
 	my $result = 1;
-	for my $moduleName (@_)
+	for my $moduleName (@{$params{modules}})
 	{
-		$result = (_install($moduleName) and $result);
-	}
-	return $result;
-}
+		cp_msg("Looking for module $moduleName to install", 1);
+		my $mod = $cb->module_tree($moduleName);
+		if (not $mod)
+		{
+			cp_error("Module $moduleName is not found", 1);
+			$result = 0;
+			next;
+		}
 
-sub _remove
-{
-	my ($moduleName) = @_;
-	my $mod = $cb->module_tree($moduleName);
-	if (not $mod)
-	{
-		cp_error("Module $moduleName is not found", 1);
-		return 0;
-	}
-	my $instdir = $mod->installed_dir();
-	unless (defined $instdir and $instdir eq $sitelib)
-	{
-		cp_msg("Module $moduleName is not installed in Perl virtual environment", 1);
-		return 1;
-	}
-	my $result = $mod->uninstall(type => 'all');
-	if ($result)
-	{
-		cp_msg("Module $moduleName has been successfully removed.", 1);
-	} else
-	{
-		cp_error("Module $moduleName could not be removed.", 1);
+		if ($mod->package_is_perl_core())
+		{
+			cp_msg("Module $moduleName is in Perl core", 1);
+			next;
+		}
+
+		my $instpath = $mod->installed_dir();
+		$instpath = $mod->installed_file() unless defined $instpath;
+		my $installed = (defined $instpath and ($instpath =~ /^\Q$sitelib\E/));
+		if (not $params{force} and ($instpath =~ /^\Q$Config{privlib}\E/ or grep({ my $inc = $_; $inc =~ /^\Q$Config{privlib}\E/ and -e $inc."/".($moduleName =~ s/::/\//r).".pm"; } @INC)))
+		{
+			cp_msg("Module $moduleName is in Perl library", 1);
+			next;
+		}
+		if (not $params{force} and $installed and $mod->is_uptodate())
+		{
+			cp_msg("Module $moduleName is up to date", 1);
+			next;
+		}
+
+		cp_msg("Fetching module $moduleName", 1);
+		unless ($mod->fetch(verbose => 1))
+		{
+			cp_error("Failed to fetch module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		#cp_msg("Succeed to fetch module $moduleName", 1);
+
+		cp_msg("Extracting module $moduleName", 1);
+		unless ($mod->extract(verbose => 1))
+		{
+			cp_error("Failed to extract module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		#cp_msg("Succeed to extract module $moduleName", 1);
+
+		cp_msg("Preparing module $moduleName", 1);
+		unless ($mod->prepare(verbose => 1))
+		{
+			cp_error("Failed to prepare module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		#cp_msg("Succeed to prepare module $moduleName", 1);
+
+		cp_msg("Looking for prerequisites of module $moduleName", 1);
+		state @install;
+		push @install, $moduleName;
+		my $res = 1;
+		for my $ps (@{$mod->{_status}->{prereqs}})
+		{
+			delete $ps->{'perl'};
+			delete $ps->{'Config'};
+			for my $p (keys %$ps)
+			{
+				next if (grep($_ eq $p, @install));
+				unless (install(modules => [$p]))
+				{
+					$res = 0;
+					last;
+				}
+			}
+			last unless $res;
+		}
+		pop @install;
+		unless ($res)
+		{
+			cp_error("Failed to install prerequisites of module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		cp_msg("Succeed to install prerequisites of module $moduleName", 1);
+
+=pod
+		cp_msg("Creating module $moduleName", 1);
+		unless ($mod->create(verbose => 1))
+		{
+			cp_error("Failed to create module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		#cp_msg("Succeed to create module $moduleName", 1);
+
+		cp_msg("Testing module $moduleName", 1);
+		unless ($mod->test(verbose => 1))
+		{
+			cp_error("Failed to test module $moduleName", 1);
+			$result = 0;
+			next;
+		}
+		#cp_msg("Succeed to test module $moduleName", 1);
+=cut
+
+		cp_msg("Installing module $moduleName", 1);
+		my $willBeStatus =  (not $installed)? "installed": "upgraded";
+		unless ($mod->install(verbose => 1, force => 1))
+		{
+			cp_error("Module $moduleName could not be $willBeStatus", 1);
+			$result = 0;
+			next;
+		}
+		cp_msg("Module $moduleName has been successfully $willBeStatus", 1);
 	}
 	return $result;
 }
 
 sub remove
 {
+	my %params = @_;
 	my $result = 1;
-	for my $moduleName (@_)
+	for my $moduleName (@{$params{modules}})
 	{
-		$result = (_remove($moduleName) and $result);
+		cp_msg("Looking for module $moduleName to remove", 1);
+		my $mod = $cb->module_tree($moduleName);
+		if (not $mod)
+		{
+			cp_error("Module $moduleName is not found", 1);
+			$result = 0;
+			next;
+		}
+
+		my $instpath = $mod->installed_dir();
+		$instpath = $mod->installed_file() unless defined $instpath;
+		my $installed = (defined $instpath and ($instpath =~ /^\Q$sitelib\E/));
+		unless ($installed)
+		{
+			cp_msg("Module $moduleName is not installed", 1);
+			next;
+		}
+
+		cp_msg("Removing module $moduleName", 1);
+		unless ($mod->uninstall(verbose => 1, type => 'all'))
+		{
+			cp_error("Module $moduleName could not be removed", 1);
+			$result = 0;
+			next;
+		}
+		cp_msg("Module $moduleName has been successfully removed", 1);
 	}
 	return $result;
 }

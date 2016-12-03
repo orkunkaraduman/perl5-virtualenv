@@ -27,19 +27,55 @@ deactivates activated Perl virtual environment
 
 runs Unix shell under Perl virtual environment
 
-> *environment_path*/bin/sh.pl
+> [*environment_path*/bin/]sh.pl [*argument*]...
 
 ### perl.pl
 
 runs Perl language interpreter under Perl virtual environment
 
-> *environment_path*/bin/perl.pl [*argument*]...
+> [*environment_path*/bin/]perl.pl [*argument*]...
 
 ### piv.pl
 
 wrapper for Perl in Virtual environment
 
-> *environment_path*/bin/piv.pl [*-arg*]... *cmd* [*param*]...
+> [*environment_path*/bin/]piv.pl [-*arg*]... [--*arg* *value*]... *cmd* [*param*]...
+
+#### piv virtualenv
+
+creates new Perl virtual environment
+
+> piv virtualenv [*environment_path*]
+
+#### piv sh
+
+runs Unix shell under Perl virtual environment
+
+> [*environment_path*/bin/]piv sh [*argument*]...
+
+#### piv perl
+
+runs Perl language interpreter under Perl virtual environment
+
+> [*environment_path*/bin/]piv perl [*argument*]...
+
+#### piv list
+
+list installed packages under Perl virtual environment
+
+> [*environment_path*/bin/]piv list [-1]
+
+#### piv install
+
+install or upgrade packages under Perl virtual environment
+
+> [*environment_path*/bin/]piv install [-f] *package*...
+
+#### piv remove
+
+remove packages under Perl virtual environment
+
+> [*environment_path*/bin/]piv remove *package*...
 
 ## INSTALLATION
 

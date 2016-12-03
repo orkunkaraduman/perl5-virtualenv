@@ -21,10 +21,10 @@ use v5.10;
 use open qw(:std :locale);
 use utf8;
 
-use App::Virtualenv::Piv;
+use App::Virtualenv;
 
 
-exit App::Virtualenv::Piv::virtualenv(@ARGV);
+exit not App::Virtualenv::create($ARGV[0]);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

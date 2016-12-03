@@ -11,7 +11,7 @@ version 1.05
 
 wrapper Perl in Virtual environment
 
-C<[I<environment_path>/bin/]piv.pl [I<-arg>]... I<command> [I<param>]...>
+C<[I<environment_path>/bin/]piv.pl [-I<arg>]... [--I<arg> I<value>]... I<cmd> [I<param>]...>
 
 =cut
 use strict;
@@ -21,6 +21,7 @@ use v5.10;
 use open qw(:std :locale);
 use utf8;
 
+use App::Virtualenv;
 use App::Virtualenv::Piv;
 
 

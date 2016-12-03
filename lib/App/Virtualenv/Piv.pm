@@ -37,6 +37,13 @@ BEGIN
 }
 
 
+sub activate
+{
+	my $virtualenvPath = App::Virtualenv::activate();
+	say "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath;
+	return $virtualenvPath;
+}
+
 sub main
 {
 	my $args = cmdArgs(@_);
@@ -49,19 +56,40 @@ sub main
 	{
 		case "virtualenv"
 		{
-			return virtualenv(@{$args->{params}});
+			return not App::Virtualenv::create($args->{params}->[0]);
+		}
+		case "sh"
+		{
+			activate;
+			return App::Virtualenv::sh(@{$args->{params}});
+		}
+		case "perl"
+		{
+			activate;
+			return App::Virtualenv::perl(@{$args->{params}});
 		}
 		case "list"
 		{
-			return list(@{$args->{params}});
+			activate;
+			my $_1 = defined($args->{-1})? 1: 0;
+			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::list(1 => $_1);");
 		}
 		case "install"
 		{
-			return install(@{$args->{params}});
+			activate;
+			my @modules = @{$args->{params}};
+			@modules = map(s/(.*)/\"\Q$1\E\"/r, @modules);
+			my $modules = join(", ", @modules);
+			my $force = defined($args->{-f})? 1: 0;
+			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => $force, modules => [$modules]);");
 		}
 		case "remove"
 		{
-			return remove(@{$args->{params}});
+			activate;
+			my @modules = @{$args->{params}};
+			@modules = map(s/(.*)/\"\Q$1\E\"/r, @modules);
+			my $modules = join(", ", @modules);
+			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::remove(modules => [$modules]);");
 		}
 		else
 		{
@@ -70,55 +98,6 @@ sub main
 		}
 	}
 	return 0;
-}
-
-sub activate
-{
-	my $virtualenvPath = App::Virtualenv::activate();
-	say "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath;
-	return $virtualenvPath;
-}
-
-sub virtualenv
-{
-	my ($virtualenv) = @_;
-	return not App::Virtualenv::create($virtualenv);
-}
-
-sub sh
-{
-	activate;
-	return App::Virtualenv::sh(@_);
-}
-
-sub perl
-{
-	activate;
-	return App::Virtualenv::perl(@_);
-}
-
-sub list
-{
-	activate;
-	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::list();");
-}
-
-sub install
-{
-	activate;
-	my @mods = @_;
-	for (@mods) { s/(.*)/\"\Q$1\E\"/; }
-	my $mods = join ", ", @mods;
-	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install($mods);");
-}
-
-sub remove
-{
-	activate;
-	my @mods = @_;
-	for (@mods) { s/(.*)/\"\Q$1\E\"/; }
-	my $mods = join ", ", @mods;
-	return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::remove($mods);");
 }
 
 

@@ -1,7 +1,7 @@
 package App::Virtualenv;
 =head1 NAME
 
-App::Virtualenv - Perl 5 virtual environment core
+App::Virtualenv - Perl virtual environment core
 
 =head1 VERSION
 
@@ -9,7 +9,7 @@ version 1.05
 
 =head1 SYNOPSIS
 
-Perl 5 virtual environment core
+Perl virtual environment core
 
 =cut
 use strict;
@@ -125,6 +125,7 @@ sub create
 {
 	my ($virtualenvPath) = @_;
 	$virtualenvPath = Cwd::realpath((defined $virtualenvPath)? $virtualenvPath: ".");
+	say "Creating Perl virtual environment: $virtualenvPath";
 
 	deactivate();
 
@@ -133,7 +134,7 @@ sub create
 
 	activate($virtualenvPath);
 
-	perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install('CPAN', 'CPANPLUS');");
+	perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => 1, modules => ['LWP', 'CPAN', 'CPANPLUS']);");
 
 	my $pkgPath = dirname(__FILE__);
 	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");

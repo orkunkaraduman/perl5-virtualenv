@@ -11,7 +11,7 @@ version 1.05
 
 runs Perl language interpreter under Perl virtual environment
 
-C<I<environment_path>/bin/perl.pl [I<argument>]...>
+C<[I<environment_path>/bin/]perl.pl [I<argument>]...>
 
 =cut
 use strict;
@@ -21,10 +21,12 @@ use v5.10;
 use open qw(:std :locale);
 use utf8;
 
-use App::Virtualenv::Piv;
+use App::Virtualenv;
 
 
-exit App::Virtualenv::Piv::perl(@ARGV);
+my $virtualenvPath = App::Virtualenv::activate();
+say "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath;
+exit App::Virtualenv::perl(@ARGV);
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
