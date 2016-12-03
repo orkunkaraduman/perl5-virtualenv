@@ -40,7 +40,6 @@ runs Perl language interpreter under Perl virtual environment
 wrapper for Perl in Virtual environment
 
 > [*environment_path*/bin/]piv.pl [-*arg*]... [--*arg* *value*]... *cmd* [*param*]...
-> [*environment_path*/bin/]piv [-*arg*]... [--*arg* *value*]... *cmd* [*param*]...
 
 #### piv virtualenv
 
