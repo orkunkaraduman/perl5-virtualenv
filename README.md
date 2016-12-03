@@ -45,7 +45,7 @@ wrapper for Perl in Virtual environment
 
 creates new Perl virtual environment
 
-> piv virtualenv [*environment_path*]
+> piv virtualenv [-e] [*environment_path*]
 
 #### piv sh
 

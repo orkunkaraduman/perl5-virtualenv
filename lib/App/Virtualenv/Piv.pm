@@ -56,7 +56,7 @@ sub main
 	{
 		case "virtualenv"
 		{
-			return not App::Virtualenv::create($args->{params}->[0]);
+			return not App::Virtualenv::create($args->{params}->[0], defined($args->{-e}));
 		}
 		case "sh"
 		{

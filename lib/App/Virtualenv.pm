@@ -123,7 +123,7 @@ sub validVirtualenvPath
 
 sub create
 {
-	my ($virtualenvPath) = @_;
+	my ($virtualenvPath, $empty) = @_;
 	$virtualenvPath = Cwd::realpath((defined $virtualenvPath)? $virtualenvPath: ".");
 	say "Creating Perl virtual environment: $virtualenvPath";
 
@@ -134,7 +134,7 @@ sub create
 
 	activate($virtualenvPath);
 
-	perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => 1, modules => ['LWP', 'CPAN', 'CPANPLUS']);");
+	perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => 1, modules => ['LWP', 'CPAN', 'CPANPLUS']);") unless $empty;
 
 	my $pkgPath = dirname(__FILE__);
 	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
