@@ -153,11 +153,7 @@ sub install
 			next;
 		}
 
-		my $instpath = $mod->installed_dir();
-		$instpath = $mod->installed_file() unless defined $instpath;
-		if (not $force and
-			($instpath =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ or
-			grep({ my $inc = $_; $inc =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ and -e $inc."/".($moduleName =~ s/\:\:/\//r).".pm"; } @INC)))
+		if (not $force and grep({ my $inc = $_; $inc =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ and -e $inc."/".($moduleName =~ s/\:\:/\//r).".pm"; } @INC))
 		{
 			cp_msg("Module $moduleName is in Perl library", 1);
 			next;
@@ -269,9 +265,6 @@ sub remove
 			$result = 0;
 			next;
 		}
-
-		my $instpath = $mod->installed_dir();
-		$instpath = $mod->installed_file() unless defined $instpath;
 
 		my $installed = isInstalled($moduleName);
 		unless ($installed)
