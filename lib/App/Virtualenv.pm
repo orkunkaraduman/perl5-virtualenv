@@ -134,7 +134,7 @@ sub create
 
 	activate($virtualenvPath);
 
-	perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => 1, modules => ['LWP', 'CPAN', 'CPANPLUS']);") unless $empty;
+	perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => 1, test => 0, modules => ['LWP', 'CPAN', 'CPANPLUS']);") unless $empty;
 
 	my $pkgPath = dirname(__FILE__);
 	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");

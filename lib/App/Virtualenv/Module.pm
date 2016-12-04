@@ -5,7 +5,7 @@ App::Virtualenv::Module - Module management for Perl virtual environment
 
 =head1 VERSION
 
-version 1.06
+version 1.07
 
 =head1 SYNOPSIS
 
@@ -33,7 +33,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.06';
+	our $VERSION     = '1.07';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -97,6 +97,7 @@ sub install
 {
 	my %params = @_;
 	my $force = $params{force}? 1: 0;
+	my $test = $params{test}? 1: 0;
 	my $result = 1;
 	for my $moduleName (@{$params{modules}})
 	{
@@ -170,7 +171,7 @@ sub install
 			for my $p (keys %$ps)
 			{
 				next if (grep($_ eq $p, @install));
-				unless (install(modules => [$p]))
+				unless (install(modules => [$p], test => $test))
 				{
 					$res = 0;
 					last;
@@ -187,29 +188,21 @@ sub install
 		}
 		cp_msg("Succeed to install prerequisites of module $moduleName", 1);
 
-=pod
-		cp_msg("Creating module $moduleName", 1);
-		unless ($mod->create(verbose => 1))
+		if ($test)
 		{
-			cp_error("Failed to create module $moduleName", 1);
-			$result = 0;
-			next;
+			cp_msg("Testing module $moduleName", 1);
+			unless ($mod->test(verbose => 1))
+			{
+				cp_error("Failed to test module $moduleName", 1);
+				$result = 0;
+				next;
+			}
+			#cp_msg("Succeed to test module $moduleName", 1);
 		}
-		#cp_msg("Succeed to create module $moduleName", 1);
-
-		cp_msg("Testing module $moduleName", 1);
-		unless ($mod->test(verbose => 1))
-		{
-			cp_error("Failed to test module $moduleName", 1);
-			$result = 0;
-			next;
-		}
-		#cp_msg("Succeed to test module $moduleName", 1);
-=cut
 
 		cp_msg("Installing module $moduleName", 1);
 		my $willBeStatus =  (not $installed)? "installed": "upgraded";
-		unless ($mod->install(verbose => 1, force => 1))
+		unless ($mod->install(verbose => 1, force => 1, skiptest => 1))
 		{
 			cp_error("Module $moduleName could not be $willBeStatus", 1);
 			$result = 0;

@@ -1,3 +1,6 @@
+1.07	2016-12-04
+		- Added piv install -t
+
 1.06	2016-12-04
 		- Added piv remove -f
 		- Added piv virtualenv -e

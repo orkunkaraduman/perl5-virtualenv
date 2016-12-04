@@ -56,7 +56,8 @@ sub main
 	{
 		case "virtualenv"
 		{
-			return not App::Virtualenv::create($args->{params}->[0], defined($args->{-e}));
+			my $empty = defined($args->{-e})? 1: 0;
+			return not App::Virtualenv::create($args->{params}->[0], $empty);
 		}
 		case "sh"
 		{
@@ -77,19 +78,20 @@ sub main
 		case "install"
 		{
 			activate;
+			my $force = defined($args->{-f})? 1: 0;
+			my $test = defined($args->{-t})? 1: 0;
 			my @modules = @{$args->{params}};
 			@modules = map(s/(.*)/\"\Q$1\E\"/r, @modules);
 			my $modules = join(", ", @modules);
-			my $force = defined($args->{-f})? 1: 0;
-			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => $force, modules => [$modules]);");
+			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => $force, test=> $test, modules => [$modules]);");
 		}
 		case "remove"
 		{
 			activate;
+			my $force = defined($args->{-f})? 1: 0;
 			my @modules = @{$args->{params}};
 			@modules = map(s/(.*)/\"\Q$1\E\"/r, @modules);
 			my $modules = join(", ", @modules);
-			my $force = defined($args->{-f})? 1: 0;
 			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::remove(force => $force, modules => [$modules]);");
 		}
 		else
