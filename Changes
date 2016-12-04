@@ -2,6 +2,8 @@
 		- Minimum Perl version setted v5.14
 		- Added piv install -t
 		- Added piv install -s
+		- Module isInstalled checking is fixed
+		- Little fixes
 
 1.06	2016-12-04
 		- Added piv remove -f
