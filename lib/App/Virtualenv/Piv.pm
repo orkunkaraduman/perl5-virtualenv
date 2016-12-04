@@ -80,7 +80,7 @@ sub main
 			activate;
 			my $force = defined($args->{-f})? 1: 0;
 			my $test = defined($args->{-t})? 1: 0;
-			my $soft = defined($args->{-s})? 1: 0;
+			my $soft = defined($args->{"-s"})? 1: 0;
 			my @modules = @{$args->{params}};
 			@modules = map(s/(.*)/\"\Q$1\E\"/r, @modules);
 			my $modules = join(", ", @modules);
