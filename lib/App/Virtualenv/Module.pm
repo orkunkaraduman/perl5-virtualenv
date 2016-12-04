@@ -5,7 +5,7 @@ App::Virtualenv::Module - Module management for Perl virtual environment
 
 =head1 VERSION
 
-version 1.06
+version 1.07
 
 =head1 SYNOPSIS
 
@@ -33,7 +33,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.06';
+	our $VERSION     = '1.07';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -49,19 +49,27 @@ $sitelib{$perl5lib[0]} = "perl5lib" if $perl5lib[0];
 unless (keys %sitelib)
 {
 	$sitelib{$Config{sitelib}} = "sitelib";
-	$sitelib{$Config{archlib}} = "archlib";
+	$sitelib{$Config{sitearch}} = "sitearch";
 }
-my $inst = ExtUtils::Installed->new;
+my $installed;
+App::Virtualenv::Module::reloadInstalled();
 my $cb = CPANPLUS::Backend->new;
 
 
+sub reloadInstalled
+{
+	$installed = ExtUtils::Installed->new(inc_override => [sort keys %sitelib]);
+	return;
+}
+
 sub moduleFiles
 {
-	my ($module) = @_;
+	my ($moduleName) = @_;
+	return unless grep($_ eq $moduleName, $installed->modules());
 	my %files;
 	for my $path (sort keys %sitelib)
 	{
-		for my $file ($inst->files($module, "all", $path))
+		for my $file ($installed->files($moduleName, "all", $path))
 		{
 			$files{$file} = $sitelib{$path};
 		}
@@ -69,26 +77,54 @@ sub moduleFiles
 	return keys %files;
 }
 
+sub moduleDirectories
+{
+	my ($moduleName) = @_;
+	return unless grep($_ eq $moduleName, $installed->modules());
+	my %directories;
+	for my $path (sort keys %sitelib)
+	{
+		for my $directory ($installed->directories($moduleName, "all", $path))
+		{
+			$directories{$directory} = $sitelib{$path};
+		}
+	}
+	return keys %directories;
+}
+
+sub isInstalled
+{
+	my ($moduleName) = @_;
+	reloadInstalled();
+	return 0 unless grep($_ eq $moduleName, $installed->modules());
+	for my $path (sort keys %sitelib)
+	{
+		return 1 if $installed->files($moduleName, "all", $path);
+	}
+	return 0;
+}
+
 sub list
 {
 	my %params = @_;
-	my @modules = $inst->modules();
-	for my $module (sort {lc($a) cmp lc($b)} @modules)
+	reloadInstalled();
+	my @modules = $installed->modules();
+	for my $moduleName (sort {lc($a) cmp lc($b)} @modules)
 	{
-		my @files = moduleFiles($module);
+		my @files = moduleFiles($moduleName);
 		next unless @files;
 		if ($params{1})
 		{
-			say $module;
+			say $moduleName;
 			next;
 		}
 		my $space = "                                       ";
-		my $len = length($space)-length($module);
+		my $len = length($space)-length($moduleName);
 		my $spaces = substr($space, -$len);
 		$spaces = "" if $len <= 0;
-		my $version = $inst->version($module);
+		my $version = $installed->version($moduleName);
 		$version = "0" if not $version;
-		say "$module$spaces $version";
+		say "$moduleName$spaces $version";
 	}
 	return 1;
 }
@@ -97,6 +133,8 @@ sub install
 {
 	my %params = @_;
 	my $force = $params{force}? 1: 0;
+	my $test = $params{test}? 1: 0;
+	my $soft = $params{soft}? 1: 0;
 	my $result = 1;
 	for my $moduleName (@{$params{modules}})
 	{
@@ -115,16 +153,13 @@ sub install
 			next;
 		}
 
-		my $instpath = $mod->installed_dir();
-		$instpath = $mod->installed_file() unless defined $instpath;
-		my $installed = (defined $instpath and grep($instpath =~ /^\Q$_\E/, keys %sitelib));
-		if (not $force and
-			($instpath =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ or
-			grep({ my $inc = $_; $inc =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ and -e $inc."/".($moduleName =~ s/\:\:/\//r).".pm"; } @INC)))
+		if (not $force and grep({ my $inc = $_; $inc =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ and -e $inc."/".($moduleName =~ s/\:\:/\//r).".pm"; } @INC))
 		{
 			cp_msg("Module $moduleName is in Perl library", 1);
 			next;
 		}
+
+		my $installed = isInstalled($moduleName);
 		if (not $force and $installed and $mod->is_uptodate())
 		{
 			cp_msg("Module $moduleName is up to date", 1);
@@ -158,58 +193,53 @@ sub install
 		}
 		#cp_msg("Succeed to prepare module $moduleName", 1);
 
-		cp_msg("Looking for prerequisites of module $moduleName", 1);
-		state @install;
-		push @install, $moduleName;
-		my $res = 1;
-		for my $ps (@{$mod->{_status}->{prereqs}})
+		unless ($soft)
 		{
-			delete $ps->{'perl'};
-			delete $ps->{'Config'};
-			delete $ps->{'Errno'};
-			for my $p (keys %$ps)
+			cp_msg("Looking for prerequisites of module $moduleName", 1);
+			state @install;
+			push @install, $moduleName;
+			my $res = 1;
+			for my $ps (@{$mod->{_status}->{prereqs}})
 			{
-				next if (grep($_ eq $p, @install));
-				unless (install(modules => [$p]))
+				delete $ps->{'perl'};
+				delete $ps->{'Config'};
+				delete $ps->{'Errno'};
+				for my $p (keys %$ps)
 				{
-					$res = 0;
-					last;
+					next if (grep($_ eq $p, @install));
+					unless (install(modules => [$p], test => $test))
+					{
+						$res = 0;
+						last;
+					}
 				}
+				last unless $res;
 			}
-			last unless $res;
+			pop @install;
+			unless ($res)
+			{
+				cp_error("Failed to install prerequisites of module $moduleName", 1);
+				$result = 0;
+				next;
+			}
+			cp_msg("Succeed to install prerequisites of module $moduleName", 1);
 		}
-		pop @install;
-		unless ($res)
-		{
-			cp_error("Failed to install prerequisites of module $moduleName", 1);
-			$result = 0;
-			next;
-		}
-		cp_msg("Succeed to install prerequisites of module $moduleName", 1);
 
-=pod
-		cp_msg("Creating module $moduleName", 1);
-		unless ($mod->create(verbose => 1))
+		if ($test)
 		{
-			cp_error("Failed to create module $moduleName", 1);
-			$result = 0;
-			next;
+			cp_msg("Testing module $moduleName", 1);
+			unless ($mod->test(verbose => 1))
+			{
+				cp_error("Failed to test module $moduleName", 1);
+				$result = 0;
+				next;
+			}
+			#cp_msg("Succeed to test module $moduleName", 1);
 		}
-		#cp_msg("Succeed to create module $moduleName", 1);
-
-		cp_msg("Testing module $moduleName", 1);
-		unless ($mod->test(verbose => 1))
-		{
-			cp_error("Failed to test module $moduleName", 1);
-			$result = 0;
-			next;
-		}
-		#cp_msg("Succeed to test module $moduleName", 1);
-=cut
 
 		cp_msg("Installing module $moduleName", 1);
 		my $willBeStatus =  (not $installed)? "installed": "upgraded";
-		unless ($mod->install(verbose => 1, force => 1))
+		unless ($mod->install(verbose => 1, force => 1, skiptest => 1))
 		{
 			cp_error("Module $moduleName could not be $willBeStatus", 1);
 			$result = 0;
@@ -236,9 +266,7 @@ sub remove
 			next;
 		}
 
-		my $instpath = $mod->installed_dir();
-		$instpath = $mod->installed_file() unless defined $instpath;
-		my $installed = (defined $instpath and grep($instpath =~ /^\Q$_\E/, keys %sitelib));
+		my $installed = isInstalled($moduleName);
 		unless ($installed)
 		{
 			cp_msg("Module $moduleName is not installed", 1);

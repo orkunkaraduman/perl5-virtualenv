@@ -1,15 +1,15 @@
 package App::Virtualenv;
 =head1 NAME
 
-App::Virtualenv - Perl virtual environment core
+App::Virtualenv - Perl virtual environment
 
 =head1 VERSION
 
-version 1.06
+version 1.07
 
 =head1 SYNOPSIS
 
-Perl virtual environment core
+Perl virtual environment
 
 =cut
 use strict;
@@ -29,7 +29,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.06';
+	our $VERSION     = '1.07';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -134,7 +134,7 @@ sub create
 
 	activate($virtualenvPath);
 
-	perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => 1, modules => ['LWP', 'CPAN', 'CPANPLUS']);") unless $empty;
+	perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => 1, test => 0, modules => ['LWP', 'CPAN', 'CPANPLUS']);") unless $empty;
 
 	my $pkgPath = dirname(__FILE__);
 	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
