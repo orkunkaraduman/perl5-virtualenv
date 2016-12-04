@@ -98,6 +98,7 @@ sub install
 	my %params = @_;
 	my $force = $params{force}? 1: 0;
 	my $test = $params{test}? 1: 0;
+	my $soft = $params{soft}? 1: 0;
 	my $result = 1;
 	for my $moduleName (@{$params{modules}})
 	{
@@ -159,34 +160,37 @@ sub install
 		}
 		#cp_msg("Succeed to prepare module $moduleName", 1);
 
-		cp_msg("Looking for prerequisites of module $moduleName", 1);
-		state @install;
-		push @install, $moduleName;
-		my $res = 1;
-		for my $ps (@{$mod->{_status}->{prereqs}})
+		unless ($soft)
 		{
-			delete $ps->{'perl'};
-			delete $ps->{'Config'};
-			delete $ps->{'Errno'};
-			for my $p (keys %$ps)
+			cp_msg("Looking for prerequisites of module $moduleName", 1);
+			state @install;
+			push @install, $moduleName;
+			my $res = 1;
+			for my $ps (@{$mod->{_status}->{prereqs}})
 			{
-				next if (grep($_ eq $p, @install));
-				unless (install(modules => [$p], test => $test))
+				delete $ps->{'perl'};
+				delete $ps->{'Config'};
+				delete $ps->{'Errno'};
+				for my $p (keys %$ps)
 				{
-					$res = 0;
-					last;
+					next if (grep($_ eq $p, @install));
+					unless (install(modules => [$p], test => $test))
+					{
+						$res = 0;
+						last;
+					}
 				}
+				last unless $res;
 			}
-			last unless $res;
+			pop @install;
+			unless ($res)
+			{
+				cp_error("Failed to install prerequisites of module $moduleName", 1);
+				$result = 0;
+				next;
+			}
+			cp_msg("Succeed to install prerequisites of module $moduleName", 1);
 		}
-		pop @install;
-		unless ($res)
-		{
-			cp_error("Failed to install prerequisites of module $moduleName", 1);
-			$result = 0;
-			next;
-		}
-		cp_msg("Succeed to install prerequisites of module $moduleName", 1);
 
 		if ($test)
 		{

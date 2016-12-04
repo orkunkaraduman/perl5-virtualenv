@@ -69,7 +69,7 @@ list installed packages under Perl virtual environment
 
 install or upgrade packages under Perl virtual environment
 
-> [*environment_path*/bin/]piv install [-f] [-t] *package*...
+> [*environment_path*/bin/]piv install [-f] [-t] [-s] *package*...
 
 #### piv remove
 
