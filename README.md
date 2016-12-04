@@ -74,7 +74,9 @@ install or upgrade packages under Perl virtual environment
 > [*environment_path*/bin/]piv install [-f] [-t] [-s] *package*...
 
 **-f** Force
+
 **-t** Run tests
+
 **-s** Soft install without installing prerequisites
 
 #### piv remove
