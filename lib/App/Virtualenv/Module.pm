@@ -49,7 +49,7 @@ $sitelib{$perl5lib[0]} = "perl5lib" if $perl5lib[0];
 unless (keys %sitelib)
 {
 	$sitelib{$Config{sitelib}} = "sitelib";
-	$sitelib{$Config{archlib}} = "archlib";
+	$sitelib{$Config{sitearch}} = "sitearch";
 }
 my $inst = ExtUtils::Installed->new;
 my $cb = CPANPLUS::Backend->new;
