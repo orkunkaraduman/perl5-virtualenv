@@ -51,9 +51,16 @@ unless (keys %sitelib)
 	$sitelib{$Config{sitelib}} = "sitelib";
 	$sitelib{$Config{sitearch}} = "sitearch";
 }
-my $inst = ExtUtils::Installed->new;
+my $inst;
+App::Virtualenv::Module::reloadInst();
 my $cb = CPANPLUS::Backend->new;
 
+
+sub reloadInst
+{
+	$inst = ExtUtils::Installed->new(inc_override => [sort keys %sitelib]);
+	return;
+}
 
 sub moduleFiles
 {
@@ -70,9 +77,37 @@ sub moduleFiles
 	return keys %files;
 }
 
+sub moduleDirectories
+{
+	my ($moduleName) = @_;
+	return unless grep($_ eq $moduleName, $inst->modules());
+	my %directories;
+	for my $path (sort keys %sitelib)
+	{
+		for my $directory ($inst->directories($moduleName, "all", $path))
+		{
+			$directories{$directory} = $sitelib{$path};
+		}
+	}
+	return keys %directories;
+}
+
+sub isInstalled
+{
+	my ($moduleName) = @_;
+	reloadInst();
+	return 0 unless grep($_ eq $moduleName, $inst->modules());
+	for my $path (sort keys %sitelib)
+	{
+		return 1 if $inst->files($moduleName, "all", $path);
+	}
+	return 0;
+}
+
 sub list
 {
 	my %params = @_;
+	reloadInst();
 	my @modules = $inst->modules();
 	for my $moduleName (sort {lc($a) cmp lc($b)} @modules)
 	{
@@ -118,8 +153,6 @@ sub install
 			next;
 		}
 
-		$inst = ExtUtils::Installed->new;
-
 		my $instpath = $mod->installed_dir();
 		$instpath = $mod->installed_file() unless defined $instpath;
 		if (not $force and
@@ -130,7 +163,7 @@ sub install
 			next;
 		}
 
-		my $installed = ($instpath and moduleFiles($moduleName));
+		my $installed = isInstalled($moduleName);
 		if (not $force and $installed and $mod->is_uptodate())
 		{
 			cp_msg("Module $moduleName is up to date", 1);
@@ -237,12 +270,10 @@ sub remove
 			next;
 		}
 
-		$inst = ExtUtils::Installed->new;
-
 		my $instpath = $mod->installed_dir();
 		$instpath = $mod->installed_file() unless defined $instpath;
 
-		my $installed = ($instpath and moduleFiles($moduleName));
+		my $installed = isInstalled($moduleName);
 		unless ($installed)
 		{
 			cp_msg("Module $moduleName is not installed", 1);
