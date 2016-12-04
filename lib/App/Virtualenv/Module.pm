@@ -111,7 +111,7 @@ sub install
 			next;
 		}
 
-		if ($mod->package_is_perl_core())
+		if ($mod->package_is_perl_core() or $mod->module_is_supplied_with_perl_core())
 		{
 			cp_msg("Module $moduleName is in Perl core", 1);
 			next;
@@ -127,6 +127,7 @@ sub install
 			cp_msg("Module $moduleName is in Perl library", 1);
 			next;
 		}
+
 		if (not $force and $installed and $mod->is_uptodate())
 		{
 			cp_msg("Module $moduleName is up to date", 1);
