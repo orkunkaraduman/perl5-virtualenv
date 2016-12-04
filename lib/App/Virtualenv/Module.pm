@@ -51,25 +51,25 @@ unless (keys %sitelib)
 	$sitelib{$Config{sitelib}} = "sitelib";
 	$sitelib{$Config{sitearch}} = "sitearch";
 }
-my $inst;
-App::Virtualenv::Module::reloadInst();
+my $installed;
+App::Virtualenv::Module::reloadInstalled();
 my $cb = CPANPLUS::Backend->new;
 
 
-sub reloadInst
+sub reloadInstalled
 {
-	$inst = ExtUtils::Installed->new(inc_override => [sort keys %sitelib]);
+	$installed = ExtUtils::Installed->new(inc_override => [sort keys %sitelib]);
 	return;
 }
 
 sub moduleFiles
 {
 	my ($moduleName) = @_;
-	return unless grep($_ eq $moduleName, $inst->modules());
+	return unless grep($_ eq $moduleName, $installed->modules());
 	my %files;
 	for my $path (sort keys %sitelib)
 	{
-		for my $file ($inst->files($moduleName, "all", $path))
+		for my $file ($installed->files($moduleName, "all", $path))
 		{
 			$files{$file} = $sitelib{$path};
 		}
@@ -80,11 +80,11 @@ sub moduleFiles
 sub moduleDirectories
 {
 	my ($moduleName) = @_;
-	return unless grep($_ eq $moduleName, $inst->modules());
+	return unless grep($_ eq $moduleName, $installed->modules());
 	my %directories;
 	for my $path (sort keys %sitelib)
 	{
-		for my $directory ($inst->directories($moduleName, "all", $path))
+		for my $directory ($installed->directories($moduleName, "all", $path))
 		{
 			$directories{$directory} = $sitelib{$path};
 		}
@@ -95,11 +95,11 @@ sub moduleDirectories
 sub isInstalled
 {
 	my ($moduleName) = @_;
-	reloadInst();
-	return 0 unless grep($_ eq $moduleName, $inst->modules());
+	reloadInstalled();
+	return 0 unless grep($_ eq $moduleName, $installed->modules());
 	for my $path (sort keys %sitelib)
 	{
-		return 1 if $inst->files($moduleName, "all", $path);
+		return 1 if $installed->files($moduleName, "all", $path);
 	}
 	return 0;
 }
@@ -107,8 +107,8 @@ sub isInstalled
 sub list
 {
 	my %params = @_;
-	reloadInst();
-	my @modules = $inst->modules();
+	reloadInstalled();
+	my @modules = $installed->modules();
 	for my $moduleName (sort {lc($a) cmp lc($b)} @modules)
 	{
 		my @files = moduleFiles($moduleName);
@@ -122,7 +122,7 @@ sub list
 		my $len = length($space)-length($moduleName);
 		my $spaces = substr($space, -$len);
 		$spaces = "" if $len <= 0;
-		my $version = $inst->version($moduleName);
+		my $version = $installed->version($moduleName);
 		$version = "0" if not $version;
 		say "$moduleName$spaces $version";
 	}
