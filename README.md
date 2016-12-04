@@ -65,17 +65,25 @@ list installed packages under Perl virtual environment
 
 > [*environment_path*/bin/]piv list [-1]
 
+**-1** One column list
+
 #### piv install
 
 install or upgrade packages under Perl virtual environment
 
 > [*environment_path*/bin/]piv install [-f] [-t] [-s] *package*...
 
+**-f** Force
+**-t** Run tests
+**-s** Soft install without installing prerequisites
+
 #### piv remove
 
 remove packages under Perl virtual environment
 
 > [*environment_path*/bin/]piv remove [-f] *package*...
+
+**-f** Force
 
 ## INSTALLATION
 
