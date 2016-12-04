@@ -1,3 +1,6 @@
+1.08	2016-12-04
+		- Hotfix for versioning
+
 1.07	2016-12-04
 		- Minimum Perl version setted v5.14
 		- Added piv install -t
