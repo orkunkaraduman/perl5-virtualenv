@@ -29,9 +29,13 @@ use App::Virtualenv::Module;
 use App::Virtualenv::Piv;
 
 
+my $inst = ExtUtils::Installed->new;
+my @a = $inst->directory_tree("Net::Twitter", "all");
+say Dumper(\@a);
+exit;
 #exit App::Virtualenv::Module::install(force => 1, modules => ['ExtUtils::Installed']);
-exit App::Virtualenv::Piv::main(@ARGV);
-exit App::Virtualenv::perl("-I${FindBin::Bin}/../lib", "-MApp::Virtualenv::Module", "-e exit App::Virtualenv::Module::${ARGV[0]}('${ARGV[1]}');");
+#exit App::Virtualenv::Piv::main(@ARGV);
+#exit App::Virtualenv::perl("-I${FindBin::Bin}/../lib", "-MApp::Virtualenv::Module", "-e exit App::Virtualenv::Module::${ARGV[0]}('${ARGV[1]}');");
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

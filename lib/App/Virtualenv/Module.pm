@@ -57,11 +57,12 @@ my $cb = CPANPLUS::Backend->new;
 
 sub moduleFiles
 {
-	my ($module) = @_;
+	my ($moduleName) = @_;
+	return unless grep($_ eq $moduleName, $inst->modules());
 	my %files;
 	for my $path (sort keys %sitelib)
 	{
-		for my $file ($inst->files($module, "all", $path))
+		for my $file ($inst->files($moduleName, "all", $path))
 		{
 			$files{$file} = $sitelib{$path};
 		}
@@ -73,22 +74,22 @@ sub list
 {
 	my %params = @_;
 	my @modules = $inst->modules();
-	for my $module (sort {lc($a) cmp lc($b)} @modules)
+	for my $moduleName (sort {lc($a) cmp lc($b)} @modules)
 	{
-		my @files = moduleFiles($module);
+		my @files = moduleFiles($moduleName);
 		next unless @files;
 		if ($params{1})
 		{
-			say $module;
+			say $moduleName;
 			next;
 		}
 		my $space = "                                       ";
-		my $len = length($space)-length($module);
+		my $len = length($space)-length($moduleName);
 		my $spaces = substr($space, -$len);
 		$spaces = "" if $len <= 0;
-		my $version = $inst->version($module);
+		my $version = $inst->version($moduleName);
 		$version = "0" if not $version;
-		say "$module$spaces $version";
+		say "$moduleName$spaces $version";
 	}
 	return 1;
 }
@@ -111,15 +112,16 @@ sub install
 			next;
 		}
 
-		if ($mod->package_is_perl_core() or $mod->module_is_supplied_with_perl_core())
+		if ($mod->package_is_perl_core())
 		{
 			cp_msg("Module $moduleName is in Perl core", 1);
 			next;
 		}
 
+		$inst = ExtUtils::Installed->new;
+
 		my $instpath = $mod->installed_dir();
 		$instpath = $mod->installed_file() unless defined $instpath;
-		my $installed = (defined $instpath and grep($instpath =~ /^\Q$_\E/, keys %sitelib));
 		if (not $force and
 			($instpath =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ or
 			grep({ my $inc = $_; $inc =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ and -e $inc."/".($moduleName =~ s/\:\:/\//r).".pm"; } @INC)))
@@ -128,6 +130,7 @@ sub install
 			next;
 		}
 
+		my $installed = ($instpath and moduleFiles($moduleName));
 		if (not $force and $installed and $mod->is_uptodate())
 		{
 			cp_msg("Module $moduleName is up to date", 1);
@@ -234,9 +237,12 @@ sub remove
 			next;
 		}
 
+		$inst = ExtUtils::Installed->new;
+
 		my $instpath = $mod->installed_dir();
 		$instpath = $mod->installed_file() unless defined $instpath;
-		my $installed = (defined $instpath and grep($instpath =~ /^\Q$_\E/, keys %sitelib));
+
+		my $installed = ($instpath and moduleFiles($moduleName));
 		unless ($installed)
 		{
 			cp_msg("Module $moduleName is not installed", 1);
