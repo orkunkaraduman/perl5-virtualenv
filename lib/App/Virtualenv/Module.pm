@@ -5,7 +5,7 @@ App::Virtualenv::Module - Module management for Perl virtual environment
 
 =head1 VERSION
 
-version 1.07
+version 1.09
 
 =head1 SYNOPSIS
 
@@ -33,7 +33,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.07';
+	our $VERSION     = '1.09';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -43,65 +43,28 @@ BEGIN
 }
 
 
-my @perl5lib = split(":", defined $ENV{PERL5LIB}? $ENV{PERL5LIB}: "");
-my %sitelib;
-$sitelib{$perl5lib[0]} = "perl5lib" if $perl5lib[0];
-unless (keys %sitelib)
-{
-	$sitelib{$Config{sitelib}} = "sitelib";
-	$sitelib{$Config{sitearch}} = "sitearch";
-}
-my $installed;
-App::Virtualenv::Module::reloadInstalled();
+my $installed = App::Virtualenv::Module::reloadInstalled();
 my $cb = CPANPLUS::Backend->new;
 
 
 sub reloadInstalled
 {
-	$installed = ExtUtils::Installed->new(inc_override => [sort keys %sitelib]);
-	return;
-}
-
-sub moduleFiles
-{
-	my ($moduleName) = @_;
-	return unless grep($_ eq $moduleName, $installed->modules());
-	my %files;
-	for my $path (sort keys %sitelib)
-	{
-		for my $file ($installed->files($moduleName, "all", $path))
-		{
-			$files{$file} = $sitelib{$path};
-		}
-	}
-	return keys %files;
-}
-
-sub moduleDirectories
-{
-	my ($moduleName) = @_;
-	return unless grep($_ eq $moduleName, $installed->modules());
-	my %directories;
-	for my $path (sort keys %sitelib)
-	{
-		for my $directory ($installed->directories($moduleName, "all", $path))
-		{
-			$directories{$directory} = $sitelib{$path};
-		}
-	}
-	return keys %directories;
+	my @perl5lib = split(":", defined $ENV{PERL5LIB}? $ENV{PERL5LIB}: "");
+	$installed = ExtUtils::Installed->new(inc_override => [($perl5lib[0]? ("$perl5lib[0]/$Config{version}/$Config{archname}", "$perl5lib[0]/$Config{version}", "$perl5lib[0]/$Config{archname}", "$perl5lib[0]"): ($Config{sitearch}, $Config{sitelib}))]);
+	return $installed;
 }
 
 sub isInstalled
 {
 	my ($moduleName) = @_;
 	reloadInstalled();
-	return 0 unless grep($_ eq $moduleName, $installed->modules());
-	for my $path (sort keys %sitelib)
-	{
-		return 1 if $installed->files($moduleName, "all", $path);
-	}
-	return 0;
+	return grep($_ eq $moduleName, $installed->modules()) > 0;
+}
+
+sub inPerlLib
+{
+	my ($moduleName) = @_;
+	return grep(-e $_."/".($moduleName =~ s/\:\:/\//r).".pm", ($Config{archlib}, $Config{privlib})) > 0;
 }
 
 sub list
@@ -111,8 +74,6 @@ sub list
 	my @modules = $installed->modules();
 	for my $moduleName (sort {lc($a) cmp lc($b)} @modules)
 	{
-		my @files = moduleFiles($moduleName);
-		next unless @files;
 		if ($params{1})
 		{
 			say $moduleName;
@@ -153,7 +114,7 @@ sub install
 			next;
 		}
 
-		if (not $force and grep({ my $inc = $_; $inc =~ /^\Q$Config{privlib}\E|\Q$Config{archlib}\E/ and -e $inc."/".($moduleName =~ s/\:\:/\//r).".pm"; } @INC))
+		if (not $force and inPerlLib($moduleName))
 		{
 			cp_msg("Module $moduleName is in Perl library", 1);
 			next;
@@ -202,8 +163,6 @@ sub install
 			for my $ps (@{$mod->{_status}->{prereqs}})
 			{
 				delete $ps->{'perl'};
-				delete $ps->{'Config'};
-				delete $ps->{'Errno'};
 				for my $p (keys %$ps)
 				{
 					next if (grep($_ eq $p, @install));
