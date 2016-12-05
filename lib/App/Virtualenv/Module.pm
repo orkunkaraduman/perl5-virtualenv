@@ -96,6 +96,7 @@ sub install
 	my $force = $params{force}? 1: 0;
 	my $test = $params{test}? 1: 0;
 	my $soft = $params{soft}? 1: 0;
+	my $verbose = $params{verbose}? 1: 0;
 	my $result = 1;
 	for my $moduleName (@{$params{modules}})
 	{
@@ -128,31 +129,31 @@ sub install
 		}
 
 		cp_msg("Fetching module $moduleName", 1);
-		unless ($mod->fetch(verbose => 1))
+		unless ($mod->fetch(verbose => $verbose))
 		{
 			cp_error("Failed to fetch module $moduleName", 1);
 			$result = 0;
 			next;
 		}
-		#cp_msg("Succeed to fetch module $moduleName", 1);
+		cp_msg("Succeed to fetch module $moduleName", 1);
 
 		cp_msg("Extracting module $moduleName", 1);
-		unless ($mod->extract(verbose => 1))
+		unless ($mod->extract(verbose => $verbose))
 		{
 			cp_error("Failed to extract module $moduleName", 1);
 			$result = 0;
 			next;
 		}
-		#cp_msg("Succeed to extract module $moduleName", 1);
+		cp_msg("Succeed to extract module $moduleName", 1);
 
 		cp_msg("Preparing module $moduleName", 1);
-		unless ($mod->prepare(verbose => 1))
+		unless ($mod->prepare(verbose => $verbose))
 		{
 			cp_error("Failed to prepare module $moduleName", 1);
 			$result = 0;
 			next;
 		}
-		#cp_msg("Succeed to prepare module $moduleName", 1);
+		cp_msg("Succeed to prepare module $moduleName", 1);
 
 		unless ($soft)
 		{
@@ -187,18 +188,18 @@ sub install
 		if ($test)
 		{
 			cp_msg("Testing module $moduleName", 1);
-			unless ($mod->test(verbose => 1))
+			unless ($mod->test(verbose => $verbose))
 			{
 				cp_error("Failed to test module $moduleName", 1);
 				$result = 0;
 				next;
 			}
-			#cp_msg("Succeed to test module $moduleName", 1);
+			cp_msg("Succeed to test module $moduleName", 1);
 		}
 
 		cp_msg("Installing module $moduleName", 1);
 		my $willBeStatus =  (not $installed)? "installed": "upgraded";
-		unless ($mod->install(verbose => 1, force => 1, skiptest => 1))
+		unless ($mod->install(verbose => $verbose, force => 1, skiptest => 1))
 		{
 			cp_error("Module $moduleName could not be $willBeStatus", 1);
 			$result = 0;
@@ -213,6 +214,7 @@ sub remove
 {
 	my %params = @_;
 	my $force = $params{force}? 1: 0;
+	my $verbose = $params{verbose}? 1: 0;
 	my $result = 1;
 	for my $moduleName (@{$params{modules}})
 	{
@@ -233,7 +235,7 @@ sub remove
 		}
 
 		cp_msg("Removing module $moduleName", 1);
-		unless ($mod->uninstall(verbose => 1, force => $force, type => 'all'))
+		unless ($mod->uninstall(verbose => $verbose, force => $force, type => 'all'))
 		{
 			cp_error("Module $moduleName could not be removed", 1);
 			$result = 0;
