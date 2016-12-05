@@ -64,7 +64,7 @@ sub isInstalled
 sub inPerlLib
 {
 	my ($moduleName) = @_;
-	return grep(-e $_."/".($moduleName =~ s/\:\:/\//r).".pm", ($Config{archlib}, $Config{privlib})) > 0;
+	return grep(-e $_."/".($moduleName =~ s/\:\:/\//r).".pm", ($Config{extrasarch}, $Config{extraslib}, $Config{archlib}, $Config{privlib})) > 0;
 }
 
 sub list
