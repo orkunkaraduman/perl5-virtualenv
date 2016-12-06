@@ -39,8 +39,9 @@ BEGIN
 
 sub activate
 {
+	my $oldVirtualenvPath = App::Virtualenv::getVirtualenvPath();
 	my $virtualenvPath = App::Virtualenv::activate();
-	say "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath;
+	say STDERR "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath and (not defined $oldVirtualenvPath or $oldVirtualenvPath ne $virtualenvPath);
 	return $virtualenvPath;
 }
 
