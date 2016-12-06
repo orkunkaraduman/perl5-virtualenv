@@ -74,6 +74,7 @@ sub list
 	my @modules = $installed->modules();
 	for my $moduleName (sort {lc($a) cmp lc($b)} @modules)
 	{
+		next if lc($moduleName) eq 'perl';
 		if ($params{1})
 		{
 			say $moduleName;
