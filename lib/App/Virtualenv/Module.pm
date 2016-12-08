@@ -280,13 +280,17 @@ sub remove
 	my $force = $params{force}? 1: 0;
 	my $verbose = $params{verbose}? 1: 0;
 	my $result = 1;
+	state @removeInfos;
 	for my $moduleName (@{$params{modules}})
 	{
+		my $removeInfo = {name => $moduleName, "success" => "", "fail" => "", "depth" => 0};
+		push @removeInfos, $removeInfo;
 		cp_msg("Looking for module $moduleName to remove", 1);
 		my $mod = $cb->module_tree($moduleName);
 		if (not $mod)
 		{
 			cp_error("Module $moduleName is not found", 1);
+			$removeInfo->{"fail"} = "find";
 			$result = 0;
 			next;
 		}
@@ -295,6 +299,7 @@ sub remove
 		unless ($installed)
 		{
 			cp_msg("Module $moduleName is not installed", 1);
+			$removeInfo->{"success"} = "not installed";
 			next;
 		}
 
@@ -302,11 +307,56 @@ sub remove
 		unless ($mod->uninstall(verbose => $verbose, force => $force, type => 'all'))
 		{
 			cp_error("Module $moduleName could not be removed", 1);
+			$removeInfo->{"fail"} = "remove";
 			$result = 0;
 			next;
 		}
 		cp_msg("Module $moduleName has been successfully removed", 1);
+		$removeInfo->{"success"} = "removed";
 	}
+
+	say "\nSummary:";
+	my ($removedCount, $failedCount) = (0, 0);
+	my $lastDepth = 0;
+	for my $removeInfo (@removeInfos)
+	{
+		my $msg;
+		if ($removeInfo->{"fail"})
+		{
+			$msg = "failed to $removeInfo->{'fail'}";
+			$failedCount++;
+		} elsif ($removeInfo->{"success"})
+		{
+			next if $removeInfo->{'success'} ne "removed";
+			$msg = "is $removeInfo->{'success'}";
+			$removedCount++;
+		}
+		my $spaces;
+		if ($removeInfo->{depth} < $lastDepth)
+		{
+			$spaces = "";
+			for (0..$removeInfo->{depth})
+			{
+				next unless $_;
+				$spaces .= "|---";
+			}
+			$spaces .= "|---|";
+			say $spaces;
+		}
+		$spaces = "";
+		for (0..$removeInfo->{depth})
+		{
+			next unless $_;
+			$spaces .= "|---";
+		}
+		$spaces .= "|-- ";
+		say $spaces.$removeInfo->{name}." $msg";
+		$lastDepth = $removeInfo->{depth};
+	}
+	say "|\n| Removed: $removedCount\n| Failed: $failedCount\n";
+
+	@removeInfos = ();
+
 	return $result;
 }
 
