@@ -266,7 +266,7 @@ sub install
 			say $spaces.$moduleInfo->{name}." $msg";
 			$lastDepth = $moduleInfo->{depth};
 		}
-		say "\nInstalled: $installedCount, Failed: $failedCount\n";
+		say "|\n| Installed: $installedCount\n| Failed: $failedCount\n";
 
 		@moduleInfos = ();
 	}
