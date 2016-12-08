@@ -118,7 +118,7 @@ sub install
 			next;
 		}
 
-		if ($mod->package_is_perl_core())
+		if ($mod->package_is_perl_core() or lc($moduleName) eq "perl" or $moduleName eq "Config")
 		{
 			cp_msg("Module $moduleName is in Perl core", 1);
 			$installInfo->{"success"} = "in Perl core";
@@ -236,7 +236,7 @@ sub install
 			my $msg;
 			if ($installInfo->{"fail"})
 			{
-				$msg = "failed to $installInfo->{'fail'}";
+				$msg = "is failed to $installInfo->{'fail'}";
 				$failedCount++;
 			} elsif ($installInfo->{"success"})
 			{
@@ -323,7 +323,7 @@ sub remove
 		my $msg;
 		if ($removeInfo->{"fail"})
 		{
-			$msg = "failed to $removeInfo->{'fail'}";
+			$msg = "is failed to $removeInfo->{'fail'}";
 			$failedCount++;
 		} elsif ($removeInfo->{"success"})
 		{
