@@ -109,6 +109,14 @@ sub install
 		my $installInfo = {name => $moduleName, "success" => "", "fail" => "", "depth" => scalar(@installing)-1};
 		push @installInfos, $installInfo;
 		cp_msg("Looking for module $moduleName to install", 1);
+
+		if (lc($moduleName) eq "perl" or $moduleName eq "Config")
+		{
+			cp_msg("Module $moduleName is in Perl", 1);
+			$installInfo->{"success"} = "in Perl";
+			next;
+		}
+
 		my $mod = $cb->module_tree($moduleName);
 		if (not $mod)
 		{
@@ -118,7 +126,7 @@ sub install
 			next;
 		}
 
-		if ($mod->package_is_perl_core() or lc($moduleName) eq "perl" or $moduleName eq "Config")
+		if ($mod->package_is_perl_core())
 		{
 			cp_msg("Module $moduleName is in Perl core", 1);
 			$installInfo->{"success"} = "in Perl core";
