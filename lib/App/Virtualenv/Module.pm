@@ -100,20 +100,20 @@ sub install
 	my $verbose = $params{verbose}? 1: 0;
 	my $result = 1;
 	state @installing;
-	state @moduleInfos;
+	state @installInfos;
 	push @installing, "";
 	for my $moduleName (@{$params{modules}})
 	{
 		pop @installing;
 		push @installing, $moduleName;
-		my $moduleInfo = {name => $moduleName, "success" => "", "fail" => "", "depth" => scalar(@installing)-1};
-		push @moduleInfos, $moduleInfo;
+		my $installInfo = {name => $moduleName, "success" => "", "fail" => "", "depth" => scalar(@installing)-1};
+		push @installInfos, $installInfo;
 		cp_msg("Looking for module $moduleName to install", 1);
 		my $mod = $cb->module_tree($moduleName);
 		if (not $mod)
 		{
 			cp_error("Module $moduleName is not found", 1);
-			$moduleInfo->{"fail"} = "find";
+			$installInfo->{"fail"} = "find";
 			$result = 0;
 			next;
 		}
@@ -121,23 +121,23 @@ sub install
 		if ($mod->package_is_perl_core())
 		{
 			cp_msg("Module $moduleName is in Perl core", 1);
-			$moduleInfo->{"success"} = "in Perl core";
+			$installInfo->{"success"} = "in Perl core";
 			next;
 		}
 
 		if (not $force and inPerlLib($moduleName))
 		{
 			cp_msg("Module $moduleName is in Perl library", 1);
-			$moduleInfo->{"success"} = "in Perl library";
+			$installInfo->{"success"} = "in Perl library";
 			next;
 		}
 
 		my $installed = isInstalled($moduleName);
-		$moduleInfo->{"alreadyInstalled"} = $installed;
+		$installInfo->{"alreadyInstalled"} = $installed;
 		if (not $force and $installed and $mod->is_uptodate())
 		{
 			cp_msg("Module $moduleName is up to date", 1);
-			$moduleInfo->{"success"} = "up to date";
+			$installInfo->{"success"} = "up to date";
 			next;
 		}
 
@@ -145,7 +145,7 @@ sub install
 		unless ($mod->fetch(verbose => $verbose))
 		{
 			cp_error("Failed to fetch module $moduleName", 1);
-			$moduleInfo->{"fail"} = "fetch";
+			$installInfo->{"fail"} = "fetch";
 			$result = 0;
 			next;
 		}
@@ -155,7 +155,7 @@ sub install
 		unless ($mod->extract(verbose => $verbose))
 		{
 			cp_error("Failed to extract module $moduleName", 1);
-			$moduleInfo->{"fail"} = "extract";
+			$installInfo->{"fail"} = "extract";
 			$result = 0;
 			next;
 		}
@@ -165,7 +165,7 @@ sub install
 		unless ($mod->prepare(verbose => $verbose))
 		{
 			cp_error("Failed to prepare module $moduleName", 1);
-			$moduleInfo->{"fail"} = "prepare";
+			$installInfo->{"fail"} = "prepare";
 			$result = 0;
 			next;
 		}
@@ -192,7 +192,7 @@ sub install
 			unless ($res)
 			{
 				cp_error("Failed to install prerequisites of module $moduleName", 1);
-				$moduleInfo->{"fail"} = "install prerequisites";
+				$installInfo->{"fail"} = "install prerequisites";
 				$result = 0;
 				next;
 			}
@@ -205,7 +205,7 @@ sub install
 			unless ($mod->test(verbose => $verbose))
 			{
 				cp_error("Failed to test module $moduleName", 1);
-				$moduleInfo->{"fail"} = "test";
+				$installInfo->{"fail"} = "test";
 				$result = 0;
 				next;
 			}
@@ -217,12 +217,12 @@ sub install
 		unless ($mod->install(verbose => $verbose, force => 1, skiptest => 1))
 		{
 			cp_error("Module $moduleName could not be $willBeStatus", 1);
-			$moduleInfo->{"fail"} = "install";
+			$installInfo->{"fail"} = "install";
 			$result = 0;
 			next;
 		}
 		cp_msg("Module $moduleName has been successfully $willBeStatus", 1);
-		$moduleInfo->{"success"} = "installed";
+		$installInfo->{"success"} = "installed";
 	}
 	pop @installing;
 
@@ -231,24 +231,24 @@ sub install
 		say "\nSummary:";
 		my ($installedCount, $failedCount) = (0, 0);
 		my $lastDepth = 0;
-		for my $moduleInfo (@moduleInfos)
+		for my $installInfo (@installInfos)
 		{
 			my $msg;
-			if ($moduleInfo->{"fail"})
+			if ($installInfo->{"fail"})
 			{
-				$msg = "failed to $moduleInfo->{'fail'}";
+				$msg = "failed to $installInfo->{'fail'}";
 				$failedCount++;
-			} elsif ($moduleInfo->{"success"})
+			} elsif ($installInfo->{"success"})
 			{
-				next if $moduleInfo->{'success'} ne "installed";
-				$msg = "is $moduleInfo->{'success'}";
+				next if $installInfo->{'success'} ne "installed";
+				$msg = "is $installInfo->{'success'}";
 				$installedCount++;
 			}
 			my $spaces;
-			if ($moduleInfo->{depth} < $lastDepth)
+			if ($installInfo->{depth} < $lastDepth)
 			{
 				$spaces = "";
-				for (0..$moduleInfo->{depth})
+				for (0..$installInfo->{depth})
 				{
 					next unless $_;
 					$spaces .= "|---";
@@ -257,18 +257,18 @@ sub install
 				say $spaces;
 			}
 			$spaces = "";
-			for (0..$moduleInfo->{depth})
+			for (0..$installInfo->{depth})
 			{
 				next unless $_;
 				$spaces .= "|---";
 			}
 			$spaces .= "|-- ";
-			say $spaces.$moduleInfo->{name}." $msg";
-			$lastDepth = $moduleInfo->{depth};
+			say $spaces.$installInfo->{name}." $msg";
+			$lastDepth = $installInfo->{depth};
 		}
 		say "|\n| Installed: $installedCount\n| Failed: $failedCount\n";
 
-		@moduleInfos = ();
+		@installInfos = ();
 	}
 
 	return $result;
