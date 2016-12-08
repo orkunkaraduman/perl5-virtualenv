@@ -37,11 +37,6 @@ BEGIN
 	# Functions and variables which can be optionally exported
 	our @EXPORT_OK   = qw();
 }
-=TODO
-Install summary and -nosummary arg
-Remove prompt and -y arg
-CPANPLUS selfupgrade or key upgrade
-=cut
 
 
 sub activate

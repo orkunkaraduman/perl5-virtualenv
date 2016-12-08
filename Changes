@@ -1,3 +1,10 @@
+1.09	2016-12-08
+		- Improved local library and Perl library module checks
+		- Added piv install -v
+		- Added piv remove -v
+		- Added summary for piv install
+		- Added summary for piv remove
+
 1.08	2016-12-04
 		- Hotfix for versioning
 
