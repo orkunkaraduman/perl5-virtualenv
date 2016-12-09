@@ -11,6 +11,219 @@ version 1.09
 
 Perl virtual environment
 
+=head1 DESCRIPTION
+
+App::Virtualenv is a Perl package to create isolated Perl virtual environments, like Python virtual environment.
+
+=head1 USAGE
+
+=head2 virtualenv.pl
+
+creates new Perl virtual environment
+
+=over
+
+B<virtualenv.pl> [I<environment_path>]
+
+=back
+
+=head2 activate
+
+activates Perl virtual environment
+
+=over
+
+source I<environment_path>/bin/B<activate>
+
+=back
+
+=head2 deactivate
+
+deactivates activated Perl virtual environment
+
+=over
+
+B<deactivate>
+
+=back
+
+=head2 sh.pl
+
+runs Unix shell under Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<sh.pl> [I<argument>]...
+
+=back
+
+=head2 perl.pl
+
+runs Perl language interpreter under Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<perl.pl> [I<argument>]...
+
+=back
+
+=head2 piv.pl
+
+Perl in Virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<piv.pl> [-I<argument>]... [--I<argument> I<value>]... I<command> [I<parameter>]...
+
+=back
+
+=head3 Commands
+
+=head4 piv virtualenv
+
+creates new Perl virtual environment
+
+=over
+
+B<piv virtualenv> [-e] [I<environment_path>]
+
+=over
+
+B<-e> Empty virtual environment
+
+=back
+
+=back
+
+=head4 piv sh
+
+runs Unix shell under Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<piv sh> [I<argument>]...
+
+=back
+
+=head4 piv perl
+
+runs Perl language interpreter under Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<piv perl> [I<argument>]...
+
+=back
+
+=head4 piv list
+
+lists installed packages under Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<piv list> [-1]
+
+=over
+
+B<-1> One column list
+
+=back
+
+=back
+
+=head4 piv install
+
+installs or upgrades packages under Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<piv install> [-f] [-t] [-s] [-v] I<package>...
+
+=over
+
+B<-f> Force
+
+B<-t> Run tests
+
+B<-s> Soft install without installing prerequisites
+
+B<-v> Verbose
+
+=back
+
+=back
+
+=head4 piv remove
+
+removes packages under Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<piv remove> [-f] [-v] I<package>...
+
+=over
+
+B<-f> Force
+
+B<-v> Verbose
+
+=back
+
+=back
+
+=head2 INSTALLATION
+
+To install this module type the following
+
+	perl Makefile.PL
+	make
+	make test
+	make install
+
+from CPAN
+
+	cpan -i App::Virtualenv
+
+=head2 DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+=over
+
+=item *
+
+local::lib
+
+=item *
+
+Switch
+
+=item *
+
+FindBin
+
+=item *
+
+Cwd
+
+=item *
+
+File::Basename
+
+=item *
+
+ExtUtils::Installed
+
+=item *
+
+CPAN
+
+=item *
+
+CPANPLUS
+
+=back
+
 =cut
 use strict;
 use warnings;
@@ -161,6 +374,7 @@ sub perl
 
 
 1;
+__END__
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

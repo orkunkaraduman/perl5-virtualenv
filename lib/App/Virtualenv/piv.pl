@@ -1,17 +1,117 @@
 #! /usr/bin/perl
 =head1 NAME
 
-piv.pl - wrapper for Perl in Virtual environment
+piv.pl - Perl in Virtual environment
 
 =head1 VERSION
 
-version 1.05
+version 1.09
 
 =head1 SYNOPSIS
 
-wrapper Perl in Virtual environment
+Perl in Virtual environment
 
-C<[I<environment_path>/bin/]piv.pl [-I<arg>]... [--I<arg> I<value>]... I<cmd> [I<param>]...>
+=over
+
+[I<environment_path>/bin/]B<piv.pl> [-I<argument>]... [--I<argument> I<value>]... I<command> [I<parameter>]...
+
+=back
+
+=head2 PIV
+
+=head3 Commands
+
+=head4 piv virtualenv
+
+creates new Perl virtual environment
+
+=over
+
+B<piv virtualenv> [-e] [I<environment_path>]
+
+=over
+
+B<-e> Empty virtual environment
+
+=back
+
+=back
+
+=head4 piv sh
+
+runs Unix shell under Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<piv sh> [I<argument>]...
+
+=back
+
+=head4 piv perl
+
+runs Perl language interpreter under Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<piv perl> [I<argument>]...
+
+=back
+
+=head4 piv list
+
+lists installed packages under Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<piv list> [-1]
+
+=over
+
+B<-1> One column list
+
+=back
+
+=back
+
+=head4 piv install
+
+installs or upgrades packages under Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<piv install> [-f] [-t] [-s] [-v] I<package>...
+
+=over
+
+B<-f> Force
+
+B<-t> Run tests
+
+B<-s> Soft install without installing prerequisites
+
+B<-v> Verbose
+
+=back
+
+=back
+
+=head4 piv remove
+
+removes packages under Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<piv remove> [-f] [-v] I<package>...
+
+=over
+
+B<-f> Force
+
+B<-v> Verbose
+
+=back
+
+=back
 
 =cut
 use strict;
@@ -26,6 +126,7 @@ use App::Virtualenv::Piv;
 
 
 exit App::Virtualenv::Piv::main(@ARGV);
+__END__
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

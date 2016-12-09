@@ -370,6 +370,7 @@ sub remove
 
 
 1;
+__END__
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

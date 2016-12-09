@@ -5,7 +5,7 @@ App::Virtualenv::Utils - Utilities for Perl virtual environment
 
 =head1 VERSION
 
-version 1.06
+version 1.09
 
 =head1 SYNOPSIS
 
@@ -137,6 +137,7 @@ sub cmdArgs
 
 
 1;
+__END__
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

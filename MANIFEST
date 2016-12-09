@@ -3,6 +3,7 @@ Changes
 LICENSE
 MANIFEST
 Makefile.PL
+README
 README.md
 bin/test.pl
 lib/App/Virtualenv.pm

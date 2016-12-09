@@ -5,13 +5,17 @@ virtualenv.pl - creates new Perl virtual environment
 
 =head1 VERSION
 
-version 1.05
+version 1.09
 
 =head1 SYNOPSIS
 
 creates new Perl virtual environment
 
-C<virtualenv.pl [I<environment_path>]>
+=over
+
+B<virtualenv.pl> [I<environment_path>]
+
+=back
 
 =cut
 use strict;
@@ -25,6 +29,7 @@ use App::Virtualenv;
 
 
 exit not App::Virtualenv::create($ARGV[0]);
+__END__
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
