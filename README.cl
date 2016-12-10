@@ -1,58 +1,58 @@
-NAME
+[1mNAME[0m
 
     App::Virtualenv - Perl virtual environment
 
-VERSION
+[1mVERSION[0m
 
     version 1.09
 
-SYNOPSIS
+[1mSYNOPSIS[0m
 
     Perl virtual environment
 
-DESCRIPTION
+[1mDESCRIPTION[0m
 
     App::Virtualenv is a Perl package to create isolated Perl virtual
     environments, like Python virtual environment.
 
-USAGE
+[1mUSAGE[0m
 
-  virtualenv.pl
+  [1mvirtualenv.pl[0m
 
     creates new Perl virtual environment
 
-        virtualenv.pl [*environment_path*]
+        [1mvirtualenv.pl[0m [[33menvironment_path[0m]
 
-  activate
+  [1mactivate[0m
 
     activates Perl virtual environment
 
-        source *environment_path*/bin/activate
+        source [33menvironment_path[0m/bin/[1mactivate[0m
 
-  deactivate
+  [1mdeactivate[0m
 
     deactivates activated Perl virtual environment
 
-        deactivate
+        [1mdeactivate[0m
 
-  sh.pl
+  [1msh.pl[0m
 
     runs Unix shell under Perl virtual environment
 
-        [*environment_path*/bin/]sh.pl [*argument*]...
+        [[33menvironment_path[0m/bin/][1msh.pl[0m [[33margument[0m]...
 
-  perl.pl
+  [1mperl.pl[0m
 
     runs Perl language interpreter under Perl virtual environment
 
-        [*environment_path*/bin/]perl.pl [*argument*]...
+        [[33menvironment_path[0m/bin/][1mperl.pl[0m [[33margument[0m]...
 
-  piv.pl
+  [1mpiv.pl[0m
 
     Perl in Virtual environment
 
-        [*environment_path*/bin/]piv.pl [-*argument*]... [--*argument*
-        *value*]... *command* [*parameter*]...
+        [[33menvironment_path[0m/bin/][1mpiv.pl[0m [-[33margument[0m]... [--[33margument[0m [33mvalue[0m]...
+        [33mcommand[0m [[33mparameter[0m]...
 
    Commands
 
@@ -60,56 +60,55 @@ USAGE
 
     creates new Perl virtual environment
 
-        piv virtualenv [-e] [*environment_path*]
+        [1mpiv virtualenv[0m [-e] [[33menvironment_path[0m]
 
-            -e Empty virtual environment
+            [1m-e[0m Empty virtual environment
 
    piv sh
 
     runs Unix shell under Perl virtual environment
 
-        [*environment_path*/bin/]piv sh [*argument*]...
+        [[33menvironment_path[0m/bin/][1mpiv sh[0m [[33margument[0m]...
 
    piv perl
 
     runs Perl language interpreter under Perl virtual environment
 
-        [*environment_path*/bin/]piv perl [*argument*]...
+        [[33menvironment_path[0m/bin/][1mpiv perl[0m [[33margument[0m]...
 
    piv list
 
     lists installed packages under Perl virtual environment
 
-        [*environment_path*/bin/]piv list [-1]
+        [[33menvironment_path[0m/bin/][1mpiv list[0m [-1]
 
-            -1 One column list
+            [1m-1[0m One column list
 
    piv install
 
     installs or upgrades packages under Perl virtual environment
 
-        [*environment_path*/bin/]piv install [-f] [-t] [-s] [-v]
-        *package*...
+        [[33menvironment_path[0m/bin/][1mpiv install[0m [-f] [-t] [-s] [-v] [33mpackage[0m...
 
-            -f Force
+            [1m-f[0m Force
 
-            -t Run tests
+            [1m-t[0m Run tests
 
-            -s Soft install without installing prerequisites
+            [1m-s[0m Soft install without installing prerequisites
 
-            -v Verbose
+            [1m-v[0m Verbose
 
    piv remove
 
     removes packages under Perl virtual environment
 
-        [*environment_path*/bin/]piv remove [-f] [-v] *package*...
+        [[33menvironment_path[0m/bin/][1mpiv remove[0m [-f] [-v] [33mpackage[0m...
 
-            -f Force
+            [1m-f[0m Force
 
-            -v Verbose
+            [1m-v[0m Verbose
 
-  INSTALLATION
+  [1mINSTALLATION[0m
 
     To install this module type the following
 
@@ -122,7 +121,7 @@ USAGE
 
             cpan -i App::Virtualenv
 
-  DEPENDENCIES
+  [1mDEPENDENCIES[0m
 
     This module requires these other modules and libraries:
 
@@ -142,11 +141,11 @@ USAGE
 
     *   CPANPLUS
 
-AUTHOR
+[1mAUTHOR[0m
 
     Orkun Karaduman <orkunkaraduman@gmail.com>
 
-COPYRIGHT AND LICENSE
+[1mCOPYRIGHT AND LICENSE[0m
 
     Copyright (C) 2016 Orkun Karaduman <orkunkaraduman@gmail.com>
 
