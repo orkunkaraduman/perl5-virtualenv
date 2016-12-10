@@ -18,7 +18,7 @@ WriteMakefile(
 							) 
 	],
 	AUTHOR				=> 'Orkun Karaduman <orkunkaraduman@gmail.com>',
-	ABSTRACT			=> 'Virtual environment for Perl 5',
+	ABSTRACT			=> 'Perl virtual environment',
 	LICENSE				=> 'gpl_3',
 	META_MERGE			=> {
 		"meta-spec" => { version => 2 },

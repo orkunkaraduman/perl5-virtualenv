@@ -1,4 +1,4 @@
-1.09	2016-12-09
+1.09	2016-12-10
 		- Improved local library and Perl library module checks
 		- Added piv install -v
 		- Added piv remove -v
