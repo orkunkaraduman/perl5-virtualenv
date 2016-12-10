@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-    version 1.09
+    version 1.10
 
 SYNOPSIS
 
@@ -109,7 +109,7 @@ USAGE
 
             -v Verbose
 
-  INSTALLATION
+INSTALLATION
 
     To install this module type the following
 
@@ -122,7 +122,7 @@ USAGE
 
             cpan -i App::Virtualenv
 
-  DEPENDENCIES
+DEPENDENCIES
 
     This module requires these other modules and libraries:
 

@@ -4,7 +4,7 @@ App::Virtualenv - Perl virtual environment
 
 # VERSION
 
-version 1.09
+version 1.10
 
 # SYNOPSIS
 
@@ -106,7 +106,7 @@ removes packages under Perl virtual environment
 > >
 > > **-v** Verbose
 
-## INSTALLATION
+# INSTALLATION
 
 To install this module type the following
 
@@ -119,7 +119,7 @@ from CPAN
 
         cpan -i App::Virtualenv
 
-## DEPENDENCIES
+# DEPENDENCIES
 
 This module requires these other modules and libraries:
 
