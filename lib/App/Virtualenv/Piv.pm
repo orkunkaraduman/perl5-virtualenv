@@ -5,7 +5,7 @@ App::Virtualenv::Piv - Perl in Virtual environment
 
 =head1 VERSION
 
-version 1.07
+version 1.09
 
 =head1 SYNOPSIS
 
@@ -27,7 +27,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.07';
+	our $VERSION     = '1.09';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -39,8 +39,9 @@ BEGIN
 
 sub activate
 {
+	my $oldVirtualenvPath = App::Virtualenv::getVirtualenvPath();
 	my $virtualenvPath = App::Virtualenv::activate();
-	say "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath;
+	say STDERR "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath and (not defined $oldVirtualenvPath or $oldVirtualenvPath ne $virtualenvPath);
 	return $virtualenvPath;
 }
 
@@ -81,19 +82,21 @@ sub main
 			my $force = defined($args->{-f})? 1: 0;
 			my $test = defined($args->{-t})? 1: 0;
 			my $soft = defined($args->{"-s"})? 1: 0;
+			my $verbose = defined($args->{-v})? 1: 0;
 			my @modules = @{$args->{params}};
 			@modules = map(s/(.*)/\"\Q$1\E\"/r, @modules);
 			my $modules = join(", ", @modules);
-			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => $force, test=> $test, soft => $soft, modules => [$modules]);");
+			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => $force, test=> $test, soft => $soft, verbose => $verbose, modules => [$modules]);");
 		}
 		case "remove"
 		{
 			activate;
 			my $force = defined($args->{-f})? 1: 0;
+			my $verbose = defined($args->{-v})? 1: 0;
 			my @modules = @{$args->{params}};
 			@modules = map(s/(.*)/\"\Q$1\E\"/r, @modules);
 			my $modules = join(", ", @modules);
-			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::remove(force => $force, modules => [$modules]);");
+			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::remove(force => $force, verbose => $verbose, modules => [$modules]);");
 		}
 		else
 		{
@@ -106,6 +109,7 @@ sub main
 
 
 1;
+__END__
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
