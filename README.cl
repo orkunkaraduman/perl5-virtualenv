@@ -4,7 +4,7 @@
 
 [1mVERSION[0m
 
-    version 1.09
+    version 1.10
 
 [1mSYNOPSIS[0m
 
@@ -108,7 +108,7 @@
 
             [1m-v[0m Verbose
 
-  [1mINSTALLATION[0m
+[1mINSTALLATION[0m
 
     To install this module type the following
 
@@ -121,7 +121,7 @@
 
             cpan -i App::Virtualenv
 
-  [1mDEPENDENCIES[0m
+[1mDEPENDENCIES[0m
 
     This module requires these other modules and libraries:
 

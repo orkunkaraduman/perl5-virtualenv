@@ -5,7 +5,7 @@ App::Virtualenv - Perl virtual environment
 
 =head1 VERSION
 
-version 1.09
+version 1.10
 
 =head1 SYNOPSIS
 
@@ -171,7 +171,7 @@ B<-v> Verbose
 
 =back
 
-=head2 INSTALLATION
+=head1 INSTALLATION
 
 To install this module type the following
 
@@ -184,7 +184,7 @@ from CPAN
 
 	cpan -i App::Virtualenv
 
-=head2 DEPENDENCIES
+=head1 DEPENDENCIES
 
 This module requires these other modules and libraries:
 
@@ -242,7 +242,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.09';
+	our $VERSION     = '1.10';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
