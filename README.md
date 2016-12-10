@@ -1,124 +1,144 @@
-# perl5-virtualenv
-###### Virtual environment for Perl 5
+# NAME
 
-perl5-virtualenv is a tool to create isolated Perl 5 virtual environments, like Python virtual environment.
+App::Virtualenv - Perl virtual environment
 
-## USAGE
+# VERSION
 
-### virtualenv.pl
+version 1.09
+
+# SYNOPSIS
+
+Perl virtual environment
+
+# DESCRIPTION
+
+App::Virtualenv is a Perl package to create isolated Perl virtual environments, like Python virtual environment.
+
+# USAGE
+
+## virtualenv.pl
 
 creates new Perl virtual environment
 
-> virtualenv.pl [*environment_path*]
+> **virtualenv.pl** \[_environment\_path_\]
 
-### activate
+## activate
 
 activates Perl virtual environment
 
-> source *environment_path*/bin/activate
+> source _environment\_path_/bin/**activate**
 
-### deactivate
+## deactivate
 
 deactivates activated Perl virtual environment
 
-> deactivate
+> **deactivate**
 
-### sh.pl
+## sh.pl
 
 runs Unix shell under Perl virtual environment
 
-> [*environment_path*/bin/]sh.pl [*argument*]...
+> \[_environment\_path_/bin/\]**sh.pl** \[_argument_\]...
 
-### perl.pl
+## perl.pl
 
 runs Perl language interpreter under Perl virtual environment
 
-> [*environment_path*/bin/]perl.pl [*argument*]...
+> \[_environment\_path_/bin/\]**perl.pl** \[_argument_\]...
 
-### piv.pl
+## piv.pl
 
-wrapper for Perl in Virtual environment
+Perl in Virtual environment
 
-> [*environment_path*/bin/]piv.pl [-*arg*]... [--*arg* *value*]... *cmd* [*param*]...
+> \[_environment\_path_/bin/\]**piv.pl** \[-_argument_\]... \[--_argument_ _value_\]... _command_ \[_parameter_\]...
+
+### Commands
 
 #### piv virtualenv
 
 creates new Perl virtual environment
 
-> piv virtualenv [-e] [*environment_path*]
+> **piv virtualenv** \[-e\] \[_environment\_path_\]
+>
+> > **-e** Empty virtual environment
 
 #### piv sh
 
 runs Unix shell under Perl virtual environment
 
-> [*environment_path*/bin/]piv sh [*argument*]...
+> \[_environment\_path_/bin/\]**piv sh** \[_argument_\]...
 
 #### piv perl
 
 runs Perl language interpreter under Perl virtual environment
 
-> [*environment_path*/bin/]piv perl [*argument*]...
+> \[_environment\_path_/bin/\]**piv perl** \[_argument_\]...
 
 #### piv list
 
-list installed packages under Perl virtual environment
+lists installed packages under Perl virtual environment
 
-> [*environment_path*/bin/]piv list [-1]
-
-**-1** One column list
+> \[_environment\_path_/bin/\]**piv list** \[-1\]
+>
+> > **-1** One column list
 
 #### piv install
 
-install or upgrade packages under Perl virtual environment
+installs or upgrades packages under Perl virtual environment
 
-> [*environment_path*/bin/]piv install [-f] [-t] [-s] *package*...
-
-**-f** Force
-
-**-t** Run tests
-
-**-s** Soft install without installing prerequisites
+> \[_environment\_path_/bin/\]**piv install** \[-f\] \[-t\] \[-s\] \[-v\] _package_...
+>
+> > **-f** Force
+> >
+> > **-t** Run tests
+> >
+> > **-s** Soft install without installing prerequisites
+> >
+> > **-v** Verbose
 
 #### piv remove
 
-remove packages under Perl virtual environment
+removes packages under Perl virtual environment
 
-> [*environment_path*/bin/]piv remove [-f] *package*...
-
-**-f** Force
+> \[_environment\_path_/bin/\]**piv remove** \[-f\] \[-v\] _package_...
+>
+> > **-f** Force
+> >
+> > **-v** Verbose
 
 ## INSTALLATION
 
 To install this module type the following
 
-> perl Makefile.PL
->
-> make
->
-> make test
->
-> make install
+        perl Makefile.PL
+        make
+        make test
+        make install
 
 from CPAN
 
-> cpan -i App::Virtualenv
+        cpan -i App::Virtualenv
 
 ## DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-* local::lib
-* Switch
-* FindBin
-* Cwd
-* File::Basename
-* ExtUtils::Installed
-* CPAN
-* CPANPLUS
+- local::lib
+- Switch
+- FindBin
+- Cwd
+- File::Basename
+- ExtUtils::Installed
+- CPAN
+- CPANPLUS
 
-## COPYRIGHT AND LICENCE
+# AUTHOR
 
-Copyright (C) 2016  Orkun Karaduman <<orkunkaraduman@gmail.com>>
+Orkun Karaduman &lt;orkunkaraduman@gmail.com&gt;
+
+# COPYRIGHT AND LICENSE
+
+Copyright (C) 2016  Orkun Karaduman &lt;orkunkaraduman@gmail.com&gt;
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -131,4 +151,4 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <<http://www.gnu.org/licenses/>>.
+along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.

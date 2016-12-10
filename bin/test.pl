@@ -36,6 +36,7 @@ exit;
 #exit App::Virtualenv::Module::install(force => 1, modules => ['ExtUtils::Installed']);
 #exit App::Virtualenv::Piv::main(@ARGV);
 #exit App::Virtualenv::perl("-I${FindBin::Bin}/../lib", "-MApp::Virtualenv::Module", "-e exit App::Virtualenv::Module::${ARGV[0]}('${ARGV[1]}');");
+__END__
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>

@@ -3,7 +3,11 @@ use warnings;
 
 use Test::More tests => 4;
 
-BEGIN { use_ok('App::Virtualenv') }
-BEGIN { use_ok('App::Virtualenv::Utils') }
-BEGIN { use_ok('App::Virtualenv::Module') }
-BEGIN { use_ok('App::Virtualenv::Piv') }
+
+BEGIN
+{
+	use_ok('App::Virtualenv');
+	use_ok('App::Virtualenv::Utils');
+	use_ok('App::Virtualenv::Module');
+	use_ok('App::Virtualenv::Piv');
+}
