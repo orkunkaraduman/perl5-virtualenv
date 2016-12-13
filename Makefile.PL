@@ -8,7 +8,7 @@ WriteMakefile(
 	NAME				=> 'App::Virtualenv',
 	VERSION_FROM		=> 'lib/App/Virtualenv.pm',
 	MIN_PERL_VERSION	=> '5.014',
-	PREREQ_PM			=> { 'local::lib' => 0, 'Switch' => 0, 'FindBin' => 0, 'Cwd' => 0, 'File::Basename' => 0, 'ExtUtils::Installed' => 0, 'CPAN' => 0, 'CPANPLUS' => 0, },
+	PREREQ_PM			=> { 'local::lib' => 0, 'Switch' => 0, 'FindBin' => 0, 'Cwd' => 0, 'File::Basename' => 0, 'ExtUtils::Installed' => 0, 'CPAN' => 0, 'CPANPLUS' => '0.9160', },
 	EXE_FILES			=> [ qw(
 								lib/App/Virtualenv/virtualenv.pl
 								lib/App/Virtualenv/sh.pl
