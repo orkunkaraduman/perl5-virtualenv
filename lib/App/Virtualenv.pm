@@ -228,7 +228,7 @@ CPANPLUS
 use strict;
 use warnings;
 no warnings qw(qw utf8);
-use v5.10;
+use v5.14;
 use utf8;
 use Config;
 use FindBin;

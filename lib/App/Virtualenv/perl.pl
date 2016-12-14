@@ -5,7 +5,7 @@ perl.pl - runs Perl language interpreter under Perl virtual environment
 
 =head1 VERSION
 
-version 1.09
+version 1.11
 
 =head1 SYNOPSIS
 
@@ -21,9 +21,10 @@ runs Perl language interpreter under Perl virtual environment
 use strict;
 use warnings;
 no warnings qw(qw utf8);
-use v5.10;
-use open qw(:std :locale);
+use v5.14;
 use utf8;
+use open qw(:std :locale);
+
 
 use App::Virtualenv;
 
