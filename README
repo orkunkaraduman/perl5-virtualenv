@@ -1,63 +1,50 @@
 NAME
-
     App::Virtualenv - Perl virtual environment
 
 VERSION
-
-    version 1.10
+    version 1.11
 
 SYNOPSIS
-
     Perl virtual environment
 
 DESCRIPTION
-
     App::Virtualenv is a Perl package to create isolated Perl virtual
     environments, like Python virtual environment.
 
 USAGE
-
   virtualenv.pl
-
     creates new Perl virtual environment
 
         virtualenv.pl [*environment_path*]
 
   activate
-
     activates Perl virtual environment
 
         source *environment_path*/bin/activate
 
   deactivate
-
     deactivates activated Perl virtual environment
 
         deactivate
 
   sh.pl
-
     runs Unix shell under Perl virtual environment
 
         [*environment_path*/bin/]sh.pl [*argument*]...
 
   perl.pl
-
     runs Perl language interpreter under Perl virtual environment
 
         [*environment_path*/bin/]perl.pl [*argument*]...
 
   piv.pl
-
     Perl in Virtual environment
 
         [*environment_path*/bin/]piv.pl [-*argument*]... [--*argument*
         *value*]... *command* [*parameter*]...
 
    Commands
-
    piv virtualenv
-
     creates new Perl virtual environment
 
         piv virtualenv [-e] [*environment_path*]
@@ -65,19 +52,16 @@ USAGE
             -e Empty virtual environment
 
    piv sh
-
     runs Unix shell under Perl virtual environment
 
         [*environment_path*/bin/]piv sh [*argument*]...
 
    piv perl
-
     runs Perl language interpreter under Perl virtual environment
 
         [*environment_path*/bin/]piv perl [*argument*]...
 
    piv list
-
     lists installed packages under Perl virtual environment
 
         [*environment_path*/bin/]piv list [-1]
@@ -85,7 +69,6 @@ USAGE
             -1 One column list
 
    piv install
-
     installs or upgrades packages under Perl virtual environment
 
         [*environment_path*/bin/]piv install [-f] [-t] [-s] [-v]
@@ -100,7 +83,6 @@ USAGE
             -v Verbose
 
    piv remove
-
     removes packages under Perl virtual environment
 
         [*environment_path*/bin/]piv remove [-f] [-v] *package*...
@@ -110,7 +92,6 @@ USAGE
             -v Verbose
 
 INSTALLATION
-
     To install this module type the following
 
             perl Makefile.PL
@@ -123,7 +104,6 @@ INSTALLATION
             cpan -i App::Virtualenv
 
 DEPENDENCIES
-
     This module requires these other modules and libraries:
 
     *   local::lib
@@ -143,11 +123,9 @@ DEPENDENCIES
     *   CPANPLUS
 
 AUTHOR
-
     Orkun Karaduman <orkunkaraduman@gmail.com>
 
 COPYRIGHT AND LICENSE
-
     Copyright (C) 2016 Orkun Karaduman <orkunkaraduman@gmail.com>
 
     This program is free software: you can redistribute it and/or modify it
