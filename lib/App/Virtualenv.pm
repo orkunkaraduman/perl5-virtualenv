@@ -5,7 +5,7 @@ App::Virtualenv - Perl virtual environment
 
 =head1 VERSION
 
-version 1.10
+version 1.11
 
 =head1 SYNOPSIS
 
@@ -228,7 +228,7 @@ CPANPLUS
 use strict;
 use warnings;
 no warnings qw(qw utf8);
-use v5.10;
+use v5.14;
 use utf8;
 use Config;
 use FindBin;
@@ -242,7 +242,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.10';
+	our $VERSION     = '1.11';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -281,8 +281,22 @@ sub activate
 	$ENV{PERL_MM_OPT} = "INSTALL_BASE=$virtualenvPath";
 
 	$ENV{_OLD_PERL_VIRTUAL_PS1} = $ENV{PS1};
-	$ENV{PS1} = "(" . basename($virtualenvPath) . ") ".((defined $ENV{PS1})? $ENV{PS1}: "");
+	$ENV{PS1} = "(".basename($virtualenvPath).") ".((defined $ENV{PS1})? $ENV{PS1}: "");
 
+	return $virtualenvPath;
+}
+
+sub activate2
+{
+	my $oldVirtualenvPath = getVirtualenvPath();
+	my $virtualenvPath = activate();
+	if (defined $virtualenvPath)
+	{
+		say STDERR "Perl virtual environment path: $virtualenvPath" if not defined $oldVirtualenvPath or $oldVirtualenvPath ne $virtualenvPath;
+	} else
+	{
+		say STDERR "Perl virtual environment is not activated";
+	}
 	return $virtualenvPath;
 }
 

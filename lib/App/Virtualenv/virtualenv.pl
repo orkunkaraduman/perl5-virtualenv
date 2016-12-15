@@ -5,7 +5,7 @@ virtualenv.pl - creates new Perl virtual environment
 
 =head1 VERSION
 
-version 1.09
+version 1.11
 
 =head1 SYNOPSIS
 
@@ -21,9 +21,9 @@ B<virtualenv.pl> [I<environment_path>]
 use strict;
 use warnings;
 no warnings qw(qw utf8);
-use v5.10;
-use open qw(:std :locale);
+use v5.14;
 use utf8;
+use open qw(:std :locale);
 
 use App::Virtualenv;
 

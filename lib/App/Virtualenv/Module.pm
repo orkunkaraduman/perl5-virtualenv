@@ -5,7 +5,7 @@ App::Virtualenv::Module - Module management for Perl virtual environment
 
 =head1 VERSION
 
-version 1.09
+version 1.11
 
 =head1 SYNOPSIS
 
@@ -15,7 +15,7 @@ Module management for Perl virtual environment
 use strict;
 use warnings;
 no warnings qw(qw utf8);
-use v5.10;
+use v5.14;
 use utf8;
 use Config;
 use FindBin;
@@ -33,7 +33,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.09';
+	our $VERSION     = '1.11';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -43,7 +43,7 @@ BEGIN
 }
 
 
-my $inst = App::Virtualenv::Module::reloadInst();
+my $inst = reloadInst();
 my $cb = CPANPLUS::Backend->new;
 
 
@@ -64,7 +64,7 @@ sub isInstalled
 sub inPerlLib
 {
 	my ($moduleName) = @_;
-	return grep(-e $_."/".($moduleName =~ s/\:\:/\//r).".pm", ($Config{extrasarch}, $Config{extraslib}, $Config{archlib}, $Config{privlib})) > 0;
+	return grep({defined $_ and -e $_."/".($moduleName =~ s/\:\:/\//r).".pm"} ($Config{extrasarch}, $Config{extraslib}, $Config{archlib}, $Config{privlib})) > 0;
 }
 
 sub list

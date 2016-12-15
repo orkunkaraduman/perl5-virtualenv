@@ -5,7 +5,7 @@ App::Virtualenv::Piv - Perl in Virtual environment
 
 =head1 VERSION
 
-version 1.09
+version 1.11
 
 =head1 SYNOPSIS
 
@@ -15,7 +15,7 @@ Perl in Virtual environment
 use strict;
 use warnings;
 no warnings qw(qw utf8);
-use v5.10;
+use v5.14;
 use utf8;
 use Switch;
 
@@ -27,7 +27,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.09';
+	our $VERSION     = '1.11';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -36,14 +36,6 @@ BEGIN
 	our @EXPORT_OK   = qw();
 }
 
-
-sub activate
-{
-	my $oldVirtualenvPath = App::Virtualenv::getVirtualenvPath();
-	my $virtualenvPath = App::Virtualenv::activate();
-	say STDERR "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath and (not defined $oldVirtualenvPath or $oldVirtualenvPath ne $virtualenvPath);
-	return $virtualenvPath;
-}
 
 sub main
 {
@@ -62,23 +54,23 @@ sub main
 		}
 		case "sh"
 		{
-			activate;
+			App::Virtualenv::activate;
 			return App::Virtualenv::sh(@{$args->{params}});
 		}
 		case "perl"
 		{
-			activate;
+			App::Virtualenv::activate;
 			return App::Virtualenv::perl(@{$args->{params}});
 		}
 		case "list"
 		{
-			activate;
+			App::Virtualenv::activate2;
 			my $_1 = defined($args->{-1})? 1: 0;
 			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::list(1 => $_1);");
 		}
 		case "install"
 		{
-			activate;
+			App::Virtualenv::activate2;
 			my $force = defined($args->{-f})? 1: 0;
 			my $test = defined($args->{-t})? 1: 0;
 			my $soft = defined($args->{"-s"})? 1: 0;
@@ -90,7 +82,7 @@ sub main
 		}
 		case "remove"
 		{
-			activate;
+			App::Virtualenv::activate2;
 			my $force = defined($args->{-f})? 1: 0;
 			my $verbose = defined($args->{-v})? 1: 0;
 			my @modules = @{$args->{params}};
