@@ -37,14 +37,6 @@ BEGIN
 }
 
 
-sub activate
-{
-	my $oldVirtualenvPath = App::Virtualenv::getVirtualenvPath();
-	my $virtualenvPath = App::Virtualenv::activate();
-	say STDERR "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath and (not defined $oldVirtualenvPath or $oldVirtualenvPath ne $virtualenvPath);
-	return $virtualenvPath;
-}
-
 sub main
 {
 	my $args = cmdArgs(@_);
@@ -62,23 +54,23 @@ sub main
 		}
 		case "sh"
 		{
-			activate;
+			App::Virtualenv::activate;
 			return App::Virtualenv::sh(@{$args->{params}});
 		}
 		case "perl"
 		{
-			activate;
+			App::Virtualenv::activate;
 			return App::Virtualenv::perl(@{$args->{params}});
 		}
 		case "list"
 		{
-			activate;
+			App::Virtualenv::activate2;
 			my $_1 = defined($args->{-1})? 1: 0;
 			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::list(1 => $_1);");
 		}
 		case "install"
 		{
-			activate;
+			App::Virtualenv::activate2;
 			my $force = defined($args->{-f})? 1: 0;
 			my $test = defined($args->{-t})? 1: 0;
 			my $soft = defined($args->{"-s"})? 1: 0;
@@ -90,7 +82,7 @@ sub main
 		}
 		case "remove"
 		{
-			activate;
+			App::Virtualenv::activate2;
 			my $force = defined($args->{-f})? 1: 0;
 			my $verbose = defined($args->{-v})? 1: 0;
 			my @modules = @{$args->{params}};

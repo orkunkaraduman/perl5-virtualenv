@@ -286,6 +286,20 @@ sub activate
 	return $virtualenvPath;
 }
 
+sub activate2
+{
+	my $oldVirtualenvPath = getVirtualenvPath();
+	my $virtualenvPath = activate();
+	if (defined $virtualenvPath)
+	{
+		say STDERR "Perl virtual environment path: $virtualenvPath" if not defined $oldVirtualenvPath or $oldVirtualenvPath ne $virtualenvPath;
+	} else
+	{
+		say STDERR "Perl virtual environment is not activated";
+	}
+	return $virtualenvPath;
+}
+
 sub deactivate
 {
 	my ($nondestructive) = @_;

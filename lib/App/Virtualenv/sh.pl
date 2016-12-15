@@ -28,8 +28,7 @@ use open qw(:std :locale);
 use App::Virtualenv;
 
 
-my $virtualenvPath = App::Virtualenv::activate();
-say "Perl virtual environment path: $virtualenvPath" if defined $virtualenvPath;
+App::Virtualenv::activate;
 exit App::Virtualenv::sh(@ARGV);
 __END__
 =head1 AUTHOR
