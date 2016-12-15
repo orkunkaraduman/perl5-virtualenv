@@ -43,7 +43,7 @@ BEGIN
 }
 
 
-my $inst = App::Virtualenv::Module::reloadInst();
+my $inst = reloadInst();
 my $cb = CPANPLUS::Backend->new;
 
 

@@ -281,7 +281,7 @@ sub activate
 	$ENV{PERL_MM_OPT} = "INSTALL_BASE=$virtualenvPath";
 
 	$ENV{_OLD_PERL_VIRTUAL_PS1} = $ENV{PS1};
-	$ENV{PS1} = "(" . basename($virtualenvPath) . ") ".((defined $ENV{PS1})? $ENV{PS1}: "");
+	$ENV{PS1} = "(".basename($virtualenvPath).") ".((defined $ENV{PS1})? $ENV{PS1}: "");
 
 	return $virtualenvPath;
 }
