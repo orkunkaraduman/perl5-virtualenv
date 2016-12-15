@@ -1,3 +1,8 @@
+1.11	2016-12-15
+		- App::Virtualenv::Module::inPerLib() fix
+		- App::Virtualenv::activate2() added
+		- Perl v5.14 for all modules
+
 1.10	2016-12-10
 		- Version, POD and README fixes for v1.09
 		- Improved local library and Perl library module checks

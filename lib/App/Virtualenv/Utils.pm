@@ -5,7 +5,7 @@ App::Virtualenv::Utils - Utilities for Perl virtual environment
 
 =head1 VERSION
 
-version 1.10
+version 1.11
 
 =head1 SYNOPSIS
 
@@ -15,7 +15,7 @@ Utilities for Perl virtual environment
 use strict;
 use warnings;
 no warnings qw(qw utf8);
-use v5.10;
+use v5.14;
 use utf8;
 
 
@@ -23,7 +23,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.10';
+	our $VERSION     = '1.11';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
