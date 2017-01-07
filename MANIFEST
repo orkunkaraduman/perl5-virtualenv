@@ -8,6 +8,7 @@ lib/App/Virtualenv/piv
 lib/App/Virtualenv/piv.pl
 lib/App/Virtualenv/Piv.pm
 lib/App/Virtualenv/sh.pl
+lib/App/Virtualenv/Utils.pm
 lib/App/Virtualenv/virtualenv.pl
 LICENSE
 Makefile.PL
