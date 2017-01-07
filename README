@@ -40,8 +40,8 @@ USAGE
   piv.pl
     Perl in Virtual environment
 
-    Usage: [*environment_path*/bin/]piv.pl [-*option*]... [--*option*
-    *value*]... *command* [*parameter*]...
+    Usage: [*environment_path*/bin/]piv.pl [-*option*]... *command*
+    [*parameter*]...
 
     -h: *shows synopsis*
 

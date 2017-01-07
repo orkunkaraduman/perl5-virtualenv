@@ -11,7 +11,7 @@ version 1.12
 
 Perl in Virtual environment
 
-Usage: [I<environment_path>/bin/]B<piv.pl> [-I<option>]... [--I<option> I<value>]... I<command> [I<parameter>]...
+Usage: [I<environment_path>/bin/]B<piv.pl> [-I<option>]... I<command> [I<parameter>]...
 
 -h: I<shows synopsis>
 
