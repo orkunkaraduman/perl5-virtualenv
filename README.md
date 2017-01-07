@@ -20,37 +20,37 @@ App::Virtualenv is a Perl package to create isolated Perl virtual environments, 
 
 creates new Perl virtual environment
 
-**virtualenv.pl** \[_environment\_path_\]
+Usage: **virtualenv.pl** \[_environment\_path_\]
 
 ## activate
 
 activates Perl virtual environment
 
-source _environment\_path_/bin/**activate**
+Usage: source _environment\_path_/bin/**activate**
 
 ## deactivate
 
 deactivates activated Perl virtual environment
 
-**deactivate**
+Usage: **deactivate**
 
 ## sh.pl
 
 runs Unix shell under Perl virtual environment
 
-\[_environment\_path_/bin/\]**sh.pl** \[_argument_\]...
+Usage: \[_environment\_path_/bin/\]**sh.pl** \[_argument_\]...
 
 ## perl.pl
 
 runs Perl language interpreter under Perl virtual environment
 
-\[_environment\_path_/bin/\]**perl.pl** \[_argument_\]...
+Usage: \[_environment\_path_/bin/\]**perl.pl** \[_argument_\]...
 
 ## piv.pl
 
 Perl in Virtual environment
 
-\[_environment\_path_/bin/\]**piv.pl** \[-_option_\]... \[--_option_ _value_\]... _command_ \[_parameter_\]...
+Usage: \[_environment\_path_/bin/\]**piv.pl** \[-_option_\]... \[--_option_ _value_\]... _command_ \[_parameter_\]...
 
 ### Commands
 
@@ -58,7 +58,7 @@ Perl in Virtual environment
 
 creates new Perl virtual environment
 
-**piv virtualenv** \[-e\] \[_environment\_path_\]
+Usage: **piv virtualenv** \[-e\] \[_environment\_path_\]
 
 \-e: _Empty virtual environment_
 
@@ -66,19 +66,19 @@ creates new Perl virtual environment
 
 runs Unix shell under Perl virtual environment
 
-\[_environment\_path_/bin/\]**piv sh** \[_argument_\]...
+Usage: \[_environment\_path_/bin/\]**piv sh** \[_argument_\]...
 
 #### piv perl
 
 runs Perl language interpreter under Perl virtual environment
 
-\[_environment\_path_/bin/\]**piv perl** \[_argument_\]...
+Usage: \[_environment\_path_/bin/\]**piv perl** \[_argument_\]...
 
 #### piv list
 
 lists installed packages under Perl virtual environment
 
-\[_environment\_path_/bin/\]**piv list** \[-1\]
+Usage: \[_environment\_path_/bin/\]**piv list** \[-1\]
 
 \-1: _One column list_
 
@@ -86,7 +86,7 @@ lists installed packages under Perl virtual environment
 
 installs or upgrades packages under Perl virtual environment
 
-\[_environment\_path_/bin/\]**piv install** \[-f\] \[-t\] \[-s\] \[-v\] _package_...
+Usage: \[_environment\_path_/bin/\]**piv install** \[-f\] \[-t\] \[-s\] \[-v\] _package_...
 
 \-f: _Force_
 
@@ -100,7 +100,7 @@ installs or upgrades packages under Perl virtual environment
 
 removes packages under Perl virtual environment
 
-\[_environment\_path_/bin/\]**piv remove** \[-f\] \[-v\] _package_...
+Usage: \[_environment\_path_/bin/\]**piv remove** \[-f\] \[-v\] _package_...
 
 \-f: _Force_
 

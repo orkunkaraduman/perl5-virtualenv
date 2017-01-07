@@ -21,37 +21,37 @@ App::Virtualenv is a Perl package to create isolated Perl virtual environments, 
 
 creates new Perl virtual environment
 
-B<virtualenv.pl> [I<environment_path>]
+Usage: B<virtualenv.pl> [I<environment_path>]
 
 =head2 activate
 
 activates Perl virtual environment
 
-source I<environment_path>/bin/B<activate>
+Usage: source I<environment_path>/bin/B<activate>
 
 =head2 deactivate
 
 deactivates activated Perl virtual environment
 
-B<deactivate>
+Usage: B<deactivate>
 
 =head2 sh.pl
 
 runs Unix shell under Perl virtual environment
 
-[I<environment_path>/bin/]B<sh.pl> [I<argument>]...
+Usage: [I<environment_path>/bin/]B<sh.pl> [I<argument>]...
 
 =head2 perl.pl
 
 runs Perl language interpreter under Perl virtual environment
 
-[I<environment_path>/bin/]B<perl.pl> [I<argument>]...
+Usage: [I<environment_path>/bin/]B<perl.pl> [I<argument>]...
 
 =head2 piv.pl
 
 Perl in Virtual environment
 
-[I<environment_path>/bin/]B<piv.pl> [-I<option>]... [--I<option> I<value>]... I<command> [I<parameter>]...
+Usage: [I<environment_path>/bin/]B<piv.pl> [-I<option>]... [--I<option> I<value>]... I<command> [I<parameter>]...
 
 =head3 Commands
 
@@ -59,7 +59,7 @@ Perl in Virtual environment
 
 creates new Perl virtual environment
 
-B<piv virtualenv> [-e] [I<environment_path>]
+Usage: B<piv virtualenv> [-e] [I<environment_path>]
 
 -e: I<Empty virtual environment>
 
@@ -67,19 +67,19 @@ B<piv virtualenv> [-e] [I<environment_path>]
 
 runs Unix shell under Perl virtual environment
 
-[I<environment_path>/bin/]B<piv sh> [I<argument>]...
+Usage: [I<environment_path>/bin/]B<piv sh> [I<argument>]...
 
 =head4 piv perl
 
 runs Perl language interpreter under Perl virtual environment
 
-[I<environment_path>/bin/]B<piv perl> [I<argument>]...
+Usage: [I<environment_path>/bin/]B<piv perl> [I<argument>]...
 
 =head4 piv list
 
 lists installed packages under Perl virtual environment
 
-[I<environment_path>/bin/]B<piv list> [-1]
+Usage: [I<environment_path>/bin/]B<piv list> [-1]
 
 -1: I<One column list>
 
@@ -87,7 +87,7 @@ lists installed packages under Perl virtual environment
 
 installs or upgrades packages under Perl virtual environment
 
-[I<environment_path>/bin/]B<piv install> [-f] [-t] [-s] [-v] I<package>...
+Usage: [I<environment_path>/bin/]B<piv install> [-f] [-t] [-s] [-v] I<package>...
 
 -f: I<Force>
 
@@ -101,7 +101,7 @@ installs or upgrades packages under Perl virtual environment
 
 removes packages under Perl virtual environment
 
-[I<environment_path>/bin/]B<piv remove> [-f] [-v] I<package>...
+Usage: [I<environment_path>/bin/]B<piv remove> [-f] [-v] I<package>...
 
 -f: I<Force>
 
