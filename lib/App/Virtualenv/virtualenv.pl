@@ -5,7 +5,7 @@ virtualenv.pl - creates new Perl virtual environment
 
 =head1 VERSION
 
-version 1.11
+version 1.12
 
 =head1 SYNOPSIS
 
@@ -30,13 +30,19 @@ use App::Virtualenv;
 
 exit not App::Virtualenv::create($ARGV[0]);
 __END__
+=head1 REPOSITORY
+
+B<GitHub> L<https://github.com/orkunkaraduman/perl5-virtualenv>
+
+B<CPAN> L<https://metacpan.org/release/App-Virtualenv>
+
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2016  Orkun Karaduman <orkunkaraduman@gmail.com>
+Copyright (C) 2017  Orkun Karaduman <orkunkaraduman@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
