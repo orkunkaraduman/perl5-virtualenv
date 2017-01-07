@@ -13,6 +13,7 @@ WriteMakefile(
 		'Cwd' => 0,
 		'File::Basename' => 0,
 		'local::lib' => 0,
+		'Lazy::Utils' => '1.04',
 		'ExtUtils::Installed' => 0,
 		'ExtUtils::MakeMaker' => 0,
 		'Module::Build' => 0,

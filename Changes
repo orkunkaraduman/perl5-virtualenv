@@ -1,3 +1,6 @@
+1.12	2017-01-07
+		- 
+
 1.11	2016-12-15
 		- App::Virtualenv::Module::inPerLib() fix
 		- App::Virtualenv::activate2() added

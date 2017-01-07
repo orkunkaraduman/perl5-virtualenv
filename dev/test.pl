@@ -24,7 +24,6 @@ use Data::Dumper;
 
 use lib "${FindBin::Bin}/../lib";
 use App::Virtualenv;
-use App::Virtualenv::Utils;
 use App::Virtualenv::Module;
 use App::Virtualenv::Piv;
 
