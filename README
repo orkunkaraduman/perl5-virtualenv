@@ -2,7 +2,7 @@ NAME
     App::Virtualenv - Perl virtual environment
 
 VERSION
-    version 1.11
+    version 1.12
 
 SYNOPSIS
     Perl virtual environment
@@ -15,81 +15,82 @@ USAGE
   virtualenv.pl
     creates new Perl virtual environment
 
-        virtualenv.pl [*environment_path*]
+    Usage: virtualenv.pl [*environment_path*]
 
   activate
     activates Perl virtual environment
 
-        source *environment_path*/bin/activate
+    Usage: source *environment_path*/bin/activate
 
   deactivate
     deactivates activated Perl virtual environment
 
-        deactivate
+    Usage: deactivate
 
   sh.pl
     runs Unix shell under Perl virtual environment
 
-        [*environment_path*/bin/]sh.pl [*argument*]...
+    Usage: [*environment_path*/bin/]sh.pl [*argument*]...
 
   perl.pl
     runs Perl language interpreter under Perl virtual environment
 
-        [*environment_path*/bin/]perl.pl [*argument*]...
+    Usage: [*environment_path*/bin/]perl.pl [*argument*]...
 
   piv.pl
     Perl in Virtual environment
 
-        [*environment_path*/bin/]piv.pl [-*argument*]... [--*argument*
-        *value*]... *command* [*parameter*]...
+    Usage: [*environment_path*/bin/]piv.pl [-*option*]... *command*
+    [*parameter*]...
 
-   Commands
+    -h: *shows synopsis*
+
    piv virtualenv
     creates new Perl virtual environment
 
-        piv virtualenv [-e] [*environment_path*]
+    Usage: piv virtualenv [-e] [*environment_path*]
 
-            -e Empty virtual environment
+    -e: *Empty virtual environment*
 
    piv sh
     runs Unix shell under Perl virtual environment
 
-        [*environment_path*/bin/]piv sh [*argument*]...
+    Usage: [*environment_path*/bin/]piv sh [*argument*]...
 
    piv perl
     runs Perl language interpreter under Perl virtual environment
 
-        [*environment_path*/bin/]piv perl [*argument*]...
+    Usage: [*environment_path*/bin/]piv perl [*argument*]...
 
    piv list
     lists installed packages under Perl virtual environment
 
-        [*environment_path*/bin/]piv list [-1]
+    Usage: [*environment_path*/bin/]piv list [-1]
 
-            -1 One column list
+    -1: *One column list*
 
    piv install
     installs or upgrades packages under Perl virtual environment
 
-        [*environment_path*/bin/]piv install [-f] [-t] [-s] [-v]
-        *package*...
+    Usage: [*environment_path*/bin/]piv install [-f] [-t] [-s] [-v]
+    *package*...
 
-            -f Force
+    -f: *Force*
 
-            -t Run tests
+    -t: *Run tests*
 
-            -s Soft install without installing prerequisites
+    -s: *Soft install without installing prerequisites*
 
-            -v Verbose
+    -v: *Verbose*
 
    piv remove
     removes packages under Perl virtual environment
 
-        [*environment_path*/bin/]piv remove [-f] [-v] *package*...
+    Usage: [*environment_path*/bin/]piv remove [-f] [-v] *package*...
 
-            -f Force
+    -f: *Force*
 
-            -v Verbose
+    -v: *Verbose*
 
 INSTALLATION
     To install this module type the following
@@ -106,8 +107,6 @@ INSTALLATION
 DEPENDENCIES
     This module requires these other modules and libraries:
 
-    *   local::lib
-
     *   Switch
 
     *   FindBin
@@ -116,17 +115,44 @@ DEPENDENCIES
 
     *   File::Basename
 
+    *   local::lib
+
+    *   Lazy::Utils
+
     *   ExtUtils::Installed
+
+    *   ExtUtils::MakeMaker
+
+    *   Module::Build
+
+    *   Log::Log4perl
+
+    *   Term::ReadLine
+
+    *   YAML
+
+    *   JSON
+
+    *   LWP
+
+    *   LWP::Protocol::https
 
     *   CPAN
 
     *   CPANPLUS
 
+    *   CPANPLUS::Dist::Build
+
+REPOSITORY
+    GitHub <https://github.com/orkunkaraduman/perl5-virtualenv>
+
+    CPAN <https://metacpan.org/release/App-Virtualenv>
+
 AUTHOR
     Orkun Karaduman <orkunkaraduman@gmail.com>
 
 COPYRIGHT AND LICENSE
-    Copyright (C) 2016 Orkun Karaduman <orkunkaraduman@gmail.com>
+    Copyright (C) 2017 Orkun Karaduman <orkunkaraduman@gmail.com>
 
     This program is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by the

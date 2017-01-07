@@ -1,17 +1,15 @@
 #! /usr/bin/perl
 =head1 NAME
 
-virtualenv.pl - creates new Perl virtual environment
+test.pl - for internal tests
 
 =head1 VERSION
 
-version 1.12
+version not defined
 
 =head1 SYNOPSIS
 
-creates new Perl virtual environment
-
-B<virtualenv.pl> [I<environment_path>]
+for internal tests
 
 =cut
 use strict;
@@ -20,11 +18,17 @@ no warnings qw(qw utf8);
 use v5.14;
 use utf8;
 use open qw(:std :locale);
+use Config;
+use FindBin;
+use Data::Dumper;
 
+use lib "${FindBin::Bin}/../lib";
 use App::Virtualenv;
+use App::Virtualenv::Module;
+use App::Virtualenv::Piv;
 
 
-exit not App::Virtualenv::create($ARGV[0]);
+exit 0;
 __END__
 =head1 REPOSITORY
 

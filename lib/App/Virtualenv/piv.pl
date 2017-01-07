@@ -5,113 +5,67 @@ piv.pl - Perl in Virtual environment
 
 =head1 VERSION
 
-version 1.11
+version 1.12
 
 =head1 SYNOPSIS
 
 Perl in Virtual environment
 
-=over
+Usage: [I<environment_path>/bin/]B<piv.pl> [-I<option>]... I<command> [I<parameter>]...
 
-[I<environment_path>/bin/]B<piv.pl> [-I<argument>]... [--I<argument> I<value>]... I<command> [I<parameter>]...
+-h: I<shows synopsis>
 
-=back
-
-=head2 PIV
-
-=head3 Commands
-
-=head4 piv virtualenv
+=head3 piv virtualenv
 
 creates new Perl virtual environment
 
-=over
+Usage: B<piv virtualenv> [-e] [I<environment_path>]
 
-B<piv virtualenv> [-e] [I<environment_path>]
+-e: I<Empty virtual environment>
 
-=over
-
-B<-e> Empty virtual environment
-
-=back
-
-=back
-
-=head4 piv sh
+=head3 piv sh
 
 runs Unix shell under Perl virtual environment
 
-=over
+Usage: [I<environment_path>/bin/]B<piv sh> [I<argument>]...
 
-[I<environment_path>/bin/]B<piv sh> [I<argument>]...
-
-=back
-
-=head4 piv perl
+=head3 piv perl
 
 runs Perl language interpreter under Perl virtual environment
 
-=over
+Usage: [I<environment_path>/bin/]B<piv perl> [I<argument>]...
 
-[I<environment_path>/bin/]B<piv perl> [I<argument>]...
-
-=back
-
-=head4 piv list
+=head3 piv list
 
 lists installed packages under Perl virtual environment
 
-=over
+Usage: [I<environment_path>/bin/]B<piv list> [-1]
 
-[I<environment_path>/bin/]B<piv list> [-1]
+-1: I<One column list>
 
-=over
-
-B<-1> One column list
-
-=back
-
-=back
-
-=head4 piv install
+=head3 piv install
 
 installs or upgrades packages under Perl virtual environment
 
-=over
+Usage: [I<environment_path>/bin/]B<piv install> [-f] [-t] [-s] [-v] I<package>...
 
-[I<environment_path>/bin/]B<piv install> [-f] [-t] [-s] [-v] I<package>...
+-f: I<Force>
 
-=over
+-t: I<Run tests>
 
-B<-f> Force
+-s: I<Soft install without installing prerequisites>
 
-B<-t> Run tests
+-v: I<Verbose>
 
-B<-s> Soft install without installing prerequisites
-
-B<-v> Verbose
-
-=back
-
-=back
-
-=head4 piv remove
+=head3 piv remove
 
 removes packages under Perl virtual environment
 
-=over
+Usage: [I<environment_path>/bin/]B<piv remove> [-f] [-v] I<package>...
 
-[I<environment_path>/bin/]B<piv remove> [-f] [-v] I<package>...
+-f: I<Force>
 
-=over
-
-B<-f> Force
-
-B<-v> Verbose
-
-=back
-
-=back
+-v: I<Verbose>
 
 =cut
 use strict;
@@ -127,13 +81,19 @@ use App::Virtualenv::Piv;
 
 exit App::Virtualenv::Piv::main(@ARGV);
 __END__
+=head1 REPOSITORY
+
+B<GitHub> L<https://github.com/orkunkaraduman/perl5-virtualenv>
+
+B<CPAN> L<https://metacpan.org/release/App-Virtualenv>
+
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2016  Orkun Karaduman <orkunkaraduman@gmail.com>
+Copyright (C) 2017  Orkun Karaduman <orkunkaraduman@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

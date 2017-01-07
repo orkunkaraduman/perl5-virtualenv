@@ -1,7 +1,7 @@
 #! /usr/bin/perl
 =head1 NAME
 
-test.pl - for internal tests
+dist.pl - distribution generator
 
 =head1 VERSION
 
@@ -9,7 +9,7 @@ version not defined
 
 =head1 SYNOPSIS
 
-for internal tests
+distribution generator
 
 =cut
 use strict;
@@ -20,24 +20,35 @@ use utf8;
 use open qw(:std :locale);
 use Config;
 use FindBin;
-use Data::Dumper;
+use Cwd;
 
-use lib "${FindBin::Bin}/../lib";
-use App::Virtualenv;
-use App::Virtualenv::Utils;
-use App::Virtualenv::Module;
-use App::Virtualenv::Piv;
 
+my $module = "App::Virtualenv";
+my $modulePath = "lib/" . $module =~ s/\:\:/\//gr . ".pm";
+my $base = "${FindBin::Bin}/..";
+cwd($base);
+
+system("perl Makefile.PL");
+system("pod2markdown --html-encode-chars 1 $modulePath > README.md");
+system("pod2text $modulePath > README");
+system("rm MANIFEST; make manifest");
+system("make dist");
 
 exit 0;
 __END__
+=head1 REPOSITORY
+
+B<GitHub> L<https://github.com/orkunkaraduman/perl5-virtualenv>
+
+B<CPAN> L<https://metacpan.org/release/App-Virtualenv>
+
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2016  Orkun Karaduman <orkunkaraduman@gmail.com>
+Copyright (C) 2017  Orkun Karaduman <orkunkaraduman@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

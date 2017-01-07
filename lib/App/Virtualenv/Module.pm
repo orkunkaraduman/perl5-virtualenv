@@ -5,7 +5,7 @@ App::Virtualenv::Module - Module management for Perl virtual environment
 
 =head1 VERSION
 
-version 1.11
+version 1.12
 
 =head1 SYNOPSIS
 
@@ -18,22 +18,23 @@ no warnings qw(qw utf8);
 use v5.14;
 use utf8;
 use Config;
+use Switch;
 use FindBin;
 use Cwd;
 use File::Basename;
+use Lazy::Utils;
 use ExtUtils::Installed;
 require CPANPLUS;
 use CPANPLUS::Error qw(cp_msg cp_error);
 
 use App::Virtualenv;
-use App::Virtualenv::Utils;
 
 
 BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.11';
+	our $VERSION     = '1.12';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -44,7 +45,7 @@ BEGIN
 
 
 my $inst = reloadInst();
-my $cb = CPANPLUS::Backend->new;
+my $cb = CPANPLUS::Backend->new();
 
 
 sub reloadInst
@@ -371,13 +372,19 @@ sub remove
 
 1;
 __END__
+=head1 REPOSITORY
+
+B<GitHub> L<https://github.com/orkunkaraduman/perl5-virtualenv>
+
+B<CPAN> L<https://metacpan.org/release/App-Virtualenv>
+
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2016  Orkun Karaduman <orkunkaraduman@gmail.com>
+Copyright (C) 2017  Orkun Karaduman <orkunkaraduman@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

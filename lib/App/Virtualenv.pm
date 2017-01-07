@@ -5,7 +5,7 @@ App::Virtualenv - Perl virtual environment
 
 =head1 VERSION
 
-version 1.11
+version 1.12
 
 =head1 SYNOPSIS
 
@@ -21,208 +21,91 @@ App::Virtualenv is a Perl package to create isolated Perl virtual environments, 
 
 creates new Perl virtual environment
 
-=over
-
-B<virtualenv.pl> [I<environment_path>]
-
-=back
+Usage: B<virtualenv.pl> [I<environment_path>]
 
 =head2 activate
 
 activates Perl virtual environment
 
-=over
-
-source I<environment_path>/bin/B<activate>
-
-=back
+Usage: source I<environment_path>/bin/B<activate>
 
 =head2 deactivate
 
 deactivates activated Perl virtual environment
 
-=over
-
-B<deactivate>
-
-=back
+Usage: B<deactivate>
 
 =head2 sh.pl
 
 runs Unix shell under Perl virtual environment
 
-=over
-
-[I<environment_path>/bin/]B<sh.pl> [I<argument>]...
-
-=back
+Usage: [I<environment_path>/bin/]B<sh.pl> [I<argument>]...
 
 =head2 perl.pl
 
 runs Perl language interpreter under Perl virtual environment
 
-=over
-
-[I<environment_path>/bin/]B<perl.pl> [I<argument>]...
-
-=back
+Usage: [I<environment_path>/bin/]B<perl.pl> [I<argument>]...
 
 =head2 piv.pl
 
 Perl in Virtual environment
 
-=over
+Usage: [I<environment_path>/bin/]B<piv.pl> [-I<option>]... I<command> [I<parameter>]...
 
-[I<environment_path>/bin/]B<piv.pl> [-I<argument>]... [--I<argument> I<value>]... I<command> [I<parameter>]...
+-h: I<shows synopsis>
 
-=back
-
-=head3 Commands
-
-=head4 piv virtualenv
+=head3 piv virtualenv
 
 creates new Perl virtual environment
 
-=over
+Usage: B<piv virtualenv> [-e] [I<environment_path>]
 
-B<piv virtualenv> [-e] [I<environment_path>]
+-e: I<Empty virtual environment>
 
-=over
-
-B<-e> Empty virtual environment
-
-=back
-
-=back
-
-=head4 piv sh
+=head3 piv sh
 
 runs Unix shell under Perl virtual environment
 
-=over
+Usage: [I<environment_path>/bin/]B<piv sh> [I<argument>]...
 
-[I<environment_path>/bin/]B<piv sh> [I<argument>]...
-
-=back
-
-=head4 piv perl
+=head3 piv perl
 
 runs Perl language interpreter under Perl virtual environment
 
-=over
+Usage: [I<environment_path>/bin/]B<piv perl> [I<argument>]...
 
-[I<environment_path>/bin/]B<piv perl> [I<argument>]...
-
-=back
-
-=head4 piv list
+=head3 piv list
 
 lists installed packages under Perl virtual environment
 
-=over
+Usage: [I<environment_path>/bin/]B<piv list> [-1]
 
-[I<environment_path>/bin/]B<piv list> [-1]
+-1: I<One column list>
 
-=over
-
-B<-1> One column list
-
-=back
-
-=back
-
-=head4 piv install
+=head3 piv install
 
 installs or upgrades packages under Perl virtual environment
 
-=over
+Usage: [I<environment_path>/bin/]B<piv install> [-f] [-t] [-s] [-v] I<package>...
 
-[I<environment_path>/bin/]B<piv install> [-f] [-t] [-s] [-v] I<package>...
+-f: I<Force>
 
-=over
+-t: I<Run tests>
 
-B<-f> Force
+-s: I<Soft install without installing prerequisites>
 
-B<-t> Run tests
+-v: I<Verbose>
 
-B<-s> Soft install without installing prerequisites
-
-B<-v> Verbose
-
-=back
-
-=back
-
-=head4 piv remove
+=head3 piv remove
 
 removes packages under Perl virtual environment
 
-=over
+Usage: [I<environment_path>/bin/]B<piv remove> [-f] [-v] I<package>...
 
-[I<environment_path>/bin/]B<piv remove> [-f] [-v] I<package>...
+-f: I<Force>
 
-=over
-
-B<-f> Force
-
-B<-v> Verbose
-
-=back
-
-=back
-
-=head1 INSTALLATION
-
-To install this module type the following
-
-	perl Makefile.PL
-	make
-	make test
-	make install
-
-from CPAN
-
-	cpan -i App::Virtualenv
-
-=head1 DEPENDENCIES
-
-This module requires these other modules and libraries:
-
-=over
-
-=item *
-
-local::lib
-
-=item *
-
-Switch
-
-=item *
-
-FindBin
-
-=item *
-
-Cwd
-
-=item *
-
-File::Basename
-
-=item *
-
-ExtUtils::Installed
-
-=item *
-
-CPAN
-
-=item *
-
-CPANPLUS
-
-=back
+-v: I<Verbose>
 
 =cut
 use strict;
@@ -231,18 +114,18 @@ no warnings qw(qw utf8);
 use v5.14;
 use utf8;
 use Config;
+use Switch;
 use FindBin;
 use Cwd;
 use File::Basename;
-
-use App::Virtualenv::Utils;
+use Lazy::Utils;
 
 
 BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.11';
+	our $VERSION     = '1.12';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -355,6 +238,8 @@ sub create
 	say "Creating Perl virtual environment: $virtualenvPath";
 
 	deactivate();
+	$ENV{PERL_MM_USE_DEFAULT} = 1;
+	$ENV{NONINTERACTIVE_TESTING} = 1;
 
 	require local::lib;
 	local::lib->import($virtualenvPath);
@@ -389,13 +274,112 @@ sub perl
 
 1;
 __END__
+=head1 INSTALLATION
+
+To install this module type the following
+
+	perl Makefile.PL
+	make
+	make test
+	make install
+
+from CPAN
+
+	cpan -i App::Virtualenv
+
+=head1 DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+=over
+
+=item *
+
+Switch
+
+=item *
+
+FindBin
+
+=item *
+
+Cwd
+
+=item *
+
+File::Basename
+
+=item *
+
+local::lib
+
+=item *
+
+Lazy::Utils
+
+=item *
+
+ExtUtils::Installed
+
+=item *
+
+ExtUtils::MakeMaker
+
+=item *
+
+Module::Build
+
+=item *
+
+Log::Log4perl
+
+=item *
+
+Term::ReadLine
+
+=item *
+
+YAML
+
+=item *
+
+JSON
+
+=item *
+
+LWP
+
+=item *
+
+LWP::Protocol::https
+
+=item *
+
+CPAN
+
+=item *
+
+CPANPLUS
+
+=item *
+
+CPANPLUS::Dist::Build
+
+=back
+
+=head1 REPOSITORY
+
+B<GitHub> L<https://github.com/orkunkaraduman/perl5-virtualenv>
+
+B<CPAN> L<https://metacpan.org/release/App-Virtualenv>
+
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2016  Orkun Karaduman <orkunkaraduman@gmail.com>
+Copyright (C) 2017  Orkun Karaduman <orkunkaraduman@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
