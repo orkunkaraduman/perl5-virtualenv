@@ -17,10 +17,14 @@ use warnings;
 no warnings qw(qw utf8);
 use v5.14;
 use utf8;
+use Config;
 use Switch;
+use FindBin;
+use Cwd;
+use File::Basename;
+use Lazy::Utils;
 
 use App::Virtualenv;
-use App::Virtualenv::Utils;
 
 
 BEGIN
@@ -37,62 +41,77 @@ BEGIN
 }
 
 
+sub man
+{
+	my $man = whereisBin("man");
+	my $cat = whereisBin("cat");
+	return unless $man and $cat;
+	my $P = shellmeta("-P$cat");
+	return `$man "$P" piv.pl 2>/dev/null`;
+}
+
 sub main
 {
 	my $args = cmdArgs(@_);
-	if (not defined $args->{cmd})
+	my $man = man();
+	$man = "" unless $man;
+	if (not defined $args->{command})
 	{
-		say STDERR "Command is needed.";
+		say STDERR "Command is needed:\n$man";
 		return 254;
 	}
-	switch ($args->{cmd})
+	switch ($args->{command})
 	{
 		case "virtualenv"
 		{
-			my $empty = defined($args->{-e})? 1: 0;
-			return not App::Virtualenv::create($args->{params}->[0], $empty);
+			my $empty = defined($args->{'-e'})? 1: 0;
+			return not App::Virtualenv::create($args->{parameters}->[0], $empty);
 		}
 		case "sh"
 		{
-			App::Virtualenv::activate;
-			return App::Virtualenv::sh(@{$args->{params}});
+			App::Virtualenv::activate();
+			return App::Virtualenv::sh(@{$args->{parameters}});
 		}
 		case "perl"
 		{
-			App::Virtualenv::activate;
-			return App::Virtualenv::perl(@{$args->{params}});
+			App::Virtualenv::activate();
+			return App::Virtualenv::perl(@{$args->{parameters}});
 		}
 		case "list"
 		{
-			App::Virtualenv::activate2;
-			my $_1 = defined($args->{-1})? 1: 0;
+			App::Virtualenv::activate2();
+			my $_1 = defined($args->{'-1'})? 1: 0;
 			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::list(1 => $_1);");
 		}
 		case "install"
 		{
-			App::Virtualenv::activate2;
-			my $force = defined($args->{-f})? 1: 0;
-			my $test = defined($args->{-t})? 1: 0;
-			my $soft = defined($args->{"-s"})? 1: 0;
-			my $verbose = defined($args->{-v})? 1: 0;
-			my @modules = @{$args->{params}};
+			App::Virtualenv::activate2();
+			$ENV{PERL_MM_USE_DEFAULT} = 1;
+			$ENV{NONINTERACTIVE_TESTING} = 1;
+			my $force = defined($args->{'-f'})? 1: 0;
+			my $test = defined($args->{'-t'})? 1: 0;
+			my $soft = defined($args->{'-s'})? 1: 0;
+			my $verbose = defined($args->{'-v'})? 1: 0;
+			my @modules = @{$args->{parameters}};
 			@modules = map(s/(.*)/\"\Q$1\E\"/r, @modules);
 			my $modules = join(", ", @modules);
 			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::install(force => $force, test=> $test, soft => $soft, verbose => $verbose, modules => [$modules]);");
 		}
 		case "remove"
 		{
-			App::Virtualenv::activate2;
-			my $force = defined($args->{-f})? 1: 0;
-			my $verbose = defined($args->{-v})? 1: 0;
-			my @modules = @{$args->{params}};
+			App::Virtualenv::activate2();
+			$ENV{PERL_MM_USE_DEFAULT} = 1;
+			$ENV{NONINTERACTIVE_TESTING} = 1;
+			my $force = defined($args->{'-f'})? 1: 0;
+			my $verbose = defined($args->{'-v'})? 1: 0;
+			my @modules = @{$args->{parameters}};
 			@modules = map(s/(.*)/\"\Q$1\E\"/r, @modules);
 			my $modules = join(", ", @modules);
 			return App::Virtualenv::perl("-MApp::Virtualenv::Module", "-e exit not App::Virtualenv::Module::remove(force => $force, verbose => $verbose, modules => [$modules]);");
 		}
 		else
 		{
-			say STDERR "Command \"$args->{cmd}\" is not known.";
+			say STDERR "Command \"$args->{command}\" is not known:\n$man";
 			return 253;
 		}
 	}
