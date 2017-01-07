@@ -18,15 +18,16 @@ no warnings qw(qw utf8);
 use v5.14;
 use utf8;
 use Config;
+use Switch;
 use FindBin;
 use Cwd;
 use File::Basename;
+use Lazy::Utils;
 use ExtUtils::Installed;
 require CPANPLUS;
 use CPANPLUS::Error qw(cp_msg cp_error);
 
 use App::Virtualenv;
-use App::Virtualenv::Utils;
 
 
 BEGIN
@@ -44,7 +45,7 @@ BEGIN
 
 
 my $inst = reloadInst();
-my $cb = CPANPLUS::Backend->new;
+my $cb = CPANPLUS::Backend->new();
 
 
 sub reloadInst
