@@ -11,13 +11,7 @@ version 1.12
 
 Perl in Virtual environment
 
-=over
-
-[I<environment_path>/bin/]B<piv.pl> [-I<argument>]... [--I<argument> I<value>]... I<command> [I<parameter>]...
-
-=back
-
-=head2 PIV
+[I<environment_path>/bin/]B<piv.pl> [-I<option>]... [--I<option> I<value>]... I<command> [I<parameter>]...
 
 =head3 Commands
 
@@ -25,93 +19,53 @@ Perl in Virtual environment
 
 creates new Perl virtual environment
 
-=over
-
 B<piv virtualenv> [-e] [I<environment_path>]
 
-=over
-
-B<-e> Empty virtual environment
-
-=back
-
-=back
+-e: I<Empty virtual environment>
 
 =head4 piv sh
 
 runs Unix shell under Perl virtual environment
 
-=over
-
 [I<environment_path>/bin/]B<piv sh> [I<argument>]...
-
-=back
 
 =head4 piv perl
 
 runs Perl language interpreter under Perl virtual environment
 
-=over
-
 [I<environment_path>/bin/]B<piv perl> [I<argument>]...
-
-=back
 
 =head4 piv list
 
 lists installed packages under Perl virtual environment
 
-=over
-
 [I<environment_path>/bin/]B<piv list> [-1]
 
-=over
-
-B<-1> One column list
-
-=back
-
-=back
+-1: I<One column list>
 
 =head4 piv install
 
 installs or upgrades packages under Perl virtual environment
 
-=over
-
 [I<environment_path>/bin/]B<piv install> [-f] [-t] [-s] [-v] I<package>...
 
-=over
+-f: I<Force>
 
-B<-f> Force
+-t: I<Run tests>
 
-B<-t> Run tests
+-s: I<Soft install without installing prerequisites>
 
-B<-s> Soft install without installing prerequisites
-
-B<-v> Verbose
-
-=back
-
-=back
+-v: I<Verbose>
 
 =head4 piv remove
 
 removes packages under Perl virtual environment
 
-=over
-
 [I<environment_path>/bin/]B<piv remove> [-f] [-v] I<package>...
 
-=over
+-f: I<Force>
 
-B<-f> Force
-
-B<-v> Verbose
-
-=back
-
-=back
+-v: I<Verbose>
 
 =cut
 use strict;

@@ -11,11 +11,7 @@ version 1.12
 
 creates new Perl virtual environment
 
-=over
-
 B<virtualenv.pl> [I<environment_path>]
-
-=back
 
 =cut
 use strict;

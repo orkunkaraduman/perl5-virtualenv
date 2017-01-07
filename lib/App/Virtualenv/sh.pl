@@ -11,11 +11,7 @@ version 1.12
 
 runs Unix shell under Perl virtual environment
 
-=over
-
 [I<environment_path>/bin/]B<sh.pl> [I<argument>]...
-
-=back
 
 =cut
 use strict;
@@ -28,7 +24,7 @@ use open qw(:std :locale);
 use App::Virtualenv;
 
 
-App::Virtualenv::activate;
+App::Virtualenv::activate();
 exit App::Virtualenv::sh(@ARGV);
 __END__
 =head1 REPOSITORY

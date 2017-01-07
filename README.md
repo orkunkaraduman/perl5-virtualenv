@@ -4,7 +4,7 @@ App::Virtualenv - Perl virtual environment
 
 # VERSION
 
-version 1.11
+version 1.12
 
 # SYNOPSIS
 
@@ -20,37 +20,37 @@ App::Virtualenv is a Perl package to create isolated Perl virtual environments, 
 
 creates new Perl virtual environment
 
-> **virtualenv.pl** \[_environment\_path_\]
+**virtualenv.pl** \[_environment\_path_\]
 
 ## activate
 
 activates Perl virtual environment
 
-> source _environment\_path_/bin/**activate**
+source _environment\_path_/bin/**activate**
 
 ## deactivate
 
 deactivates activated Perl virtual environment
 
-> **deactivate**
+**deactivate**
 
 ## sh.pl
 
 runs Unix shell under Perl virtual environment
 
-> \[_environment\_path_/bin/\]**sh.pl** \[_argument_\]...
+\[_environment\_path_/bin/\]**sh.pl** \[_argument_\]...
 
 ## perl.pl
 
 runs Perl language interpreter under Perl virtual environment
 
-> \[_environment\_path_/bin/\]**perl.pl** \[_argument_\]...
+\[_environment\_path_/bin/\]**perl.pl** \[_argument_\]...
 
 ## piv.pl
 
 Perl in Virtual environment
 
-> \[_environment\_path_/bin/\]**piv.pl** \[-_argument_\]... \[--_argument_ _value_\]... _command_ \[_parameter_\]...
+\[_environment\_path_/bin/\]**piv.pl** \[-_option_\]... \[--_option_ _value_\]... _command_ \[_parameter_\]...
 
 ### Commands
 
@@ -58,53 +58,53 @@ Perl in Virtual environment
 
 creates new Perl virtual environment
 
-> **piv virtualenv** \[-e\] \[_environment\_path_\]
->
-> > **-e** Empty virtual environment
+**piv virtualenv** \[-e\] \[_environment\_path_\]
+
+\-e: _Empty virtual environment_
 
 #### piv sh
 
 runs Unix shell under Perl virtual environment
 
-> \[_environment\_path_/bin/\]**piv sh** \[_argument_\]...
+\[_environment\_path_/bin/\]**piv sh** \[_argument_\]...
 
 #### piv perl
 
 runs Perl language interpreter under Perl virtual environment
 
-> \[_environment\_path_/bin/\]**piv perl** \[_argument_\]...
+\[_environment\_path_/bin/\]**piv perl** \[_argument_\]...
 
 #### piv list
 
 lists installed packages under Perl virtual environment
 
-> \[_environment\_path_/bin/\]**piv list** \[-1\]
->
-> > **-1** One column list
+\[_environment\_path_/bin/\]**piv list** \[-1\]
+
+\-1: _One column list_
 
 #### piv install
 
 installs or upgrades packages under Perl virtual environment
 
-> \[_environment\_path_/bin/\]**piv install** \[-f\] \[-t\] \[-s\] \[-v\] _package_...
->
-> > **-f** Force
-> >
-> > **-t** Run tests
-> >
-> > **-s** Soft install without installing prerequisites
-> >
-> > **-v** Verbose
+\[_environment\_path_/bin/\]**piv install** \[-f\] \[-t\] \[-s\] \[-v\] _package_...
+
+\-f: _Force_
+
+\-t: _Run tests_
+
+\-s: _Soft install without installing prerequisites_
+
+\-v: _Verbose_
 
 #### piv remove
 
 removes packages under Perl virtual environment
 
-> \[_environment\_path_/bin/\]**piv remove** \[-f\] \[-v\] _package_...
->
-> > **-f** Force
-> >
-> > **-v** Verbose
+\[_environment\_path_/bin/\]**piv remove** \[-f\] \[-v\] _package_...
+
+\-f: _Force_
+
+\-v: _Verbose_
 
 # INSTALLATION
 
@@ -123,14 +123,30 @@ from CPAN
 
 This module requires these other modules and libraries:
 
-- local::lib
 - Switch
 - FindBin
 - Cwd
 - File::Basename
+- local::lib
+- Lazy::Utils
 - ExtUtils::Installed
+- ExtUtils::MakeMaker
+- Module::Build
+- Log::Log4perl
+- Term::ReadLine
+- YAML
+- JSON
+- LWP
+- LWP::Protocol::https
 - CPAN
 - CPANPLUS
+- CPANPLUS::Dist::Build
+
+# REPOSITORY
+
+**GitHub** [https://github.com/orkunkaraduman/perl5-virtualenv](https://github.com/orkunkaraduman/perl5-virtualenv)
+
+**CPAN** [https://metacpan.org/release/App-Virtualenv](https://metacpan.org/release/App-Virtualenv)
 
 # AUTHOR
 
@@ -138,7 +154,7 @@ Orkun Karaduman &lt;orkunkaraduman@gmail.com&gt;
 
 # COPYRIGHT AND LICENSE
 
-Copyright (C) 2016  Orkun Karaduman &lt;orkunkaraduman@gmail.com&gt;
+Copyright (C) 2017  Orkun Karaduman &lt;orkunkaraduman@gmail.com&gt;
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
