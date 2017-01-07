@@ -41,23 +41,19 @@ BEGIN
 }
 
 
-sub man
-{
-	my $man = whereisBin("man");
-	my $cat = whereisBin("cat");
-	return unless $man and $cat;
-	my $P = shellmeta("-P$cat");
-	return `$man "$P" piv.pl 2>/dev/null`;
-}
-
 sub main
 {
 	my $args = cmdArgs(@_);
-	my $man = man();
+	my $man = getPodText(undef, "SYNOPSIS");
 	$man = "" unless $man;
+	if (defined($args->{'-h'}))
+	{
+		print $man;
+		return 0;
+	}
 	if (not defined $args->{command})
 	{
-		say STDERR "Command is needed:\n$man";
+		print STDERR "Command is needed.\n$man";
 		return 254;
 	}
 	switch ($args->{command})
@@ -111,7 +107,7 @@ sub main
 		}
 		else
 		{
-			say STDERR "Command \"$args->{command}\" is not known:\n$man";
+			print STDERR "Command \"$args->{command}\" is not known.\n$man";
 			return 253;
 		}
 	}
