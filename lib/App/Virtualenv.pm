@@ -192,10 +192,6 @@ This module requires these other modules and libraries:
 
 =item *
 
-local::lib
-
-=item *
-
 Switch
 
 =item *
@@ -212,7 +208,47 @@ File::Basename
 
 =item *
 
+local::lib
+
+=item *
+
+Lazy::Utils
+
+=item *
+
 ExtUtils::Installed
+
+=item *
+
+ExtUtils::MakeMaker
+
+=item *
+
+Module::Build
+
+=item *
+
+Log::Log4perl
+
+=item *
+
+Term::ReadLine
+
+=item *
+
+YAML
+
+=item *
+
+JSON
+
+=item *
+
+LWP
+
+=item *
+
+LWP::Protocol::https
 
 =item *
 
@@ -221,6 +257,10 @@ CPAN
 =item *
 
 CPANPLUS
+
+=item *
+
+CPANPLUS::Dist::Build
 
 =back
 
@@ -231,11 +271,11 @@ no warnings qw(qw utf8);
 use v5.14;
 use utf8;
 use Config;
+use Switch;
 use FindBin;
 use Cwd;
 use File::Basename;
-
-use App::Virtualenv::Utils;
+use Lazy::Utils;
 
 
 BEGIN
@@ -355,6 +395,8 @@ sub create
 	say "Creating Perl virtual environment: $virtualenvPath";
 
 	deactivate();
+	$ENV{PERL_MM_USE_DEFAULT} = 1;
+	$ENV{NONINTERACTIVE_TESTING} = 1;
 
 	require local::lib;
 	local::lib->import($virtualenvPath);
