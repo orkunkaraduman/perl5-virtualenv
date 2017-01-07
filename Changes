@@ -1,5 +1,8 @@
 1.12	2017-01-07
-		- 
+		- Removed App::Virtualenv::Utils
+		- Noninteractive piv create/install/remove
+		- Added piv -h
+		- Documentation is improved
 
 1.11	2016-12-15
 		- App::Virtualenv::Module::inPerLib() fix
