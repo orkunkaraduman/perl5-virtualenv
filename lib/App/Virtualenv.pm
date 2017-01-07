@@ -53,9 +53,9 @@ Perl in Virtual environment
 
 Usage: [I<environment_path>/bin/]B<piv.pl> [-I<option>]... [--I<option> I<value>]... I<command> [I<parameter>]...
 
-=head3 Commands
+-h: I<shows synopsis>
 
-=head4 piv virtualenv
+=head3 piv virtualenv
 
 creates new Perl virtual environment
 
@@ -63,19 +63,19 @@ Usage: B<piv virtualenv> [-e] [I<environment_path>]
 
 -e: I<Empty virtual environment>
 
-=head4 piv sh
+=head3 piv sh
 
 runs Unix shell under Perl virtual environment
 
 Usage: [I<environment_path>/bin/]B<piv sh> [I<argument>]...
 
-=head4 piv perl
+=head3 piv perl
 
 runs Perl language interpreter under Perl virtual environment
 
 Usage: [I<environment_path>/bin/]B<piv perl> [I<argument>]...
 
-=head4 piv list
+=head3 piv list
 
 lists installed packages under Perl virtual environment
 
@@ -83,7 +83,7 @@ Usage: [I<environment_path>/bin/]B<piv list> [-1]
 
 -1: I<One column list>
 
-=head4 piv install
+=head3 piv install
 
 installs or upgrades packages under Perl virtual environment
 
@@ -97,7 +97,7 @@ Usage: [I<environment_path>/bin/]B<piv install> [-f] [-t] [-s] [-v] I<package>..
 
 -v: I<Verbose>
 
-=head4 piv remove
+=head3 piv remove
 
 removes packages under Perl virtual environment
 
@@ -106,99 +106,6 @@ Usage: [I<environment_path>/bin/]B<piv remove> [-f] [-v] I<package>...
 -f: I<Force>
 
 -v: I<Verbose>
-
-=head1 INSTALLATION
-
-To install this module type the following
-
-	perl Makefile.PL
-	make
-	make test
-	make install
-
-from CPAN
-
-	cpan -i App::Virtualenv
-
-=head1 DEPENDENCIES
-
-This module requires these other modules and libraries:
-
-=over
-
-=item *
-
-Switch
-
-=item *
-
-FindBin
-
-=item *
-
-Cwd
-
-=item *
-
-File::Basename
-
-=item *
-
-local::lib
-
-=item *
-
-Lazy::Utils
-
-=item *
-
-ExtUtils::Installed
-
-=item *
-
-ExtUtils::MakeMaker
-
-=item *
-
-Module::Build
-
-=item *
-
-Log::Log4perl
-
-=item *
-
-Term::ReadLine
-
-=item *
-
-YAML
-
-=item *
-
-JSON
-
-=item *
-
-LWP
-
-=item *
-
-LWP::Protocol::https
-
-=item *
-
-CPAN
-
-=item *
-
-CPANPLUS
-
-=item *
-
-CPANPLUS::Dist::Build
-
-=back
 
 =cut
 use strict;
@@ -367,6 +274,99 @@ sub perl
 
 1;
 __END__
+=head1 INSTALLATION
+
+To install this module type the following
+
+	perl Makefile.PL
+	make
+	make test
+	make install
+
+from CPAN
+
+	cpan -i App::Virtualenv
+
+=head1 DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+=over
+
+=item *
+
+Switch
+
+=item *
+
+FindBin
+
+=item *
+
+Cwd
+
+=item *
+
+File::Basename
+
+=item *
+
+local::lib
+
+=item *
+
+Lazy::Utils
+
+=item *
+
+ExtUtils::Installed
+
+=item *
+
+ExtUtils::MakeMaker
+
+=item *
+
+Module::Build
+
+=item *
+
+Log::Log4perl
+
+=item *
+
+Term::ReadLine
+
+=item *
+
+YAML
+
+=item *
+
+JSON
+
+=item *
+
+LWP
+
+=item *
+
+LWP::Protocol::https
+
+=item *
+
+CPAN
+
+=item *
+
+CPANPLUS
+
+=item *
+
+CPANPLUS::Dist::Build
+
+=back
+
 =head1 REPOSITORY
 
 B<GitHub> L<https://github.com/orkunkaraduman/perl5-virtualenv>

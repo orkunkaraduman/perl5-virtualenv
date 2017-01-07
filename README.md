@@ -52,9 +52,9 @@ Perl in Virtual environment
 
 Usage: \[_environment\_path_/bin/\]**piv.pl** \[-_option_\]... \[--_option_ _value_\]... _command_ \[_parameter_\]...
 
-### Commands
+\-h: _shows synopsis_
 
-#### piv virtualenv
+### piv virtualenv
 
 creates new Perl virtual environment
 
@@ -62,19 +62,19 @@ Usage: **piv virtualenv** \[-e\] \[_environment\_path_\]
 
 \-e: _Empty virtual environment_
 
-#### piv sh
+### piv sh
 
 runs Unix shell under Perl virtual environment
 
 Usage: \[_environment\_path_/bin/\]**piv sh** \[_argument_\]...
 
-#### piv perl
+### piv perl
 
 runs Perl language interpreter under Perl virtual environment
 
 Usage: \[_environment\_path_/bin/\]**piv perl** \[_argument_\]...
 
-#### piv list
+### piv list
 
 lists installed packages under Perl virtual environment
 
@@ -82,7 +82,7 @@ Usage: \[_environment\_path_/bin/\]**piv list** \[-1\]
 
 \-1: _One column list_
 
-#### piv install
+### piv install
 
 installs or upgrades packages under Perl virtual environment
 
@@ -96,7 +96,7 @@ Usage: \[_environment\_path_/bin/\]**piv install** \[-f\] \[-t\] \[-s\] \[-v\] _
 
 \-v: _Verbose_
 
-#### piv remove
+### piv remove
 
 removes packages under Perl virtual environment
 

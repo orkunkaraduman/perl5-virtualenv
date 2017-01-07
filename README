@@ -43,7 +43,8 @@ USAGE
     Usage: [*environment_path*/bin/]piv.pl [-*option*]... [--*option*
     *value*]... *command* [*parameter*]...
 
-   Commands
+    -h: *shows synopsis*
+
    piv virtualenv
     creates new Perl virtual environment
 
