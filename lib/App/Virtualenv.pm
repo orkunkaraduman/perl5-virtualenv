@@ -140,10 +140,10 @@ sub activate
 	my ($virtualenvPath) = @_;
 	$virtualenvPath = getVirtualenvPath() if not validVirtualenvPath($virtualenvPath);
 	$virtualenvPath = binVirtualenvPath() if not validVirtualenvPath($virtualenvPath);
-	for my $perl5lib (split(":", defined($ENV{PERL5LIB})? $ENV{PERL5LIB}: ""))
+	for (split(":", defined($ENV{PERL5LIB})? $ENV{PERL5LIB}: ""))
 	{
 		last if validVirtualenvPath($virtualenvPath);
-		$virtualenvPath = "$perl5lib/../..";
+		$virtualenvPath = "$_/../..";
 	}
 	return if not validVirtualenvPath($virtualenvPath);
 	$virtualenvPath = Cwd::realpath($virtualenvPath);

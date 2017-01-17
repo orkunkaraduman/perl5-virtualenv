@@ -51,9 +51,10 @@ my $cb = CPANPLUS::Backend->new();
 sub reloadInst
 {
 	my $perl5lib;
-	for $perl5lib (split(":", defined($ENV{PERL5LIB})? $ENV{PERL5LIB}: ""))
+	for (split(":", defined($ENV{PERL5LIB})? $ENV{PERL5LIB}: ""))
 	{
-		last if App::Virtualenv::validVirtualenvPath("$perl5lib/../..");
+		$perl5lib = $_;
+		last if App::Virtualenv::validVirtualenvPath("$_/../..");
 		$perl5lib = undef;
 	}
 	$inst = ExtUtils::Installed->new(inc_override => [($perl5lib? ("$perl5lib/$Config{version}/$Config{archname}", "$perl5lib/$Config{version}", "$perl5lib/$Config{archname}", "$perl5lib"): ($Config{sitearch}, $Config{sitelib}))]);
