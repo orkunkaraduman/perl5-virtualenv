@@ -1,3 +1,7 @@
+1.13	2017-01-17
+		- Added AUTOMATED_TESTING in Piv for non-interactiving
+		- Used PERL5LIB in Virtualenv::activate
+
 1.12	2017-01-07
 		- App::Virtualenv::Utils is deprecated
 		- Noninteractive piv create/install/remove
