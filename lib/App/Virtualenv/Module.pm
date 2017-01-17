@@ -5,7 +5,7 @@ App::Virtualenv::Module - Module management for Perl virtual environment
 
 =head1 VERSION
 
-version 1.12
+version 1.13
 
 =head1 SYNOPSIS
 
@@ -34,7 +34,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.12';
+	our $VERSION     = '1.13';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -50,8 +50,14 @@ my $cb = CPANPLUS::Backend->new();
 
 sub reloadInst
 {
-	my @perl5lib = split(":", defined $ENV{PERL5LIB}? $ENV{PERL5LIB}: "");
-	$inst = ExtUtils::Installed->new(inc_override => [($perl5lib[0]? ("$perl5lib[0]/$Config{version}/$Config{archname}", "$perl5lib[0]/$Config{version}", "$perl5lib[0]/$Config{archname}", "$perl5lib[0]"): ($Config{sitearch}, $Config{sitelib}))]);
+	my $perl5lib;
+	for (split(":", defined($ENV{PERL5LIB})? $ENV{PERL5LIB}: ""))
+	{
+		$perl5lib = $_;
+		last if App::Virtualenv::validVirtualenvPath("$_/../..");
+		$perl5lib = undef;
+	}
+	$inst = ExtUtils::Installed->new(inc_override => [($perl5lib? ("$perl5lib/$Config{version}/$Config{archname}", "$perl5lib/$Config{version}", "$perl5lib/$Config{archname}", "$perl5lib"): ($Config{sitearch}, $Config{sitelib}))]);
 	return $inst;
 }
 

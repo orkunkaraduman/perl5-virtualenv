@@ -5,7 +5,7 @@ App::Virtualenv - Perl virtual environment
 
 =head1 VERSION
 
-version 1.12
+version 1.13
 
 =head1 SYNOPSIS
 
@@ -125,7 +125,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.12';
+	our $VERSION     = '1.13';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -138,10 +138,15 @@ BEGIN
 sub activate
 {
 	my ($virtualenvPath) = @_;
-	$virtualenvPath = getVirtualenvPath() if not defined $virtualenvPath;
-	$virtualenvPath = binVirtualenvPath() if not defined $virtualenvPath;
-	$virtualenvPath = Cwd::realpath($virtualenvPath);
+	$virtualenvPath = getVirtualenvPath() if not validVirtualenvPath($virtualenvPath);
+	$virtualenvPath = binVirtualenvPath() if not validVirtualenvPath($virtualenvPath);
+	for (split(":", defined($ENV{PERL5LIB})? $ENV{PERL5LIB}: ""))
+	{
+		last if validVirtualenvPath($virtualenvPath);
+		$virtualenvPath = "$_/../..";
+	}
 	return if not validVirtualenvPath($virtualenvPath);
+	$virtualenvPath = Cwd::realpath($virtualenvPath);
 
 	deactivate(1);
 

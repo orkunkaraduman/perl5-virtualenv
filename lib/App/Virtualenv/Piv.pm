@@ -5,7 +5,7 @@ App::Virtualenv::Piv - Perl in Virtual environment
 
 =head1 VERSION
 
-version 1.12
+version 1.13
 
 =head1 SYNOPSIS
 
@@ -31,7 +31,7 @@ BEGIN
 {
 	require Exporter;
 	# set the version for version checking
-	our $VERSION     = '1.12';
+	our $VERSION     = '1.13';
 	# Inherit from Exporter to export functions and variables
 	our @ISA         = qw(Exporter);
 	# Functions and variables which are exported by default
@@ -84,6 +84,7 @@ sub main
 			App::Virtualenv::activate2();
 			$ENV{PERL_MM_USE_DEFAULT} = 1;
 			$ENV{NONINTERACTIVE_TESTING} = 1;
+			$ENV{AUTOMATED_TESTING} = 1;
 			my $force = defined($args->{'-f'})? 1: 0;
 			my $test = defined($args->{'-t'})? 1: 0;
 			my $soft = defined($args->{'-s'})? 1: 0;
@@ -98,6 +99,7 @@ sub main
 			App::Virtualenv::activate2();
 			$ENV{PERL_MM_USE_DEFAULT} = 1;
 			$ENV{NONINTERACTIVE_TESTING} = 1;
+			$ENV{AUTOMATED_TESTING} = 1;
 			my $force = defined($args->{'-f'})? 1: 0;
 			my $verbose = defined($args->{'-v'})? 1: 0;
 			my @modules = @{$args->{parameters}};
