@@ -78,7 +78,7 @@ if ! [ -z "${PERL_VIRTUAL_ENV+_}" ] ; then
     _OLD_PERL_VIRTUAL_ENV="$PERL_VIRTUAL_ENV"
     export _OLD_PERL_VIRTUAL_ENV
 fi
-PERL_VIRTUAL_ENV=$(cd `dirname $SOURCE`/..; pwd)
+PERL_VIRTUAL_ENV=$(cd `dirname $SOURCE`/.. && pwd)
 export PERL_VIRTUAL_ENV
 
 if ! [ -z "${PATH+_}" ] ; then
