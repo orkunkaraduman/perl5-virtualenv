@@ -7,18 +7,17 @@ test.pl - for internal tests
 
 version not defined
 
-=head1 SYNOPSIS
+=head1 ABSTRACT
 
 for internal tests
 
 =cut
 use strict;
 use warnings;
-no warnings qw(qw utf8);
 use v5.14;
 use utf8;
-use open qw(:std :locale);
-use Config;
+use open qw(:utf8 :std);
+use open IO => ':bytes';
 use FindBin;
 use Data::Dumper;
 
@@ -30,12 +29,6 @@ use App::Virtualenv::Piv;
 
 exit 0;
 __END__
-=head1 REPOSITORY
-
-B<GitHub> L<https://github.com/orkunkaraduman/perl5-virtualenv>
-
-B<CPAN> L<https://metacpan.org/release/App-Virtualenv>
-
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
