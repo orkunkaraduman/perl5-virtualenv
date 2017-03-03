@@ -5,35 +5,29 @@ App::Virtualenv::Utils - Utilities for Perl virtual environment (deprecated)
 
 =head1 VERSION
 
-version 1.12
+version 2.00
 
-=head1 SYNOPSIS
+=head1 ABSTRACT
 
 Utilities for Perl virtual environment (deprecated)
 
 =cut
 use strict;
 use warnings;
-no warnings qw(qw utf8);
 use v5.14;
-use utf8;
 
 
 BEGIN
 {
 	require Exporter;
-	# set the version for version checking
-	our $VERSION     = '1.12';
-	# Inherit from Exporter to export functions and variables
+	our $VERSION     = '2.00';
 	our @ISA         = qw(Exporter);
-	# Functions and variables which are exported by default
 	our @EXPORT      = qw();
-	# Functions and variables which can be optionally exported
 	our @EXPORT_OK   = qw();
 }
 
 
-warn __PACKAGE__." is deprecated";
+warn __PACKAGE__." is deprecated\n";
 
 1;
 __END__

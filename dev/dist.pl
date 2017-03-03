@@ -7,41 +7,34 @@ dist.pl - distribution generator
 
 version not defined
 
-=head1 SYNOPSIS
+=head1 ABSTRACT
 
 distribution generator
 
 =cut
 use strict;
 use warnings;
-no warnings qw(qw utf8);
 use v5.14;
 use utf8;
-use open qw(:std :locale);
-use Config;
+use open qw(:utf8 :std);
+use open IO => ':bytes';
 use FindBin;
 use Cwd;
 
 
-my $module = "App::Virtualenv";
-my $modulePath = "lib/" . $module =~ s/\:\:/\//gr . ".pm";
+my $podPath = "lib/" . "App::Virtualenv" =~ s/\:\:/\//gr . ".pm";
+#my $podPath = "README.pod";
 my $base = "${FindBin::Bin}/..";
 cwd($base);
 
 system("perl Makefile.PL");
-system("pod2markdown --html-encode-chars 1 $modulePath > README.md");
-system("pod2text $modulePath > README");
+system("pod2markdown --html-encode-chars 1 $podPath > README.md");
+system("pod2text $podPath > README");
 system("rm MANIFEST; make manifest");
 system("make dist");
 
 exit 0;
 __END__
-=head1 REPOSITORY
-
-B<GitHub> L<https://github.com/orkunkaraduman/perl5-virtualenv>
-
-B<CPAN> L<https://metacpan.org/release/App-Virtualenv>
-
 =head1 AUTHOR
 
 Orkun Karaduman <orkunkaraduman@gmail.com>
