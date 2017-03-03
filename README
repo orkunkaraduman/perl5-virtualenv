@@ -121,8 +121,8 @@ PREVIOUS VERSION
     also building a great package manager requires huge community support.
     So, PiV is deprecated in version 2.xx.
 
-    You should uninstall previous version before upgrading from v1.xx. Like:
-    cpanm -U App::Virtualenv; cpanm -U App::Virtualenv;
+    You should uninstall previous version before upgrading from v1.xx: cpanm
+    -U App::Virtualenv; cpanm -i App::Virtualenv;
 
     See also: App::Virtualenv 1.13
     <https://metacpan.org/release/ORKUN/App-Virtualenv-1.13>
@@ -146,8 +146,8 @@ INSTALLATION
 
             cpan -i App::Virtualenv
 
-    You should uninstall previous version before upgrading from v1.xx. Like:
-    cpanm -U App::Virtualenv; cpanm -U App::Virtualenv;
+    You should uninstall previous version before upgrading from v1.xx: cpanm
+    -U App::Virtualenv; cpanm -i App::Virtualenv;
 
 DEPENDENCIES
     This module requires these other modules and libraries:
