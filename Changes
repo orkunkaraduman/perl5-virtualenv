@@ -1,5 +1,7 @@
 2.00	2017-03-03
 		- Removed Perl in Virtual environment (PiV)
+		- App::Virtualenv::Piv is deprecated now
+		- App::Virtualenv::Module is deprecated now
 		- Bug fixed for finding best matching virtual environment
 		- App::Virtualenv just use CPAN now
 		- Added new features to virtualenv.pl

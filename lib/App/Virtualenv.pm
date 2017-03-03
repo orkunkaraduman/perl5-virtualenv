@@ -450,6 +450,8 @@ from CPAN
 
 	cpan -i App::Virtualenv
 
+You should uninstall when upgrading from v1.xx. Like B<cpanm -U App::Virtualenv>
+
 =head1 DEPENDENCIES
 
 This module requires these other modules and libraries:
