@@ -121,7 +121,7 @@ return value: _function doesn&#39;t return, exits with main function return code
 Previous version of App::Virtualenv has include PiV(Perl in Virtual environment) to list/install/uninstall modules
 using CPANPLUS API. Aimed with PiV making a package manager like Python pip. But Perl has various powerful package tools
 mainly CPAN and cpanminus, CPANPLUS and etc. And also building a great package manager requires huge community support.
-So, PiV is deprecated in version 2.xx.
+So, PiV is deprecated in version 2.xx. You should uninstall when upgrading from v1.xx. Like **cpanm -U App::Virtualenv**
 
 See also: [App::Virtualenv 1.13](https://metacpan.org/release/ORKUN/App-Virtualenv-1.13)
 
@@ -161,6 +161,13 @@ This module requires these other modules and libraries:
 **GitHub** [https://github.com/orkunkaraduman/perl5-virtualenv](https://github.com/orkunkaraduman/perl5-virtualenv)
 
 **CPAN** [https://metacpan.org/release/App-Virtualenv](https://metacpan.org/release/App-Virtualenv)
+
+# SEE ALSO
+
+- [App::Virtualenv 1.13](https://metacpan.org/release/ORKUN/App-Virtualenv-1.13)
+- [CPAN](https://metacpan.org/pod/CPAN)
+- [App::cpanminus](https://metacpan.org/pod/App::cpanminus)
+- [CPANPLUS](https://metacpan.org/pod/CPANPLUS)
 
 # AUTHOR
 
