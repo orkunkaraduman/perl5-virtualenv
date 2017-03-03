@@ -123,7 +123,7 @@ using CPANPLUS API. Aimed with PiV making a package manager like Python pip. But
 mainly CPAN and cpanminus, CPANPLUS and etc. And also building a great package manager requires huge community support.
 So, PiV is deprecated in version 2.xx.
 
-You should uninstall when upgrading from v1.xx. Like **cpanm -U App::Virtualenv**
+You should uninstall previous version before upgrading from v1.xx. Like: **cpanm -U App::Virtualenv; cpanm -U App::Virtualenv;**
 
 See also: [App::Virtualenv 1.13](https://metacpan.org/release/ORKUN/App-Virtualenv-1.13)
 
@@ -146,7 +146,7 @@ from CPAN
 
         cpan -i App::Virtualenv
 
-You should uninstall when upgrading from v1.xx. Like **cpanm -U App::Virtualenv**
+You should uninstall previous version before upgrading from v1.xx. Like: **cpanm -U App::Virtualenv; cpanm -U App::Virtualenv;**
 
 # DEPENDENCIES
 
