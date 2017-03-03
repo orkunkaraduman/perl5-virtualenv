@@ -5,15 +5,16 @@ App::Virtualenv - Perl virtual environment
 
 =head1 VERSION
 
-version 2.00
+version 2.01
 
 =head1 ABSTRACT
 
 Perl virtual environment
 
-	use App::Virtualenv;
-	
-	run;
+	#!/bin/sh
+	perl -MApp::Virtualenv -erun -- environment_path
+
+See also: L<virtualenv.pl|https://metacpan.org/pod/distribution/App-Virtualenv/lib/App/Virtualenv/virtualenv.pl>
 
 =head1 DESCRIPTION
 
@@ -36,7 +37,7 @@ use Lazy::Utils;
 BEGIN
 {
 	require Exporter;
-	our $VERSION     = '2.00';
+	our $VERSION     = '2.01';
 	our @ISA         = qw(Exporter);
 	our @EXPORT      = qw(main run);
 	our @EXPORT_OK   = qw();

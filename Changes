@@ -1,3 +1,6 @@
+2.01	2017-03-04
+		- POD changes
+
 2.00	2017-03-03
 		- Removed Perl in Virtual environment (PiV)
 		- App::Virtualenv::Piv is deprecated now

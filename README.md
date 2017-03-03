@@ -4,15 +4,16 @@ App::Virtualenv - Perl virtual environment
 
 # VERSION
 
-version 2.00
+version 2.01
 
 # ABSTRACT
 
 Perl virtual environment
 
-        use App::Virtualenv;
-        
-        run;
+        #!/bin/sh
+        perl -MApp::Virtualenv -erun -- environment_path
+
+See also: [virtualenv.pl](https://metacpan.org/pod/distribution/App-Virtualenv/lib/App/Virtualenv/virtualenv.pl)
 
 # DESCRIPTION
 
