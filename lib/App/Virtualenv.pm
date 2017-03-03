@@ -11,6 +11,10 @@ version 2.00
 
 Perl virtual environment
 
+	use App::Virtualenv;
+	
+	run;
+
 =head1 DESCRIPTION
 
 App::Virtualenv is a Perl package to create isolated Perl virtual environments, like Python virtual environment.
@@ -332,6 +336,8 @@ sub list
 
 App::Virtualenv main function to run on command-line
 
+See also: L<virtualenv.pl|https://metacpan.org/pod/distribution/App-Virtualenv/lib/App/Virtualenv/virtualenv.pl>
+
 @argv: I<command-line arguments>
 
 return value: I<exit code of program>
@@ -362,8 +368,9 @@ sub main
 	{
 		when (/^\-(h|\-help)$/)
 		{
-			my $s = getPodText(dirname(__FILE__)."/Virtualenv/virtualenv.pl", "ABSTRACT");
-			print $s;
+			my @lines = getPodText(dirname(__FILE__)."/Virtualenv/virtualenv.pl", "ABSTRACT");
+			$lines[0] = "virtualenv.pl";
+			say join("\n", @lines);
 		}
 		when (/^\-(c|\-create)$/)
 		{
@@ -401,6 +408,33 @@ sub run
 
 1;
 __END__
+=head1 PREVIOUS VERSION
+
+Previous version of App::Virtualenv has include PiV(Perl in Virtual environment) to list/install/uninstall modules
+using CPANPLUS API. Aimed with PiV making a package manager like Python pip. But Perl has various powerful package tools
+mainly CPAN and cpanminus, CPANPLUS and etc. And also building a great package manager requires huge community support.
+So, PiV is deprecated in version 2.xx.
+
+See also: L<App::Virtualenv 1.13|https://metacpan.org/release/ORKUN/App-Virtualenv-1.13>
+
+=head2 Deprecated Modules
+
+=over
+
+=item *
+
+App::Virtualenv::Piv
+
+=item *
+
+App::Virtualenv::Module
+
+=item *
+
+App::Virtualenv::Utils
+
+=back
+
 =head1 INSTALLATION
 
 To install this module type the following

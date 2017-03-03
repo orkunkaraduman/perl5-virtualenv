@@ -1,30 +1,27 @@
 #! /usr/bin/perl
 =head1 NAME
 
-perl.pl - runs Perl language interpreter under Perl virtual environment
+perl.pl - runs Perl language interpreter in Perl virtual environment
 
 =head1 VERSION
 
-version 1.12
+version 2.00
 
-=head1 SYNOPSIS
+=head1 ABSTRACT
 
-runs Perl language interpreter under Perl virtual environment
+runs Perl language interpreter in Perl virtual environment
 
 [I<environment_path>/bin/]B<perl.pl> [I<argument>]...
 
 =cut
 use strict;
 use warnings;
-no warnings qw(qw utf8);
 use v5.14;
-use utf8;
-use open qw(:std :locale);
 
 use App::Virtualenv;
 
 
-App::Virtualenv::activate();
+App::Virtualenv::activate2();
 exit App::Virtualenv::perl(@ARGV);
 __END__
 =head1 REPOSITORY

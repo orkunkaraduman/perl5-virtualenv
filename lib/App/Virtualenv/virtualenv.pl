@@ -1,30 +1,59 @@
 #! /usr/bin/perl
 =head1 NAME
 
-virtualenv.pl - creates new Perl virtual environment
+virtualenv.pl - manages Perl virtual environment
 
 =head1 VERSION
 
-version 1.12
+version 2.00
 
-=head1 SYNOPSIS
+=head1 ABSTRACT
 
-creates new Perl virtual environment
+manages Perl virtual environment
 
-B<virtualenv.pl> [I<environment_path>]
+=over
+
+B<virtualenv.pl> [-c|--create] [-e|--empty] I<environment_path>
+
+B<virtualenv.pl> -l|--list [-1|--one] [I<package_name>]
+
+B<virtualenv.pl> -m|--list-modules [-1|--one] [I<package_name>]
+
+B<virtualenv.pl> -f|--list-files [-1|--one] [I<package_name>]
+
+B<virtualenv.pl> -h|--help
+
+=back
+
+=head2 activate
+
+activates Perl virtual environment
+
+=over
+
+source I<environment_path>/bin/B<activate>
+
+=back
+
+=head2 deactivate
+
+deactivates activated Perl virtual environment
+
+=over
+
+B<deactivate>
+
+=back
 
 =cut
 use strict;
 use warnings;
-no warnings qw(qw utf8);
 use v5.14;
-use utf8;
-use open qw(:std :locale);
 
 use App::Virtualenv;
 
 
-exit not App::Virtualenv::create($ARGV[0]);
+run;
 __END__
 =head1 REPOSITORY
 

@@ -2,95 +2,134 @@ NAME
     App::Virtualenv - Perl virtual environment
 
 VERSION
-    version 1.13
+    version 2.00
 
-SYNOPSIS
+ABSTRACT
     Perl virtual environment
+
+            use App::Virtualenv;
+        
+            run;
 
 DESCRIPTION
     App::Virtualenv is a Perl package to create isolated Perl virtual
     environments, like Python virtual environment.
 
-USAGE
-  virtualenv.pl
-    creates new Perl virtual environment
+  Functions
+   sh(@args)
+    runs shell program defined in SHELL environment variable, otherwise
+    /bin/sh
 
-    Usage: virtualenv.pl [*environment_path*]
+    @args: *arguments of shell program*
 
-  activate
+    return value: *exit code of shell program*
+
+   perl(@args)
+    runs Perl interpreter
+
+    @args: *arguments of Perl interpreter*
+
+    return value: *exit code of Perl interpreter*
+
+   activate($virtualenvPath)
     activates Perl virtual environment
 
-    Usage: source *environment_path*/bin/activate
+    $virtualenvPath: *virtual environment path*
 
-  deactivate
-    deactivates activated Perl virtual environment
+    return value: *virtual environment path if success, otherwise undef*
 
-    Usage: deactivate
+   deactivate($nondestructive)
+    deactivates Perl virtual environment
 
-  sh.pl
-    runs Unix shell under Perl virtual environment
+    $nondestructive: *leaves envionment variables as it is, unless there are
+    old envionment variables*
 
-    Usage: [*environment_path*/bin/]sh.pl [*argument*]...
+    return value: *always 1*
 
-  perl.pl
-    runs Perl language interpreter under Perl virtual environment
+   create($virtualenvPath, $empty)
+    creates Perl virtual environment
 
-    Usage: [*environment_path*/bin/]perl.pl [*argument*]...
+    $virtualenvPath: *new virtual environment path*
 
-  piv.pl
-    Perl in Virtual environment
+    $empty: *create empty virtual environment*
 
-    Usage: [*environment_path*/bin/]piv.pl [-*option*]... *command*
-    [*parameter*]...
+    return value: *virtual environment path if success, otherwise undef*
 
-    -h: *shows synopsis*
+   findVirtualenvPath($virtualenvPath)
+    finds Perl virtual environment path by $virtualenvPath argument or
+    activated virtual environment or running script or PERL5LIB environment
+    variable
 
-   piv virtualenv
-    creates new Perl virtual environment
+    $virtualenvPath: *virtual environment path*
 
-    Usage: piv virtualenv [-e] [*environment_path*]
+    return value: *best matching virtual environment path*
 
-    -e: *Empty virtual environment*
+   activate2($virtualenvPath, $inform)
+    activates Perl virtual environment by findVirtualenvPath function
 
-   piv sh
-    runs Unix shell under Perl virtual environment
+    $virtualenvPath: *virtual environment path*
 
-    Usage: [*environment_path*/bin/]piv sh [*argument*]...
+    $inform: *informs activated virtual environment path to STDERR if new
+    activated path differs old one*
 
-   piv perl
-    runs Perl language interpreter under Perl virtual environment
+    return value: *activated best matching virtual environment path if
+    success, otherwise undef*
 
-    Usage: [*environment_path*/bin/]piv perl [*argument*]...
+   getInc($virtualenvPath)
+    gets array ref of include paths given virtual environment path or
+    sitelib paths
 
-   piv list
-    lists installed packages under Perl virtual environment
+    $virtualenvPath: *virtual environment path*
 
-    Usage: [*environment_path*/bin/]piv list [-1]
+    return value: *array ref of paths*
 
-    -1: *One column list*
+   list(%params)
+    lists packages or modules or files by given %params
 
-   piv install
-    installs or upgrades packages under Perl virtual environment
+    %params: *parameters of function*
 
-    Usage: [*environment_path*/bin/]piv install [-f] [-t] [-s] [-v]
-    *package*...
+        one: *output is one-column, by default 0*
 
-    -f: *Force*
+        detail: *prints additional detail by given value: module or file. by
+        default undef*
 
-    -t: *Run tests*
+    return value: *always 1*
 
-    -s: *Soft install without installing prerequisites*
+   main(@argv)
+    App::Virtualenv main function to run on command-line
 
-    -v: *Verbose*
+    See also: virtualenv.pl
+    <https://metacpan.org/pod/distribution/App-Virtualenv/lib/App/Virtualenv
+    /virtualenv.pl>
 
-   piv remove
-    removes packages under Perl virtual environment
+    @argv: *command-line arguments*
 
-    Usage: [*environment_path*/bin/]piv remove [-f] [-v] *package*...
+    return value: *exit code of program*
 
-    -f: *Force*
+   run
+    runs App::Virtualenv by main function with command-line arguments by
+    @ARGV
 
-    -v: *Verbose*
+    return value: *function doesn't return, exits with main function return
+    code*
+
+PREVIOUS VERSION
+    Previous version of App::Virtualenv has include PiV(Perl in Virtual
+    environment) to list/install/uninstall modules using CPANPLUS API. Aimed
+    with PiV making a package manager like Python pip. But Perl has various
+    powerful package tools mainly CPAN and cpanminus, CPANPLUS and etc. And
+    also building a great package manager requires huge community support.
+    So, PiV is deprecated in version 2.xx.
+
+    See also: App::Virtualenv 1.13
+    <https://metacpan.org/release/ORKUN/App-Virtualenv-1.13>
+
+  Deprecated Modules
+    *   App::Virtualenv::Piv
+
+    *   App::Virtualenv::Module
+
+    *   App::Virtualenv::Utils
 
 INSTALLATION
     To install this module type the following
@@ -107,41 +146,15 @@ INSTALLATION
 DEPENDENCIES
     This module requires these other modules and libraries:
 
-    *   Switch
-
-    *   FindBin
-
-    *   Cwd
-
-    *   File::Basename
-
     *   local::lib
-
-    *   Lazy::Utils
 
     *   ExtUtils::Installed
 
-    *   ExtUtils::MakeMaker
-
-    *   Module::Build
-
-    *   Log::Log4perl
-
-    *   Term::ReadLine
-
-    *   YAML
-
-    *   JSON
-
-    *   LWP
-
-    *   LWP::Protocol::https
-
     *   CPAN
 
-    *   CPANPLUS
+    *   Cwd
 
-    *   CPANPLUS::Dist::Build
+    *   Lazy::Utils
 
 REPOSITORY
     GitHub <https://github.com/orkunkaraduman/perl5-virtualenv>
