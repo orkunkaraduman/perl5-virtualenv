@@ -5,7 +5,7 @@ App::Virtualenv - Perl virtual environment
 
 =head1 VERSION
 
-version 2.01
+version 2.02
 
 =head1 ABSTRACT
 
@@ -37,7 +37,7 @@ use Lazy::Utils;
 BEGIN
 {
 	require Exporter;
-	our $VERSION     = '2.01';
+	our $VERSION     = '2.02';
 	our @ISA         = qw(Exporter);
 	our @EXPORT      = qw(main run);
 	our @EXPORT_OK   = qw();
@@ -351,7 +351,7 @@ sub main
 	my (@argv) = @_;
 	my $args = commandArgs({ valuableArgs => 0, noCommand => 1 }, @argv);
 	my $cmd;
-	for my $arg (grep(/^\-/, keys $args))
+	for my $arg (grep(/^\-/, keys %$args))
 	{
 		my $newcmd;
 		$newcmd = $arg if
