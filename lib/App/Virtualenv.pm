@@ -351,7 +351,7 @@ sub main
 	my (@argv) = @_;
 	my $args = commandArgs({ valuableArgs => 0, noCommand => 1 }, @argv);
 	my $cmd;
-	for my $arg (grep(/^\-/, keys $args))
+	for my $arg (grep(/^\-/, keys %$args))
 	{
 		my $newcmd;
 		$newcmd = $arg if
