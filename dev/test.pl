@@ -23,10 +23,9 @@ use Data::Dumper;
 
 use lib "${FindBin::Bin}/../lib";
 use App::Virtualenv;
-use App::Virtualenv::Module;
-use App::Virtualenv::Piv;
 
 
+run;
 exit 0;
 __END__
 =head1 AUTHOR
