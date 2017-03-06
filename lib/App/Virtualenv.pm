@@ -5,7 +5,7 @@ App::Virtualenv - Perl virtual environment
 
 =head1 VERSION
 
-version 2.02
+version 2.03
 
 =head1 ABSTRACT
 
@@ -23,7 +23,7 @@ App::Virtualenv is a Perl package to create isolated Perl virtual environments, 
 =cut
 use strict;
 use warnings;
-use v5.14;
+use v5.10.1;
 use feature qw(switch);
 no if ($] >= 5.018), 'warnings' => 'experimental';
 use Config;
@@ -37,7 +37,7 @@ use Lazy::Utils;
 BEGIN
 {
 	require Exporter;
-	our $VERSION     = '2.02';
+	our $VERSION     = '2.03';
 	our @ISA         = qw(Exporter);
 	our @EXPORT      = qw(main run);
 	our @EXPORT_OK   = qw();
@@ -240,10 +240,10 @@ sub activate2
 	{
 		if (defined($virtualenvPath))
 		{
-			print STDERR "Perl virtual environment path: $virtualenvPath\n" if not defined $oldVirtualenvPath or $oldVirtualenvPath ne $virtualenvPath;
+			say STDERR "Perl virtual environment path: $virtualenvPath" if not defined $oldVirtualenvPath or $oldVirtualenvPath ne $virtualenvPath;
 		} else
 		{
-			print STDERR "Perl virtual environment is not activated\n";
+			say STDERR "Perl virtual environment is not activated";
 		}
 	}
 	return $virtualenvPath;
@@ -312,8 +312,10 @@ sub list
 					{
 						if (defined($relPath))
 						{
+							my $module = $relPath;
+							$module =~ s/\//::/g;
 							print "  " unless $params{one};
-							say $relPath =~ s/\//::/gr;
+							say $module;
 						}
 					}
 					when ("file")

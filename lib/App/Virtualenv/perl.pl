@@ -5,7 +5,7 @@ perl.pl - runs Perl language interpreter in Perl virtual environment
 
 =head1 VERSION
 
-version 2.00
+version 2.03
 
 =head1 ABSTRACT
 
@@ -16,9 +16,15 @@ runs Perl language interpreter in Perl virtual environment
 =cut
 use strict;
 use warnings;
-use v5.14;
+use v5.10.1;
 
 use App::Virtualenv;
+
+
+BEGIN
+{
+	our $VERSION     = '2.03';
+}
 
 
 App::Virtualenv::activate2();

@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
 	NAME				=> 'App::Virtualenv',
 	VERSION_FROM		=> 'lib/App/Virtualenv.pm',
-	MIN_PERL_VERSION	=> '5.014',
+	MIN_PERL_VERSION	=> '5.010001',
 	PREREQ_PM			=> {
 		'local::lib'	=> '2.000004',
 		'ExtUtils::Installed' => '2.02',

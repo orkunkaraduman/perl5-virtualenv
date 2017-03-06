@@ -5,7 +5,7 @@ virtualenv.pl - manages Perl virtual environment
 
 =head1 VERSION
 
-version 2.00
+version 2.03
 
 =head1 ABSTRACT
 
@@ -48,9 +48,15 @@ B<deactivate>
 =cut
 use strict;
 use warnings;
-use v5.14;
+use v5.10.1;
 
 use App::Virtualenv;
+
+
+BEGIN
+{
+	our $VERSION     = '2.03';
+}
 
 
 run;

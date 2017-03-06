@@ -5,7 +5,7 @@ App::Virtualenv::Utils - Utilities for Perl virtual environment (deprecated)
 
 =head1 VERSION
 
-version 2.00
+version 2.03
 
 =head1 ABSTRACT
 
@@ -14,13 +14,12 @@ Utilities for Perl virtual environment (deprecated)
 =cut
 use strict;
 use warnings;
-use v5.14;
 
 
 BEGIN
 {
 	require Exporter;
-	our $VERSION     = '2.00';
+	our $VERSION     = '2.03';
 	our @ISA         = qw(Exporter);
 	our @EXPORT      = qw();
 	our @EXPORT_OK   = qw();
