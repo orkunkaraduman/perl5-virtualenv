@@ -53,6 +53,12 @@ use v5.10.1;
 use App::Virtualenv;
 
 
+BEGIN
+{
+	our $VERSION     = '2.03';
+}
+
+
 run;
 __END__
 =head1 REPOSITORY

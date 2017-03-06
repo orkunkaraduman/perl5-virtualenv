@@ -21,6 +21,12 @@ use v5.10.1;
 use App::Virtualenv;
 
 
+BEGIN
+{
+	our $VERSION     = '2.03';
+}
+
+
 App::Virtualenv::activate2();
 exit App::Virtualenv::perl(@ARGV);
 __END__
