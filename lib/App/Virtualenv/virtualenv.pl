@@ -1,11 +1,11 @@
-#! /usr/bin/perl
+#!/usr/bin/env perl
 =head1 NAME
 
 virtualenv.pl - manages Perl virtual environment
 
 =head1 VERSION
 
-version 2.03
+version 2.04
 
 =head1 ABSTRACT
 
@@ -27,7 +27,7 @@ B<virtualenv.pl> -h|--help
 
 =head2 activate
 
-activates Perl virtual environment
+activates Perl virtual environment (Bash only)
 
 =over
 
@@ -37,11 +37,31 @@ source I<environment_path>/bin/B<activate>
 
 =head2 deactivate
 
-deactivates activated Perl virtual environment
+deactivates activated Perl virtual environment (Bash only)
 
 =over
 
 B<deactivate>
+
+=back
+
+=head2 sh.pl
+
+runs Unix shell in Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<sh.pl> [I<argument>]...
+
+=back
+
+=head2 perl.pl
+
+runs Perl language interpreter in Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<perl.pl> [I<argument>]...
 
 =back
 
@@ -55,7 +75,7 @@ use App::Virtualenv;
 
 BEGIN
 {
-	our $VERSION     = '2.03';
+	our $VERSION     = '2.04';
 }
 
 

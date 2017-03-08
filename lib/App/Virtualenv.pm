@@ -5,7 +5,7 @@ App::Virtualenv - Perl virtual environment
 
 =head1 VERSION
 
-version 2.03
+version 2.04
 
 =head1 ABSTRACT
 
@@ -37,7 +37,7 @@ use Lazy::Utils;
 BEGIN
 {
 	require Exporter;
-	our $VERSION     = '2.03';
+	our $VERSION     = '2.04';
 	our @ISA         = qw(Exporter);
 	our @EXPORT      = qw(main run);
 	our @EXPORT_OK   = qw();
@@ -188,11 +188,12 @@ sub create
 
 	my $pkgPath = dirname(__FILE__);
 	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
-	_system("cp -v $pkgPath/Virtualenv/sh.pl $virtualenvPath/bin/sh.pl && chmod 755 $virtualenvPath/bin/sh.pl");
-	_system("cp -v $pkgPath/Virtualenv/perl.pl $virtualenvPath/bin/perl.pl && chmod 755 $virtualenvPath/bin/perl.pl");
-	_system("ln -v -s -f perl.pl $virtualenvPath/bin/perl");
 	_system("cp -v $pkgPath/Virtualenv/virtualenv.pl $virtualenvPath/bin/virtualenv.pl && chmod 755 $virtualenvPath/bin/virtualenv.pl");
 	_system("ln -v -s -f virtualenv.pl $virtualenvPath/bin/virtualenv");
+	_system("cp -v $pkgPath/Virtualenv/sh.pl $virtualenvPath/bin/sh.pl && chmod 755 $virtualenvPath/bin/sh.pl");
+	_system("echo \"#!".shellmeta($Config{perlpath})."\" > $virtualenvPath/bin/perl.pl");
+	_system("cat $pkgPath/Virtualenv/perl.pl >> $virtualenvPath/bin/perl.pl && chmod 755 $virtualenvPath/bin/perl.pl");
+	_system("ln -v -s -f perl.pl $virtualenvPath/bin/perl");
 
 	return $virtualenvPath;
 }

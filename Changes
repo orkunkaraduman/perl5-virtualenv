@@ -1,3 +1,7 @@
+2.04	2017-03-08
+		- Script files bug fix for #! /usr/bin/perl
+		- POD changes
+
 2.03	2017-03-06
 		- Perl v5.10.1 compatibility
 
