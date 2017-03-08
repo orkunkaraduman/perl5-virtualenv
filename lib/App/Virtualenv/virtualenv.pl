@@ -25,26 +25,6 @@ B<virtualenv.pl> -h|--help
 
 =back
 
-=head2 sh.pl
-
-runs Unix shell in Perl virtual environment
-
-=over
-
-[I<environment_path>/bin/]B<sh.pl> [I<argument>]...
-
-=back
-
-=head2 perl.pl
-
-runs Perl language interpreter in Perl virtual environment
-
-=over
-
-[I<environment_path>/bin/]B<perl.pl> [I<argument>]...
-
-=back
-
 =head2 activate
 
 activates Perl virtual environment (Bash only)
@@ -62,6 +42,26 @@ deactivates activated Perl virtual environment (Bash only)
 =over
 
 B<deactivate>
+
+=back
+
+=head2 sh.pl
+
+runs Unix shell in Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<sh.pl> [I<argument>]...
+
+=back
+
+=head2 perl.pl
+
+runs Perl language interpreter in Perl virtual environment
+
+=over
+
+[I<environment_path>/bin/]B<perl.pl> [I<argument>]...
 
 =back
 

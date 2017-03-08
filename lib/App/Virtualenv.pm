@@ -114,9 +114,6 @@ sub activate
 	$ENV{_OLD_PERL_VIRTUAL_PS1} = $ENV{PS1};
 	$ENV{PS1} = "(".basename($virtualenvPath).") ".((defined $ENV{PS1})? $ENV{PS1}: "");
 
-	$ENV{_OLD_PERL_VIRTUAL_prompt} = $ENV{prompt};
-	$ENV{prompt} = "(".basename($virtualenvPath).") ".((defined $ENV{prompt})? $ENV{prompt}: "");
-
 	return $virtualenvPath;
 }
 
@@ -155,9 +152,6 @@ sub deactivate
 
 	$ENV{PS1} = $ENV{_OLD_PERL_VIRTUAL_PS1} if defined($ENV{_OLD_PERL_VIRTUAL_PS1}) or not $nondestructive;
 	undef $ENV{_OLD_PERL_VIRTUAL_PS1};
-
-	$ENV{prompt} = $ENV{_OLD_PERL_VIRTUAL_prompt} if defined($ENV{_OLD_PERL_VIRTUAL_prompt}) or not $nondestructive;
-	undef $ENV{_OLD_PERL_VIRTUAL_prompt};
 
 	return 1;
 }
