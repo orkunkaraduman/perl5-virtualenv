@@ -5,7 +5,7 @@ App::Virtualenv - Perl virtual environment
 
 =head1 VERSION
 
-version 2.04
+version 2.05
 
 =head1 ABSTRACT
 
@@ -29,6 +29,7 @@ no if ($] >= 5.018), 'warnings' => 'experimental';
 use Config;
 use FindBin;
 use File::Basename;
+use File::Copy;
 use Cwd;
 use ExtUtils::Installed;
 use Lazy::Utils;
@@ -37,7 +38,7 @@ use Lazy::Utils;
 BEGIN
 {
 	require Exporter;
-	our $VERSION     = '2.04';
+	our $VERSION     = '2.05';
 	our @ISA         = qw(Exporter);
 	our @EXPORT      = qw(main run);
 	our @EXPORT_OK   = qw();
@@ -187,13 +188,24 @@ sub create
 	perl("-MCPAN", "-e exit(defined(CPAN::Shell->force('install', 'CPAN'))? 0: 1);") unless $empty;
 
 	my $pkgPath = dirname(__FILE__);
-	_system("cp -v $pkgPath/Virtualenv/activate $virtualenvPath/bin/activate && chmod 644 $virtualenvPath/bin/activate");
-	_system("cp -v $pkgPath/Virtualenv/virtualenv.pl $virtualenvPath/bin/virtualenv.pl && chmod 755 $virtualenvPath/bin/virtualenv.pl");
-	_system("ln -v -s -f virtualenv.pl $virtualenvPath/bin/virtualenv");
-	_system("cp -v $pkgPath/Virtualenv/sh.pl $virtualenvPath/bin/sh.pl && chmod 755 $virtualenvPath/bin/sh.pl");
-	_system("echo \"#!".shellmeta($Config{perlpath})."\" > $virtualenvPath/bin/perl.pl");
-	_system("cat $pkgPath/Virtualenv/perl.pl >> $virtualenvPath/bin/perl.pl && chmod 755 $virtualenvPath/bin/perl.pl");
-	_system("ln -v -s -f perl.pl $virtualenvPath/bin/perl");
+
+	say "Copying... bin/activate";
+	copy("$pkgPath/Virtualenv/activate", "$virtualenvPath/bin/activate");
+	chmod(0644, "$virtualenvPath/bin/activate");
+
+	say "Copying... bin/sh.pl";
+	copy("$pkgPath/Virtualenv/sh.pl", "$virtualenvPath/bin/sh.pl");
+	chmod(0755, "$virtualenvPath/bin/sh.pl");
+
+	say "Copying... bin/perl.pl";
+	file_put_contents("$virtualenvPath/bin/perl.pl", "#!".shellmeta($Config{perlpath})."\n".file_get_contents("$pkgPath/Virtualenv/perl.pl"));
+	chmod(0755, "$virtualenvPath/bin/perl.pl");
+	symlink("perl.pl", "$virtualenvPath/bin/perl");
+
+	say "Copying... bin/virtualenv.pl";
+	copy("$pkgPath/Virtualenv/virtualenv.pl", "$virtualenvPath/bin/virtualenv.pl");
+	chmod(0755, "$virtualenvPath/bin/virtualenv.pl");
+	symlink("virtualenv.pl", "$virtualenvPath/bin/virtualenv");
 
 	return $virtualenvPath;
 }
