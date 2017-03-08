@@ -1,5 +1,6 @@
 2.04	2017-03-08
 		- Script files bug fix for #! /usr/bin/perl
+		- Added prompt support for csh like PS1 in bash
 
 2.03	2017-03-06
 		- Perl v5.10.1 compatibility

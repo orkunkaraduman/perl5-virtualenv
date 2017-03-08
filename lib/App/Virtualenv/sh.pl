@@ -1,4 +1,4 @@
-#! /usr/bin/env perl
+#!/usr/bin/env perl
 =head1 NAME
 
 sh.pl - runs Unix shell in Perl virtual environment
@@ -11,7 +11,11 @@ version 2.04
 
 runs Unix shell in Perl virtual environment
 
+=over
+
 [I<environment_path>/bin/]B<sh.pl> [I<argument>]...
+
+=back
 
 =cut
 use strict;
