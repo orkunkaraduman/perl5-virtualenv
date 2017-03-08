@@ -1,11 +1,11 @@
-#! /usr/bin/perl
+#! /usr/bin/env perl
 =head1 NAME
 
 perl.pl - runs Perl language interpreter in Perl virtual environment
 
 =head1 VERSION
 
-version 2.03
+version 2.04
 
 =head1 ABSTRACT
 
@@ -23,7 +23,7 @@ use App::Virtualenv;
 
 BEGIN
 {
-	our $VERSION     = '2.03';
+	our $VERSION     = '2.04';
 }
 
 
