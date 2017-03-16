@@ -5,7 +5,7 @@ App::Virtualenv - Perl virtual environment
 
 =head1 VERSION
 
-version 2.05
+version 2.06
 
 =head1 ABSTRACT
 
@@ -38,7 +38,7 @@ use Lazy::Utils;
 BEGIN
 {
 	require Exporter;
-	our $VERSION     = '2.05';
+	our $VERSION     = '2.06';
 	our @ISA         = qw(Exporter);
 	our @EXPORT      = qw(main run);
 	our @EXPORT_OK   = qw();
@@ -304,7 +304,7 @@ sub list
 	my $inc = getInc(activate2(undef, 1));
 	my $inst = ExtUtils::Installed->new(inc_override => $inc, extra_libs =>[]);
 	my @packages = sort({lc($a) cmp lc($b)} $inst->modules());
-	for my $packageName (grep({not defined($params{package}) or $params{package} eq $_} @packages))
+	for my $packageName (grep({ my $package = $_; not defined($params{packages}) or not @{$params{packages}} or grep($_ eq $package, @{$params{packages}}) } @packages))
 	{
 		next if $packageName eq 'Perl';
 		my $version = $inst->version($packageName);
@@ -397,15 +397,15 @@ sub main
 		}
 		when (/^\-(l|\-list)$/)
 		{
-			list(one => (exists($args->{'-1'}) or exists($args->{'--one'})), package => $args->{parameters}->[0]);
+			list(one => (exists($args->{'-1'}) or exists($args->{'--one'})), packages => $args->{parameters});
 		}
 		when (/^\-(m|\-list-modules)$/)
 		{
-			list(one => (exists($args->{'-1'}) or exists($args->{'--one'})), package => $args->{parameters}->[0], detail => 'module');
+			list(one => (exists($args->{'-1'}) or exists($args->{'--one'})), packages => $args->{parameters}, detail => 'module');
 		}
 		when (/^\-(f|\-list-files)$/)
 		{
-			list(one => (exists($args->{'-1'}) or exists($args->{'--one'})), package => $args->{parameters}->[0], detail => 'file');
+			list(one => (exists($args->{'-1'}) or exists($args->{'--one'})), packages => $args->{parameters}, detail => 'file');
 		}
 	}
 	return 0;

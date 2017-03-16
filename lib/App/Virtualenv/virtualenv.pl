@@ -5,7 +5,7 @@ virtualenv.pl - manages Perl virtual environment
 
 =head1 VERSION
 
-version 2.04
+version 2.06
 
 =head1 ABSTRACT
 
@@ -15,11 +15,11 @@ manages Perl virtual environment
 
 B<virtualenv.pl> [-c|--create] [-e|--empty] I<environment_path>
 
-B<virtualenv.pl> -l|--list [-1|--one] [I<package_name>]
+B<virtualenv.pl> -l|--list [-1|--one] [I<package_name>]...
 
-B<virtualenv.pl> -m|--list-modules [-1|--one] [I<package_name>]
+B<virtualenv.pl> -m|--list-modules [-1|--one] [I<package_name>]...
 
-B<virtualenv.pl> -f|--list-files [-1|--one] [I<package_name>]
+B<virtualenv.pl> -f|--list-files [-1|--one] [I<package_name>]...
 
 B<virtualenv.pl> -h|--help
 
@@ -75,7 +75,7 @@ use App::Virtualenv;
 
 BEGIN
 {
-	our $VERSION     = '2.04';
+	our $VERSION     = '2.06';
 }
 
 
