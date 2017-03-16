@@ -4,7 +4,7 @@ App::Virtualenv - Perl virtual environment
 
 # VERSION
 
-version 2.05
+version 2.06
 
 # ABSTRACT
 
