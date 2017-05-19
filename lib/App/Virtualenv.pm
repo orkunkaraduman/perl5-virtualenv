@@ -5,7 +5,7 @@ App::Virtualenv - Perl virtual environment
 
 =head1 VERSION
 
-version 2.06
+version 2.07
 
 =head1 ABSTRACT
 
@@ -38,7 +38,7 @@ use Lazy::Utils;
 BEGIN
 {
 	require Exporter;
-	our $VERSION     = '2.06';
+	our $VERSION     = '2.07';
 	our @ISA         = qw(Exporter);
 	our @EXPORT      = qw(main run);
 	our @EXPORT_OK   = qw();
