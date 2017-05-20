@@ -47,7 +47,7 @@ B<deactivate>
 
 =head2 sh.pl
 
-runs Unix shell in Perl virtual environment
+runs shell in Perl virtual environment
 
 =over
 

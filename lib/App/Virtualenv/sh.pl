@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 =head1 NAME
 
-sh.pl - runs Unix shell in Perl virtual environment
+sh.pl - runs shell in Perl virtual environment
 
 =head1 VERSION
 
