@@ -12,11 +12,11 @@ version 2.07
 	#!/bin/sh
 	perl -MApp::Virtualenv -erun -- environment_path
 
-See also: L<virtualenv.pl|https://metacpan.org/pod/distribution/App-Virtualenv/lib/App/Virtualenv/virtualenv.pl>
-
 =head1 DESCRIPTION
 
 App::Virtualenv is a Perl package to create isolated Perl virtual environments, like Python virtual environment.
+
+See also: L<virtualenv.pl|https://metacpan.org/pod/distribution/App-Virtualenv/lib/App/Virtualenv/virtualenv.pl>
 
 =cut
 use strict;
@@ -43,9 +43,9 @@ BEGIN
 }
 
 
-=head2 Functions
+=head1 Functions
 
-=head3 sh(@args)
+=head2 sh(@args)
 
 runs shell program defined in SHELL environment variable, otherwise /bin/sh
 
@@ -60,7 +60,7 @@ sub sh
 	return _system((defined $ENV{SHELL})? $ENV{SHELL}: "/bin/sh", @args);
 }
 
-=head3 perl(@args)
+=head2 perl(@args)
 
 runs Perl interpreter
 
@@ -75,7 +75,7 @@ sub perl
 	return _system($Config{perlpath}, @args);
 }
 
-=head3 activate($virtualenvPath)
+=head2 activate($virtualenvPath)
 
 activates Perl virtual environment
 
@@ -116,7 +116,7 @@ sub activate
 	return $virtualenvPath;
 }
 
-=head3 deactivate($nondestructive)
+=head2 deactivate($nondestructive)
 
 deactivates Perl virtual environment
 
@@ -155,7 +155,7 @@ sub deactivate
 	return 1;
 }
 
-=head3 create($virtualenvPath, $empty)
+=head2 create($virtualenvPath, $empty)
 
 creates Perl virtual environment
 
@@ -208,7 +208,7 @@ sub create
 	return $virtualenvPath;
 }
 
-=head3 findVirtualenvPath($virtualenvPath)
+=head2 findVirtualenvPath($virtualenvPath)
 
 finds Perl virtual environment path by $virtualenvPath argument or activated virtual environment or running script or PERL5LIB environment variable
 
@@ -231,7 +231,7 @@ sub findVirtualenvPath
 	return $virtualenvPath;
 }
 
-=head3 activate2($virtualenvPath, $inform)
+=head2 activate2($virtualenvPath, $inform)
 
 activates Perl virtual environment by findVirtualenvPath function
 
@@ -260,7 +260,7 @@ sub activate2
 	return $virtualenvPath;
 }
 
-=head3 getInc($virtualenvPath)
+=head2 getInc($virtualenvPath)
 
 gets array ref of include paths given virtual environment path or sitelib paths
 
@@ -279,7 +279,7 @@ sub getInc
 	return $inc;
 }
 
-=head3 list(%params)
+=head2 list(%params)
 
 lists packages or modules or files by given %params
 
@@ -348,7 +348,7 @@ sub list
 	return 1;
 }
 
-=head3 main(@argv)
+=head2 main(@argv)
 
 App::Virtualenv main function to run on command-line
 
@@ -409,7 +409,7 @@ sub main
 	return 0;
 }
 
-=head3 run
+=head2 run
 
 runs App::Virtualenv by main function with command-line arguments by @ARGV
 

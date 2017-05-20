@@ -9,8 +9,6 @@ version 2.07
 
 =head1 SYNOPSIS
 
-manages Perl virtual environment
-
 =over
 
 B<virtualenv.pl> [-c|--create] [-e|--empty] I<environment_path>
@@ -24,6 +22,8 @@ B<virtualenv.pl> -f|--list-files [-1|--one] [I<package_name>]...
 B<virtualenv.pl> -h|--help
 
 =back
+
+=head1 Virtual Environment Tools
 
 =head2 activate
 
