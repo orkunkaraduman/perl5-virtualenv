@@ -14,4 +14,4 @@ MANIFEST			This list of files
 MANIFEST.SKIP
 README
 README.md
-t/App-Virtualenv.t
+t/00-load.t
