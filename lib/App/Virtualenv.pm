@@ -237,7 +237,7 @@ activates Perl virtual environment by find_virtualenv_path function
 
 $virtualenv_path: I<virtual environment path>
 
-$inform: I<informs activated virtual environment path to STDERR if new activated path differs old one>
+$inform: I<informs activated virtual environment path to STDERR if new activated path differs old one, by default 0>
 
 return value: I<activated best matching virtual environment path if success, otherwise undef>
 
@@ -289,7 +289,7 @@ lists packages or modules or files by given %params
 
 one: I<output is one-column, by default 0>
 
-detail: I<prints additional detail by given value: module or file. by default undef>
+detail: I<prints additional detail by given value('module' or 'file'), by default undef>
 
 =back
 

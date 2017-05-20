@@ -71,7 +71,7 @@ Functions
     $virtualenv_path: *virtual environment path*
 
     $inform: *informs activated virtual environment path to STDERR if new
-    activated path differs old one*
+    activated path differs old one, by default 0*
 
     return value: *activated best matching virtual environment path if
     success, otherwise undef*
@@ -91,8 +91,8 @@ Functions
 
         one: *output is one-column, by default 0*
 
-        detail: *prints additional detail by given value: module or file. by
-        default undef*
+        detail: *prints additional detail by given value('module' or
+        'file'), by default undef*
 
     return value: *always 1*
 
