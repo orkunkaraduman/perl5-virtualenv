@@ -7,7 +7,7 @@ dist.pl - distribution generator
 
 version not defined
 
-=head1 ABSTRACT
+=head1 SYNOPSIS
 
 distribution generator
 
@@ -22,14 +22,14 @@ use FindBin;
 use Cwd;
 
 
-my $podPath = "lib/" . "App::Virtualenv" =~ s/\:\:/\//gr . ".pm";
-#my $podPath = "README.pod";
-my $base = "${FindBin::Bin}/..";
-cwd($base);
+my $main_pkg = "App::Virtualenv";
+my $pod_path = "lib/" . $main_pkg =~ s/\:\:/\//gr . ".pm";
+#my $pod_path = "doc/README.pod";
 
+cwd("${FindBin::Bin}/..");
 system("perl Makefile.PL");
-system("pod2markdown --html-encode-chars 1 $podPath > README.md");
-system("pod2text $podPath > README");
+system("pod2markdown --html-encode-chars 1 $pod_path > README.md");
+system("pod2text $pod_path > README");
 system("rm MANIFEST; make manifest");
 system("make dist");
 
@@ -37,7 +37,7 @@ exit 0;
 __END__
 =head1 AUTHOR
 
-Orkun Karaduman <orkunkaraduman@gmail.com>
+Orkun Karaduman (ORKUN) <orkun@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 

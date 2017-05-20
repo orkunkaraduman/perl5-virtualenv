@@ -5,9 +5,9 @@ virtualenv.pl - manages Perl virtual environment
 
 =head1 VERSION
 
-version 2.06
+version 2.07
 
-=head1 ABSTRACT
+=head1 SYNOPSIS
 
 manages Perl virtual environment
 
@@ -75,7 +75,7 @@ use App::Virtualenv;
 
 BEGIN
 {
-	our $VERSION     = '2.06';
+	our $VERSION     = '2.07';
 }
 
 
@@ -89,7 +89,7 @@ B<CPAN> L<https://metacpan.org/release/App-Virtualenv>
 
 =head1 AUTHOR
 
-Orkun Karaduman <orkunkaraduman@gmail.com>
+Orkun Karaduman (ORKUN) <orkun@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 

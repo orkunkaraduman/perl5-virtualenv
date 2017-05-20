@@ -7,9 +7,7 @@ App::Virtualenv - Perl virtual environment
 
 version 2.07
 
-=head1 ABSTRACT
-
-Perl virtual environment
+=head1 SYNOPSIS
 
 	#!/bin/sh
 	perl -MApp::Virtualenv -erun -- environment_path
@@ -528,7 +526,7 @@ L<CPANPLUS|https://metacpan.org/pod/CPANPLUS>
 
 =head1 AUTHOR
 
-Orkun Karaduman <orkunkaraduman@gmail.com>
+Orkun Karaduman (ORKUN) <orkun@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
